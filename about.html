@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>關於企家班 | 政大企家班</title>
+<style>
+  :root{
+    --navy:#1b3a5b;--navy-dark:#13293f;--blue:#2c5f8a;--gold:#b8860b;
+    --bg:#ffffff;--bg-soft:#f4f6f9;--text:#2b2b2b;--text-soft:#5a5a5a;
+    --border:#e2e6ec;--maxw:1100px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;color:var(--text);line-height:1.8;background:var(--bg);font-size:16px}
+  a{color:var(--blue);text-decoration:none}
+  a:hover{text-decoration:underline}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+  .topbar{background:#fff;border-bottom:1px solid var(--border)}
+  .topbar-inner{display:flex;align-items:center;gap:18px;padding:14px 20px;max-width:var(--maxw);margin:0 auto;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand-logo{width:62px;height:62px;border-radius:6px}
+  .brand-name{font-size:24px;font-weight:700;color:var(--navy);letter-spacing:2px}
+  .brand-name small{display:block;font-size:12px;font-weight:400;color:var(--text-soft);letter-spacing:1px;margin-top:2px}
+  .top-actions{margin-left:auto}
+
+  nav.main{background:var(--navy);position:sticky;top:0;z-index:50}
+  .nav-inner{max-width:var(--maxw);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center}
+  .nav-inner>ul{list-style:none;display:flex;flex-wrap:wrap}
+  .nav-inner li{position:relative}
+  .nav-inner a{color:#eaf0f6;display:block;padding:14px 16px;font-size:15px;font-weight:500}
+  .nav-inner a:hover{background:rgba(255,255,255,.12);text-decoration:none}
+  .nav-inner .has-sub>a::after{content:"▾";margin-left:5px;font-size:11px;opacity:.8}
+  .submenu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:210px;box-shadow:0 8px 24px rgba(0,0,0,.15);border:1px solid var(--border);border-top:2px solid var(--gold);z-index:60}
+  .nav-inner li:hover>.submenu{display:block}
+  .submenu li a{color:var(--text);padding:11px 16px;font-size:14px;border-bottom:1px solid #f0f0f0}
+  .submenu li a:hover{background:var(--bg-soft);color:var(--navy)}
+  .nav-toggle{display:none}
+
+  /* 頁面 Banner */
+  .page-banner{background:var(--navy);color:#fff;padding:36px 0}
+  .page-banner h1{font-size:28px;font-weight:700;letter-spacing:3px}
+  .page-banner .en{font-size:13px;color:var(--gold);letter-spacing:2px;margin-top:4px;font-weight:600}
+  .breadcrumb{font-size:13px;color:#9fb4c8;margin-bottom:12px}
+  .breadcrumb a{color:#9fb4c8}
+  .breadcrumb a:hover{color:#fff}
+
+  /* 頁內錨點導覽 */
+  .sub-nav{background:#fff;border-bottom:2px solid var(--border);position:sticky;top:52px;z-index:40}
+  .sub-nav ul{list-style:none;display:flex;max-width:var(--maxw);margin:0 auto;padding:0 20px;gap:0;overflow-x:auto}
+  .sub-nav li a{display:block;padding:14px 20px;font-size:14px;font-weight:600;color:var(--text-soft);white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px}
+  .sub-nav li a:hover,.sub-nav li a.active{color:var(--navy);border-bottom-color:var(--gold);text-decoration:none}
+
+  /* 內容區塊 */
+  section.block{padding:56px 0}
+  section.block.alt{background:var(--bg-soft)}
+  .sec-head{margin-bottom:32px;padding-bottom:12px;border-bottom:2px solid var(--navy)}
+  .sec-head h2{font-size:24px;color:var(--navy);font-weight:700;letter-spacing:2px}
+  .sec-head .en{color:var(--gold);font-size:13px;letter-spacing:2px;font-weight:600;margin-top:4px}
+
+  /* 天下第一班 */
+  .about-lead{font-size:18px;color:var(--navy);font-weight:600;line-height:1.9;margin-bottom:24px;padding:20px 24px;background:var(--bg-soft);border-left:4px solid var(--gold);border-radius:0 6px 6px 0}
+  .about-body p{margin-bottom:18px;color:var(--text)}
+  .alumni-title{font-size:16px;font-weight:700;color:var(--navy);margin:28px 0 14px;letter-spacing:1px}
+  .alumni-list{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px}
+  .alumni-tag{background:#eef3f8;color:var(--blue);padding:6px 14px;border-radius:4px;font-size:14px;font-weight:500}
+
+  /* 課程資訊 */
+  .course-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px}
+  .course-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:22px 24px}
+  .course-card h3{font-size:15px;color:var(--navy);font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+  .course-card p,.course-card li{font-size:14px;color:var(--text-soft);line-height:1.9}
+  .course-card ul{padding-left:18px}
+
+  /* 司徒專欄 */
+  .situ-intro{display:flex;gap:32px;align-items:flex-start;margin-bottom:32px}
+  .situ-badge{flex:0 0 120px;text-align:center}
+  .situ-badge .icon{width:100px;height:100px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;margin:0 auto 10px}
+  .situ-badge .name{font-size:15px;font-weight:700;color:var(--navy);letter-spacing:1px}
+  .situ-badge .title{font-size:12px;color:var(--text-soft)}
+  .situ-text p{margin-bottom:16px;color:var(--text)}
+
+  /* 企家班之歌 */
+  .song-box{background:var(--navy);color:#eaf0f6;border-radius:10px;padding:36px 40px;max-width:640px;margin:0 auto}
+  .song-box h3{color:var(--gold);font-size:18px;letter-spacing:3px;margin-bottom:6px;text-align:center}
+  .song-credit{text-align:center;color:#9fb4c8;font-size:13px;margin-bottom:28px}
+  .song-lyrics{line-height:2.2;font-size:15px;white-space:pre-wrap;text-align:center}
+
+  footer{background:var(--navy-dark);color:#c7d3df;padding:40px 0 24px;margin-top:10px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
+  footer h4{color:#fff;font-size:15px;margin-bottom:12px;letter-spacing:1px}
+  footer p,footer li{font-size:14px;line-height:1.9;list-style:none}
+  footer a{color:#9fb4c8}
+  footer a:hover{color:#fff}
+  .foot-social{display:flex;gap:12px;margin-top:12px}
+  .foot-social a{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff}
+  .foot-social a:hover{background:#06c755;text-decoration:none}
+  .foot-bottom{text-align:center;margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);font-size:13px;color:#7e93a7}
+
+  @media(max-width:860px){
+    .course-grid{grid-template-columns:1fr}
+    .situ-intro{flex-direction:column}
+    .foot-grid{grid-template-columns:1fr}
+    .nav-toggle{display:block;background:none;border:none;color:#fff;font-size:22px;padding:12px 16px;cursor:pointer;margin-left:auto}
+    .nav-inner>ul{display:none;width:100%;flex-direction:column}
+    .nav-inner>ul.open{display:flex}
+    .nav-inner li{width:100%}
+    .submenu{position:static;box-shadow:none;border:none;border-top:none;background:rgba(255,255,255,.06)}
+    .nav-inner li:hover>.submenu{display:none}
+    .submenu.open{display:block}
+    .submenu li a{color:#cdd9e5;border-bottom:1px solid rgba(255,255,255,.08)}
+    .song-box{padding:24px 20px}
+    .sub-nav{top:44px}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-logo"><img src="images/logo.gif" alt="政大企家班" style="width:62px;height:62px;object-fit:contain;border-radius:6px"></div>
+      <div class="brand-name">政大企家班<small>NCCU Business Administration · 企業家經營管理研究班</small></div>
+    </div>
+    <div class="top-actions"></div>
+  </div>
+</header>
+
+<nav class="main">
+  <div class="nav-inner wrap" style="padding-left:0;padding-right:0">
+    <button class="nav-toggle" aria-label="選單" onclick="document.getElementById('navlist').classList.toggle('open')">☰</button>
+    <ul id="navlist">
+      <li><a href="index.html">首頁</a></li>
+      <li class="has-sub"><a href="about.html">關於企家班</a>
+        <ul class="submenu">
+          <li><a href="about.html#天下第一班">天下第一班</a></li>
+          <li><a href="about.html#課程資訊">課程資訊</a></li>
+          <li><a href="about.html#司徒專欄">司徒專欄</a></li>
+          <li><a href="about.html#企家班之歌">企家班之歌</a></li>
+        </ul>
+      </li>
+      <li class="has-sub"><a href="#">歷屆校友</a>
+        <ul class="submenu">
+          <li><a href="#">企家班學員專訪</a></li>
+        </ul>
+      </li>
+      <li class="has-sub"><a href="events.html">活動訊息</a>
+        <ul class="submenu">
+          <li><a href="events.html">近期活動行事曆</a></li>
+          <li><a href="events.html#過去">過期活動行事曆</a></li>
+          <li><a href="#">影音平台</a></li>
+          <li><a href="index.html#剪影">活動剪影</a></li>
+        </ul>
+      </li>
+      <li><a href="index.html#芳名錄">捐款芳名錄</a></li>
+      <li><a href="index.html#下載">下載專區</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-banner">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="index.html">首頁</a> › 關於企家班</div>
+    <h1>關於企家班</h1>
+    <div class="en">ABOUT NCCU BA</div>
+  </div>
+</div>
+
+<div class="sub-nav">
+  <ul>
+    <li><a href="#天下第一班">天下第一班</a></li>
+    <li><a href="#課程資訊">課程資訊</a></li>
+    <li><a href="#司徒專欄">司徒專欄</a></li>
+    <li><a href="#企家班之歌">企家班之歌</a></li>
+  </ul>
+</div>
+
+<!-- 天下第一班 -->
+<section class="block" id="天下第一班">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>天下第一班</h2>
+      <div class="en">THE FIRST CLASS IN THE WORLD</div>
+    </div>
+    <div class="about-body">
+      <div class="about-lead">近40年以來每年皆招生一屆，目前每屆錄取40名，備取若干名。歷屆校友在各行業中傑出之表現，使「政大企家班」在企業界聲譽日隆，素有「華人世界第一總裁班」之美譽，現已成為各大企業高階主管積極爭取進修之管道。</div>
+      <p>民國70年起，國立政治大學企業管理研究所開辦「企業家管理發展進修班」碩士學分班，以提供企業家培養管理才能之機會，期望提昇企業家進修風氣以求管理紮根，進而促進企業升級。自90年起，更名為「企業家經營管理研究班」。</p>
+      <p>歷史悠久、凝聚力超強的政大企家班，不僅獨步台灣是政治大學商學院的一塊驚世瑰寶，她更是華人世界累積企業家人才、管理經驗、教學個案最豐厚扎實的第一總裁班。現已成為各大企業高階主管積極爭取進修之管道。</p>
+      <p>目前計有869人順利結業，企業菁英涵蓋各大產業領袖，皆能以所學運用於企業之營運管理，提升企業之競爭能力，將企業往發展之高峰推進。</p>
+
+      <div class="alumni-title">歷屆傑出校友（部分）</div>
+      <div class="alumni-list">
+        <span class="alumni-tag">李成家　美吾華集團董事長</span>
+        <span class="alumni-tag">李焜耀　前友達光電董事長</span>
+        <span class="alumni-tag">朱炳昱　前台灣人壽董事長</span>
+        <span class="alumni-tag">黃少華　宏碁股份公司董事長</span>
+        <span class="alumni-tag">周俊吉　信義房屋董事長</span>
+        <span class="alumni-tag">王正一　前桂冠實業董事長</span>
+        <span class="alumni-tag">葉國筌　精技電腦董事長</span>
+        <span class="alumni-tag">宋文琪　前台北101董事長</span>
+        <span class="alumni-tag">沈方正　老爺酒店集團執行長</span>
+        <span class="alumni-tag">馬志玲　元大金控集團總裁</span>
+        <span class="alumni-tag">周永明　數字王國董事長</span>
+        <span class="alumni-tag">吳守謙　可樂旅遊副董事長</span>
+        <span class="alumni-tag">張世杰　鬍鬚張公司總經理</span>
+        <span class="alumni-tag">李瓊淑　台灣大車隊總經理</span>
+        <span class="alumni-tag">戴治中　海霆國際物流董事長</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 課程資訊 -->
+<section class="block alt" id="課程資訊">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>課程資訊</h2>
+      <div class="en">CURRICULUM</div>
+    </div>
+    <div class="course-grid">
+      <div class="course-card">
+        <h3>修業規定</h3>
+        <p>以3年內修讀完規定課程為原則，最少選修36學分，每學分上課18小時。第一、二學年，每學期最少選修6學分。</p>
+      </div>
+      <div class="course-card">
+        <h3>教學方式</h3>
+        <p>以辯證、詰問方式授課，企家班以小班制、精英主義的方式，「精雕細琢」每一位企業領導人或高階主管。</p>
+      </div>
+      <div class="course-card">
+        <h3>招生對象</h3>
+        <ul>
+          <li>各企業高階主管</li>
+          <li>具豐富管理實務經驗之領導人</li>
+          <li>每屆錄取40名，備取若干名</li>
+        </ul>
+      </div>
+      <div class="course-card">
+        <h3>班級規模</h3>
+        <p>採精英小班制，近40年來每年招生一屆，目前已累計結業超過869位各界菁英。</p>
+      </div>
+    </div>
+    <p style="color:var(--text-soft);font-size:14px">如需完整課程表，請<a href="mailto:nccu.ba.app@gmail.com">來信洽詢</a>或致電 02-29393091。</p>
+  </div>
+</section>
+
+<!-- 司徒專欄 -->
+<section class="block" id="司徒專欄">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>司徒專欄</h2>
+      <div class="en">SITU'S COLUMN</div>
+    </div>
+    <div class="situ-intro">
+      <div class="situ-badge">
+        <div class="icon">司徒</div>
+        <div class="name">司徒達賢</div>
+        <div class="title">政大企管系 榮譽教授</div>
+      </div>
+      <div class="situ-text">
+        <p>詢問參與過企業家管理發展進修班的高階主管們最難忘的師長時，十之八九會回答說「司徒達賢」。</p>
+        <p>司徒達賢教授是國內第一位捧回「企業政策」的企管博士，記憶力奇佳、思路清晰靈活、讓學生上課不敢打混。現任企管系主任于卓民、副教授林淑姬等多位教師都曾是他的學生。</p>
+        <p>司徒教授長年致力推動學術與企業界結合，其豐富的個案教學與深厚的理論功底，使他成為企家班最令人印象深刻的師長之一。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 企家班之歌 -->
+<section class="block alt" id="企家班之歌">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>企家班之歌</h2>
+      <div class="en">OUR ANTHEM</div>
+    </div>
+    <div class="song-box">
+      <h3>企家班之歌</h3>
+      <div class="song-credit">詞：鍾成虎學長</div>
+      <div class="song-lyrics" id="songLyrics">（歌詞內容請洽班會秘書處）</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <h4>國立政治大學 企業家管理發展進修班</h4>
+      <p>電話：02-29393091 EXT 87071-5, 87063-5<br>
+         地址：11605 台北市文山區指南路二段64號<br>
+         Email：<a href="mailto:nccu.ba.app@gmail.com">nccu.ba.app@gmail.com</a></p>
+      <div class="foot-social">
+        <a href="https://www.youtube.com/channel/UC0n-O1ZDkga3oMpSxoQJduw/videos" target="_blank" rel="noopener" title="YouTube">YT</a>
+        <a href="https://page.line.me/nccuba" target="_blank" rel="noopener" title="Line">Line</a>
+      </div>
+    </div>
+    <div>
+      <h4>關於企家班</h4>
+      <ul>
+        <li><a href="about.html#天下第一班">天下第一班</a></li>
+        <li><a href="about.html#課程資訊">課程資訊</a></li>
+        <li><a href="about.html#司徒專欄">司徒專欄</a></li>
+        <li><a href="about.html#企家班之歌">企家班之歌</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>校友服務</h4>
+      <ul>
+        <li><a href="index.html#芳名錄">捐款芳名錄</a></li>
+        <li><a href="index.html#剪影">活動剪影</a></li>
+        <li><a href="index.html#下載">下載專區</a></li>
+        <li><a href="https://page.line.me/nccuba" target="_blank" rel="noopener">加入 Line 好友</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">© 政大企家班 NCCU BA. 本站為校友會資訊網站。</div>
+</footer>
+
+<script>
+document.querySelectorAll('.has-sub>a').forEach(a => {
+  a.addEventListener('click', e => {
+    if (window.innerWidth <= 860) {
+      e.preventDefault();
+      a.parentElement.querySelector('.submenu').classList.toggle('open');
+    }
+  });
+});
+
+// 頁內導覽高亮
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.sub-nav a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.sub-nav a[href="#${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, {rootMargin:'-30% 0px -60% 0px'});
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

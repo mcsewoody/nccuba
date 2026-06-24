@@ -118,9 +118,11 @@
     <div class="login-logo">政大<br>企家班</div>
     <h1>後台管理系統</h1>
     <div class="sub">校友會幹部專用</div>
+    <form onsubmit="doLogin();return false" autocomplete="on">
     <div class="field"><label>電子郵件</label><input id="lgUser" type="email" placeholder="輸入電子郵件" autocomplete="email"></div>
     <div class="field"><label>密碼</label><input id="lgPass" type="password" placeholder="輸入密碼" autocomplete="current-password"></div>
-    <button class="btn" onclick="doLogin()">登入</button>
+    <button class="btn" type="submit">登入</button>
+    </form>
     <div class="login-err" id="lgErr"></div>
   </div>
 </div>
