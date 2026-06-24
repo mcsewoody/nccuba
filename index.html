@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>首頁 | 政大企家班</title>
+<meta name="description" content="近40年以來每年皆招生一屆，目前每屆錄取40名，備取若干名。歷屆校友在各行業中傑出之表現，使「政大企家班」在企業界聲譽日隆，素有「華人世界第一總裁班」之美譽。">
+<style>
+  :root{
+    --navy:#1b3a5b;          /* 主深藍 */
+    --navy-dark:#13293f;     /* 頁尾更深藍 */
+    --blue:#2c5f8a;          /* 連結藍 */
+    --gold:#b8860b;          /* 點綴金 */
+    --line-green:#06c755;    /* Line 綠 */
+    --bg:#ffffff;
+    --bg-soft:#f4f6f9;
+    --text:#2b2b2b;
+    --text-soft:#5a5a5a;
+    --border:#e2e6ec;
+    --maxw:1100px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;
+    color:var(--text);line-height:1.7;background:var(--bg);font-size:16px;
+  }
+  a{color:var(--blue);text-decoration:none}
+  a:hover{text-decoration:underline}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+  /* ---------- 頂部 logo 區 ---------- */
+  .topbar{background:#fff;border-bottom:1px solid var(--border)}
+  .topbar-inner{display:flex;align-items:center;gap:18px;padding:14px 20px;max-width:var(--maxw);margin:0 auto;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand-logo{width:62px;height:62px;border-radius:6px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;letter-spacing:1px;text-align:center;line-height:1.25}
+  .brand-name{font-size:24px;font-weight:700;color:var(--navy);letter-spacing:2px}
+  .brand-name small{display:block;font-size:12px;font-weight:400;color:var(--text-soft);letter-spacing:1px;margin-top:2px}
+  .top-actions{margin-left:auto;display:flex;align-items:center;gap:12px}
+  .btn-line{background:var(--line-green);color:#fff;padding:8px 16px;border-radius:4px;font-size:14px;font-weight:600}
+  .btn-line:hover{text-decoration:none;opacity:.9}
+  .btn-login{color:var(--text-soft);font-size:14px;border:1px solid var(--border);padding:8px 14px;border-radius:4px}
+  .btn-login:hover{text-decoration:none;border-color:var(--navy);color:var(--navy)}
+
+  /* ---------- 主導覽列 ---------- */
+  nav.main{background:var(--navy);position:sticky;top:0;z-index:50}
+  .nav-inner{max-width:var(--maxw);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center}
+  .nav-inner>ul{list-style:none;display:flex;flex-wrap:wrap}
+  .nav-inner li{position:relative}
+  .nav-inner a{color:#eaf0f6;display:block;padding:14px 16px;font-size:15px;font-weight:500}
+  .nav-inner a:hover{background:rgba(255,255,255,.12);text-decoration:none}
+  .nav-inner .has-sub>a::after{content:"▾";margin-left:5px;font-size:11px;opacity:.8}
+  .submenu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:210px;box-shadow:0 8px 24px rgba(0,0,0,.15);border:1px solid var(--border);border-top:2px solid var(--gold);z-index:60}
+  .nav-inner li:hover>.submenu{display:block}
+  .submenu li a{color:var(--text);padding:11px 16px;font-size:14px;border-bottom:1px solid #f0f0f0}
+  .submenu li a:hover{background:var(--bg-soft);color:var(--navy)}
+  .nav-toggle{display:none}
+
+  /* ---------- Hero ---------- */
+  .hero{background:linear-gradient(180deg,#f4f6f9 0%,#fff 100%);padding:40px 0}
+  .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  .hero-title{font-size:30px;color:var(--navy);font-weight:700;letter-spacing:2px;margin-bottom:8px}
+  .hero-sub{color:var(--gold);font-weight:600;letter-spacing:3px;margin-bottom:18px;font-size:15px}
+  .hero p{color:var(--text-soft);margin-bottom:14px}
+  .hero-img{border-radius:8px;overflow:hidden;box-shadow:0 10px 30px rgba(27,58,91,.15);background:#dfe5ec;aspect-ratio:485/360;display:flex;align-items:center;justify-content:center;color:#8a99aa;font-size:14px}
+
+  /* ---------- 區塊通用 ---------- */
+  section.block{padding:46px 0}
+  section.block.alt{background:var(--bg-soft)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;border-bottom:2px solid var(--navy);padding-bottom:10px}
+  .sec-head h2{font-size:22px;color:var(--navy);font-weight:700;letter-spacing:2px}
+  .sec-head .en{color:var(--gold);font-size:13px;letter-spacing:2px;font-weight:600}
+  .sec-head a.more{margin-left:auto;font-size:13px;color:var(--text-soft)}
+
+  /* 公告 */
+  .ann-list{list-style:none}
+  .ann-item{display:flex;gap:16px;align-items:flex-start;padding:14px 0;border-bottom:1px dashed var(--border)}
+  .ann-date{flex:0 0 auto;color:var(--text-soft);font-size:13px;min-width:96px;padding-top:2px}
+  .ann-tag{flex:0 0 auto;font-size:12px;padding:2px 9px;border-radius:3px;color:#fff;font-weight:600}
+  .tag-一般{background:#6c7a89}.tag-緊急{background:#c0392b}.tag-活動{background:var(--gold)}
+  .ann-title{flex:1}
+  .ann-pin{color:#c0392b;font-weight:700;font-size:12px;margin-right:6px}
+
+  /* 行事曆 */
+  .event-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+  .event-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff;display:flex}
+  .event-date-box{flex:0 0 84px;background:var(--navy);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px}
+  .event-date-box .m{font-size:13px;letter-spacing:1px}
+  .event-date-box .d{font-size:30px;font-weight:700;line-height:1}
+  .event-body{padding:14px 16px;flex:1}
+  .event-body h3{font-size:16px;color:var(--navy);margin-bottom:6px}
+  .event-meta{font-size:13px;color:var(--text-soft);margin-bottom:4px}
+
+  /* 捐款芳名錄 */
+  .term-block{margin-bottom:26px}
+  .term-head{background:var(--navy);color:#fff;padding:8px 16px;border-radius:6px 6px 0 0;font-weight:600;letter-spacing:1px}
+  .donor-table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-top:none}
+  .donor-table th,.donor-table td{padding:10px 16px;text-align:left;font-size:14px;border-bottom:1px solid #f0f0f0}
+  .donor-table th{background:#fafbfc;color:var(--text-soft);font-weight:600}
+  .donor-table tr:last-child td{border-bottom:none}
+  .amt{font-weight:600;color:var(--navy)}
+  .amt-tier{display:inline-block;background:#eef3f8;color:var(--blue);padding:2px 10px;border-radius:3px;font-size:13px;font-weight:600}
+  .amt-hidden{color:#aaa;font-size:13px}
+
+  /* 活動剪影 */
+  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+  .gallery-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff;transition:transform .15s,box-shadow .15s}
+  .gallery-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.1);text-decoration:none}
+  .gallery-cover{aspect-ratio:16/10;background:#dfe5ec;display:flex;align-items:center;justify-content:center;color:#8a99aa;font-size:13px}
+  .gallery-cover img{width:100%;height:100%;object-fit:cover}
+  .gallery-info{padding:12px 14px}
+  .gallery-info h3{font-size:15px;color:var(--navy);margin-bottom:3px}
+  .gallery-info .date{font-size:12px;color:var(--text-soft)}
+  .gallery-info .ext{font-size:12px;color:var(--gold);margin-top:4px}
+
+  /* ---------- 頁尾 ---------- */
+  footer{background:var(--navy-dark);color:#c7d3df;padding:40px 0 24px;margin-top:10px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
+  footer h4{color:#fff;font-size:15px;margin-bottom:12px;letter-spacing:1px}
+  footer p,footer li{font-size:14px;line-height:1.9;list-style:none}
+  footer a{color:#9fb4c8}
+  footer a:hover{color:#fff}
+  .foot-social{display:flex;gap:12px;margin-top:12px}
+  .foot-social a{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff}
+  .foot-social a:hover{background:var(--line-green);text-decoration:none}
+  .foot-bottom{text-align:center;margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);font-size:13px;color:#7e93a7}
+
+  /* ---------- RWD ---------- */
+  @media(max-width:860px){
+    .hero-grid{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr}
+    .nav-toggle{display:block;background:none;border:none;color:#fff;font-size:22px;padding:12px 16px;cursor:pointer;margin-left:auto}
+    .nav-inner>ul{display:none;width:100%;flex-direction:column}
+    .nav-inner>ul.open{display:flex}
+    .nav-inner li{width:100%}
+    .submenu{position:static;box-shadow:none;border:none;border-top:none;background:rgba(255,255,255,.06)}
+    .submenu li a{color:#cdd9e5;border-bottom:1px solid rgba(255,255,255,.08)}
+    .nav-inner li:hover>.submenu{display:none}
+    .submenu.open{display:block}
+    .nav-inner .has-sub>a::after{float:right}
+  }
+</style>
+</head>
+<body>
+
+<!-- 頂部 logo 區 -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-logo">政大<br>企家班</div>
+      <div class="brand-name">政大企家班<small>NCCU Business Administration · 企業家經營管理研究班</small></div>
+    </div>
+    <div class="top-actions">
+      <a class="btn-line" href="https://page.line.me/nccuba" target="_blank" rel="noopener">加入 Line 好友</a>
+      <a class="btn-login" href="admin/index.html">幹部登入</a>
+    </div>
+  </div>
+</header>
+
+<!-- 主導覽列 -->
+<nav class="main">
+  <div class="nav-inner wrap" style="padding-left:0;padding-right:0">
+    <button class="nav-toggle" aria-label="選單" onclick="document.getElementById('navlist').classList.toggle('open')">☰</button>
+    <ul id="navlist">
+      <li><a href="index.html">首頁</a></li>
+      <li class="has-sub"><a href="#">關於企家班</a>
+        <ul class="submenu">
+          <li><a href="#">天下第一班</a></li>
+          <li><a href="#">課程資訊</a></li>
+          <li><a href="#">司徒專欄</a></li>
+          <li><a href="#">企家班之歌</a></li>
+        </ul>
+      </li>
+      <li class="has-sub"><a href="#">歷屆校友</a>
+        <ul class="submenu">
+          <li><a href="#">企家班學員專訪</a></li>
+        </ul>
+      </li>
+      <li class="has-sub"><a href="#活動">活動訊息</a>
+        <ul class="submenu">
+          <li><a href="#活動">近期活動行事曆</a></li>
+          <li><a href="#">過期活動行事曆</a></li>
+          <li><a href="#">影音平台</a></li>
+          <li><a href="#剪影">活動剪影</a></li>
+        </ul>
+      </li>
+      <li class="has-sub"><a href="#">讀書有益健康</a>
+        <ul class="submenu">
+          <li><a href="#">好文賞析</a></li>
+          <li><a href="#">讀書會</a></li>
+        </ul>
+      </li>
+      <li><a href="#芳名錄">捐款芳名錄</a></li>
+      <li><a href="#">校友好康分享</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="hero-title">政大企家班</div>
+      <div class="hero-sub">天下第一班 · 華人世界第一總裁班</div>
+      <p>民國70年起，國立政治大學企業管理研究所開辦「企業家管理發展進修班」碩士學分班，以提供企業家培養管理才能之機會，期望提昇企業家進修風氣以求管理紮根，進而促進企業升級。</p>
+      <p>自90年起，更名為「企業家經營管理研究班」。近40年來每年招生一屆，每屆錄取40名，歷屆校友在各行業中傑出之表現，使企家班在企業界聲譽日隆。</p>
+    </div>
+    <div class="hero-img">首頁主視覺圖（沿用現有照片或日後替換）</div>
+  </div>
+</section>
+
+<!-- 公告 -->
+<section class="block" id="活動">
+  <div class="wrap">
+    <div class="sec-head"><h2>最新公告</h2><span class="en">ANNOUNCEMENTS</span><a class="more" href="#">更多 ›</a></div>
+    <ul class="ann-list" id="annList"></ul>
+  </div>
+</section>
+
+<!-- 行事曆 -->
+<section class="block alt">
+  <div class="wrap">
+    <div class="sec-head"><h2>近期活動行事曆</h2><span class="en">EVENTS</span><a class="more" href="#">完整行事曆 ›</a></div>
+    <div class="event-grid" id="eventGrid"></div>
+  </div>
+</section>
+
+<!-- 捐款芳名錄 -->
+<section class="block" id="芳名錄">
+  <div class="wrap">
+    <div class="sec-head"><h2>捐款芳名錄</h2><span class="en">DONORS</span></div>
+    <p style="color:var(--text-soft);margin-bottom:22px">感謝各屆校友與善心人士對企家班的支持與贊助。</p>
+    <div id="donorWrap"></div>
+  </div>
+</section>
+
+<!-- 活動剪影 -->
+<section class="block alt" id="剪影">
+  <div class="wrap">
+    <div class="sec-head"><h2>活動剪影</h2><span class="en">GALLERY</span></div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</section>
+
+<!-- 頁尾 -->
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <h4>國立政治大學 企業家管理發展進修班</h4>
+      <p>電話：02-29393091 EXT 87071-5, 87063-5<br>
+         地址：11605 台北市文山區指南路二段64號<br>
+         Email：<a href="mailto:nccu.ba.app@gmail.com">nccu.ba.app@gmail.com</a></p>
+      <div class="foot-social">
+        <a href="https://www.youtube.com/channel/UC0n-O1ZDkga3oMpSxoQJduw/videos" target="_blank" rel="noopener" title="YouTube">YT</a>
+        <a href="https://page.line.me/nccuba" target="_blank" rel="noopener" title="Line">Line</a>
+      </div>
+    </div>
+    <div>
+      <h4>快速連結</h4>
+      <ul>
+        <li><a href="#">天下第一班</a></li>
+        <li><a href="#">課程資訊</a></li>
+        <li><a href="#">歷屆校友</a></li>
+        <li><a href="#活動">活動訊息</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>校友服務</h4>
+      <ul>
+        <li><a href="#芳名錄">捐款芳名錄</a></li>
+        <li><a href="#剪影">活動剪影</a></li>
+        <li><a href="#">讀書會</a></li>
+        <li><a href="https://page.line.me/nccuba" target="_blank" rel="noopener">加入 Line 好友</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">© 政大企家班 NCCU BA. 本站為校友會資訊網站。</div>
+</footer>
+
+<script>
+/* ===== 假資料：日後改由 Firebase 讀取 ===== */
+const MOCK = {
+  announcements:[
+    {title:"第40屆招生簡章公告，歡迎企業家報名進修", category:"活動", date:"2026-06-15", pinned:true},
+    {title:"颱風來襲，6/18 校友聚會延期通知", category:"緊急", date:"2026-06-12", pinned:false},
+    {title:"司徒專欄新文上線：談企業二代接班的三個誤區", category:"一般", date:"2026-06-08", pinned:false},
+    {title:"讀書會 7 月選書與報名連結公布", category:"一般", date:"2026-06-03", pinned:false},
+  ],
+  events:[
+    {title:"第40屆開學茶會", start:"2026-09-06 14:00", location:"政大公企中心 3F", desc:"新生與歷屆學長姐交流", signup:"#"},
+    {title:"企業參訪：台積電南科廠", start:"2026-07-20 09:30", location:"台南科學園區", desc:"名額有限，額滿為止", signup:"#"},
+    {title:"校友高峰論壇暨晚宴", start:"2026-08-15 18:00", location:"圓山大飯店 12F", desc:"年度盛會，邀請各屆校友參與", signup:"#"},
+  ],
+  donations:[
+    {term:"第38屆", name:"王大明", anon:false, mode:"精確", exact:1000000, item:"獎學金"},
+    {term:"第38屆", name:"善心人士", anon:true, mode:"級距", tier:"50-100萬", item:"活動贊助"},
+    {term:"第38屆", name:"李美華", anon:false, mode:"精確", exact:300000, item:"獎學金"},
+    {term:"第39屆", name:"陳建國", anon:false, mode:"級距", tier:"10-50萬", item:"設備基金"},
+    {term:"第39屆", name:"善心人士", anon:true, mode:"不顯示", item:"一般捐款"},
+    {term:"第39屆", name:"張文昌", anon:false, mode:"精確", exact:50000, item:"一般捐款"},
+  ],
+  galleries:[
+    {title:"第39屆畢業典禮", date:"2026-05-30", url:"https://drive.google.com/drive/folders/1umaKUChjkMttkMuvS3EBnn6czAh1lO_A", cover:""},
+    {title:"2026 春季企業參訪", date:"2026-04-12", url:"https://drive.google.com/", cover:""},
+    {title:"校友年度晚宴", date:"2026-03-08", url:"https://drive.google.com/", cover:""},
+    {title:"司徒教授專題講座", date:"2026-02-20", url:"https://drive.google.com/", cover:""},
+  ],
+};
+
+function fmtAmt(d){
+  if(d.mode==="精確") return '<span class="amt">NT$ '+Number(d.exact).toLocaleString()+'</span>';
+  if(d.mode==="級距") return '<span class="amt-tier">'+d.tier+'</span>';
+  return '<span class="amt-hidden">—</span>';
+}
+
+/* 公告 */
+(function(){
+  const list=[...MOCK.announcements].sort((a,b)=> (b.pinned-a.pinned) || (b.date.localeCompare(a.date)));
+  document.getElementById('annList').innerHTML = list.map(a=>`
+    <li class="ann-item">
+      <span class="ann-date">${a.date}</span>
+      <span class="ann-tag tag-${a.category}">${a.category}</span>
+      <span class="ann-title">${a.pinned?'<span class="ann-pin">[置頂]</span>':''}${a.title}</span>
+    </li>`).join('');
+})();
+
+/* 行事曆（只顯示未來活動，依時間排序） */
+(function(){
+  const now=new Date();
+  const up=MOCK.events
+    .map(e=>({...e,dt:new Date(e.start.replace(' ','T'))}))
+    .filter(e=>e.dt>=now)
+    .sort((a,b)=>a.dt-b.dt);
+  document.getElementById('eventGrid').innerHTML = up.map(e=>`
+    <div class="event-card">
+      <div class="event-date-box"><div class="m">${e.dt.getMonth()+1}月</div><div class="d">${e.dt.getDate()}</div></div>
+      <div class="event-body">
+        <h3>${e.title}</h3>
+        <div class="event-meta">🕒 ${e.start}</div>
+        <div class="event-meta">📍 ${e.location}</div>
+        <div class="event-meta">${e.desc}</div>
+        ${e.signup?`<a href="${e.signup}" style="font-size:13px">立即報名 ›</a>`:''}
+      </div>
+    </div>`).join('') || '<p style="color:var(--text-soft)">目前無近期活動。</p>';
+})();
+
+/* 捐款芳名錄（按屆別分組） */
+(function(){
+  const groups={};
+  MOCK.donations.forEach(d=>{ (groups[d.term]=groups[d.term]||[]).push(d); });
+  const terms=Object.keys(groups).sort((a,b)=>b.localeCompare(a,'zh-Hant'));
+  document.getElementById('donorWrap').innerHTML = terms.map(t=>`
+    <div class="term-block">
+      <div class="term-head">${t}</div>
+      <table class="donor-table">
+        <thead><tr><th style="width:30%">捐款人</th><th style="width:30%">金額</th><th>捐款項目</th></tr></thead>
+        <tbody>
+          ${groups[t].map(d=>`<tr><td>${d.anon?'善心人士':d.name}</td><td>${fmtAmt(d)}</td><td>${d.item||'—'}</td></tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`).join('');
+})();
+
+/* 活動剪影 */
+(function(){
+  document.getElementById('galleryGrid').innerHTML = MOCK.galleries.map(g=>`
+    <a class="gallery-card" href="${g.url}" target="_blank" rel="noopener">
+      <div class="gallery-cover">${g.cover?`<img src="${g.cover}" alt="">`:'相簿封面'}</div>
+      <div class="gallery-info">
+        <h3>${g.title}</h3>
+        <div class="date">${g.date}</div>
+        <div class="ext">🔗 開啟 Google 相簿 ›</div>
+      </div>
+    </a>`).join('');
+})();
+
+/* 手機板子選單展開 */
+document.querySelectorAll('.has-sub>a').forEach(a=>{
+  a.addEventListener('click',e=>{
+    if(window.innerWidth<=860){ e.preventDefault(); a.parentElement.querySelector('.submenu').classList.toggle('open'); }
+  });
+});
+</script>
+</body>
+</html>
