@@ -139,6 +139,7 @@
         <button data-tab="event" onclick="switchTab('event')"><span class="ico">📅</span><span class="lbl">行事曆管理</span></button>
         <button data-tab="donation" onclick="switchTab('donation')"><span class="ico">💝</span><span class="lbl">捐款芳名錄</span></button>
         <button data-tab="gallery" onclick="switchTab('gallery')"><span class="ico">🖼️</span><span class="lbl">活動剪影</span></button>
+        <button data-tab="download" onclick="switchTab('download')"><span class="ico">📁</span><span class="lbl">下載專區</span></button>
         <button data-tab="user" id="navUser" onclick="switchTab('user')"><span class="ico">👥</span><span class="lbl">使用者管理</span></button>
       </nav>
       <div class="sb-foot">
@@ -195,7 +196,7 @@ const app2 = initializeApp(firebaseConfig, 'secondary');
 const auth2 = getAuth(app2);
 
 let CURRENT = null, curTab = 'ann', editing = {coll:null,id:null}, _editData = null;
-const TAB_TITLE = {ann:"公告管理",event:"行事曆管理",donation:"捐款芳名錄管理",gallery:"活動剪影管理",user:"使用者管理"};
+const TAB_TITLE = {ann:"公告管理",event:"行事曆管理",donation:"捐款芳名錄管理",gallery:"活動剪影管理",download:"下載專區管理",user:"使用者管理"};
 
 onAuthStateChanged(auth, async user => {
   if (user) {
@@ -253,6 +254,7 @@ async function renderTab() {
   else if (curTab==='event') { act.innerHTML='<button class="btn ghost" onclick="triggerCSV()">📥 匯入 CSV</button> <button class="btn gold" onclick="openEvent()">＋ 新增活動</button>'; c.innerHTML=await renderEvent(); }
   else if (curTab==='donation') { act.innerHTML='<button class="btn gold" onclick="openDonation()">＋ 新增捐款</button>'; c.innerHTML=await renderDonation(); }
   else if (curTab==='gallery') { act.innerHTML='<button class="btn gold" onclick="openGallery()">＋ 新增相簿</button>'; c.innerHTML=await renderGallery(); }
+  else if (curTab==='download') { act.innerHTML='<button class="btn gold" onclick="openDownload()">＋ 新增檔案</button>'; c.innerHTML=await renderDownload(); }
   else if (curTab==='user') { act.innerHTML='<button class="btn gold" onclick="openUser()">＋ 新增使用者</button>'; c.innerHTML=await renderUser(); }
 }
 
@@ -332,6 +334,35 @@ async function renderGallery() {
         <button class="btn danger sm" onclick="delRow('galleries','${g.id}')">刪除</button>
       </td>
     </tr>`).join('')}</tbody></table>`);
+}
+
+async function renderDownload() {
+  const rows = (await getCol('downloads')).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  if (!rows.length) return emptyCard('尚無下載項目');
+  return card('下載項目清單',`<table class="data">
+    <thead><tr><th>標題</th><th>說明</th><th>日期</th><th>連結</th><th></th></tr></thead>
+    <tbody>${rows.map(d=>`<tr>
+      <td>${esc(d.title)}</td>
+      <td style="color:var(--text-soft);font-size:13px">${esc(d.description||'')}</td>
+      <td>${d.date||'—'}</td>
+      <td><a href="${d.fileUrl||'#'}" target="_blank" rel="noopener">開啟 ↗</a></td>
+      <td class="actions">
+        <button class="btn ghost sm" onclick="openDownload('${d.id}')">編輯</button>
+        <button class="btn danger sm" onclick="delRow('downloads','${d.id}')">刪除</button>
+      </td>
+    </tr>`).join('')}</tbody></table>`);
+}
+
+async function openDownload(id) {
+  let d = {title:'',description:'',fileUrl:'',date:today()};
+  if (id) { const s=await getDoc(doc(db,'downloads',id)); d={id,...s.data()}; }
+  _editData=d; editing={coll:'downloads',id:id||null};
+  openModal(id?'編輯下載項目':'新增下載項目',`
+    <div class="form-row"><label>標題</label><input id="f_title" value="${esc(d.title)}"></div>
+    <div class="form-row"><label>說明（選填）</label><input id="f_description" value="${esc(d.description||'')}"></div>
+    <div class="form-row"><label>檔案連結（Google Drive 或其他）</label><input id="f_fileUrl" placeholder="https://drive.google.com/..." value="${esc(d.fileUrl||'')}"></div>
+    <div class="form-row"><label>日期（選填，用於排序）</label><input id="f_date" type="date" value="${d.date||''}"></div>
+  `);
 }
 
 async function renderUser() {
@@ -478,6 +509,9 @@ async function saveModal() {
   } else if (coll==='galleries') {
     if (!val('f_title').trim()) { toast('請填相簿標題'); return; }
     obj = {title:val('f_title'),date:val('f_date'),driveUrl:val('f_driveUrl'),coverUrl:val('f_coverUrl')||''};
+  } else if (coll==='downloads') {
+    if (!val('f_title').trim()) { toast('請填標題'); return; }
+    obj = {title:val('f_title'),description:val('f_description')||'',fileUrl:val('f_fileUrl')||'',date:val('f_date')||''};
   } else if (coll==='users') {
     if (!id) {
       const email = val('f_email'), password = val('f_password'), displayName = val('f_displayName')||val('f_email'), role = val('f_role');
@@ -586,7 +620,7 @@ function parseCSV(text) {
   return rows;
 }
 
-Object.assign(window, {doLogin,doLogout,switchTab,closeModal,saveModal,openAnn,openEvent,openDonation,openGallery,openUser,toggleUser,delRow,amtModeChange,triggerCSV});
+Object.assign(window, {doLogin,doLogout,switchTab,closeModal,saveModal,openAnn,openEvent,openDonation,openGallery,openDownload,openUser,toggleUser,delRow,amtModeChange,triggerCSV});
 
 document.getElementById('lgPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 </script>
