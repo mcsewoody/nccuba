@@ -391,7 +391,7 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;',
 function opt(arr,sel){ return arr.map(v=>`<option value="${v}" ${v===sel?'selected':''}>${v}</option>`).join(''); }
 function today(){ return new Date().toISOString().slice(0,10); }
 
-function openModal(title,bodyHTML){ document.getElementById('mTitle').textContent=title; document.getElementById('mBody').innerHTML=bodyHTML; document.getElementById('modalMask').classList.add('open'); }
+function openModal(title,bodyHTML){ document.getElementById('mTitle').textContent=title; document.getElementById('mBody').innerHTML=`<form onsubmit="return false">${bodyHTML}</form>`; document.getElementById('modalMask').classList.add('open'); }
 function closeModal(){ document.getElementById('modalMask').classList.remove('open'); editing={coll:null,id:null}; _editData=null; }
 
 async function openAnn(id) {
