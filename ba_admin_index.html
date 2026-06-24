@@ -118,15 +118,10 @@
     <div class="login-logo">政大<br>企家班</div>
     <h1>後台管理系統</h1>
     <div class="sub">校友會幹部專用</div>
-    <div class="field"><label>帳號</label><input id="lgUser" placeholder="輸入帳號" autocomplete="username"></div>
+    <div class="field"><label>電子郵件</label><input id="lgUser" type="email" placeholder="輸入電子郵件" autocomplete="email"></div>
     <div class="field"><label>密碼</label><input id="lgPass" type="password" placeholder="輸入密碼" autocomplete="current-password"></div>
     <button class="btn" onclick="doLogin()">登入</button>
     <div class="login-err" id="lgErr"></div>
-    <div class="login-hint">
-      <strong>Demo 測試帳號（接 Firebase 後失效）</strong><br>
-      管理者　admin / admin168<br>
-      幹部　　editor / editor168
-    </div>
   </div>
 </div>
 
@@ -149,7 +144,7 @@
       <div class="sb-foot">
         <div class="who" id="whoName">—</div>
         <a href="#" onclick="doLogout();return false">↩ <span>登出</span></a>　
-        <a href="../index.html" target="_blank">🌐 <span>看前台</span></a>
+        <a href="index.html" target="_blank">🌐 <span>看前台</span></a>
       </div>
     </aside>
 
@@ -178,151 +173,179 @@
 
 <div class="toast" id="toast"></div>
 
-<script>
-/* ================= 資料層（localStorage 模擬，日後換 Firebase） ================= */
-const DB_KEY='nccuba_admin_demo';
-const seed={
-  announcements:[
-    {id:1,title:"第40屆招生簡章公告，歡迎企業家報名進修",category:"活動",content:"詳情請見招生專區。",publishDate:"2026-06-15",isPinned:true,status:"上架",unpublishDate:""},
-    {id:2,title:"颱風來襲，6/18 校友聚會延期通知",category:"緊急",content:"延期至另行公告。",publishDate:"2026-06-12",isPinned:false,status:"上架",unpublishDate:"2026-06-20"},
-    {id:3,title:"司徒專欄新文上線：談企業二代接班的三個誤區",category:"一般",content:"",publishDate:"2026-06-08",isPinned:false,status:"上架",unpublishDate:""},
-  ],
-  events:[
-    {id:1,title:"第40屆開學茶會",startTime:"2026-09-06 14:00",endTime:"2026-09-06 16:00",location:"政大公企中心 3F",description:"新生與歷屆學長姐交流",signupUrl:""},
-    {id:2,title:"企業參訪：台積電南科廠",startTime:"2026-07-20 09:30",endTime:"2026-07-20 17:00",location:"台南科學園區",description:"名額有限",signupUrl:""},
-  ],
-  donations:[
-    {id:1,term:"第38屆",donorName:"王大明",isAnonymous:false,amountMode:"精確",amountExact:1000000,amountTier:"",item:"獎學金",donationDate:"2026-05-01"},
-    {id:2,term:"第38屆",donorName:"林某",isAnonymous:true,amountMode:"級距",amountExact:0,amountTier:"50-100萬",item:"活動贊助",donationDate:"2026-05-03"},
-    {id:3,term:"第39屆",donorName:"陳建國",isAnonymous:false,amountMode:"級距",amountExact:0,amountTier:"10-50萬",item:"設備基金",donationDate:"2026-04-10"},
-  ],
-  galleries:[
-    {id:1,title:"第39屆畢業典禮",date:"2026-05-30",driveUrl:"https://drive.google.com/drive/folders/1umaKUChjkMttkMuvS3EBnn6czAh1lO_A",coverUrl:""},
-  ],
-  users:[
-    {id:1,username:"admin",displayName:"系統管理者",role:"admin",isActive:true},
-    {id:2,username:"editor",displayName:"幹事 A",role:"editor",isActive:true},
-  ],
-};
-function loadDB(){ let d=localStorage.getItem(DB_KEY); if(!d){localStorage.setItem(DB_KEY,JSON.stringify(seed)); return JSON.parse(JSON.stringify(seed));} return JSON.parse(d); }
-function saveDB(){ localStorage.setItem(DB_KEY,JSON.stringify(DB)); }
-let DB=loadDB();
-function nextId(arr){ return arr.length? Math.max(...arr.map(x=>x.id))+1 : 1; }
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, getDoc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-/* ================= 登入（Demo） ================= */
-const DEMO_CREDS={admin:"admin168",editor:"editor168"};
-let CURRENT=null;
-function doLogin(){
-  const u=document.getElementById('lgUser').value.trim();
-  const p=document.getElementById('lgPass').value;
-  const err=document.getElementById('lgErr');
-  if(DEMO_CREDS[u] && DEMO_CREDS[u]===p){
-    const user=DB.users.find(x=>x.username===u);
-    if(user && !user.isActive){ err.textContent="此帳號已被停用，請聯絡管理者。"; return; }
-    CURRENT=user||{username:u,displayName:u,role:u==='admin'?'admin':'editor'};
+const firebaseConfig = {
+  apiKey: "AIzaSyDA72wtos-fOfh9Tt65dNz9Uxn6A0Vu1ag",
+  authDomain: "nccuba-8568a.firebaseapp.com",
+  projectId: "nccuba-8568a",
+  storageBucket: "nccuba-8568a.firebasestorage.app",
+  messagingSenderId: "933632898148",
+  appId: "1:933632898148:web:921d6bccaade9c4825db71"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const app2 = initializeApp(firebaseConfig, 'secondary');
+const auth2 = getAuth(app2);
+
+let CURRENT = null, curTab = 'ann', editing = {coll:null,id:null}, _editData = null;
+const TAB_TITLE = {ann:"公告管理",event:"行事曆管理",donation:"捐款芳名錄管理",gallery:"活動剪影管理",user:"使用者管理"};
+
+onAuthStateChanged(auth, async user => {
+  if (user) {
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if (!snap.exists() || snap.data().isActive === false) {
+      await signOut(auth);
+      document.getElementById('lgErr').textContent = '此帳號無存取權限，請聯絡管理者。';
+      return;
+    }
+    CURRENT = {uid: user.uid, email: user.email, ...snap.data()};
     enterApp();
-  }else{ err.textContent="帳號或密碼錯誤。"; }
+  }
+});
+
+async function doLogin() {
+  const email = document.getElementById('lgUser').value.trim();
+  const pass = document.getElementById('lgPass').value;
+  const err = document.getElementById('lgErr');
+  err.textContent = '';
+  if (!email || !pass) { err.textContent = '請輸入電子郵件與密碼'; return; }
+  try { await signInWithEmailAndPassword(auth, email, pass); }
+  catch(e) { err.textContent = '帳號或密碼錯誤，請重試。'; }
 }
-function enterApp(){
-  document.getElementById('loginView').style.display='none';
-  document.getElementById('appView').style.display='block';
-  document.getElementById('whoName').innerHTML=CURRENT.displayName+'<small>'+(CURRENT.role==='admin'?'管理者':'幹部')+'</small>';
-  document.getElementById('navUser').style.display = CURRENT.role==='admin'?'flex':'none';
+
+function enterApp() {
+  document.getElementById('loginView').style.display = 'none';
+  document.getElementById('appView').style.display = 'block';
+  document.getElementById('whoName').innerHTML = (CURRENT.displayName||CURRENT.email) + '<small>' + (CURRENT.role==='admin'?'管理者':'幹部') + '</small>';
+  document.getElementById('navUser').style.display = CURRENT.role==='admin' ? 'flex' : 'none';
   switchTab('ann');
 }
-function doLogout(){ CURRENT=null; document.getElementById('appView').style.display='none'; document.getElementById('loginView').style.display='flex'; document.getElementById('lgPass').value=''; document.getElementById('lgErr').textContent=''; }
 
-/* ================= Tab 切換 ================= */
-const TAB_TITLE={ann:"公告管理",event:"行事曆管理",donation:"捐款芳名錄管理",gallery:"活動剪影管理",user:"使用者管理"};
-let curTab='ann';
-function switchTab(t){
-  if(t==='user' && CURRENT.role!=='admin'){ return; }
-  curTab=t;
-  document.querySelectorAll('.sb-nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));
-  document.getElementById('pageTitle').textContent=TAB_TITLE[t];
+async function doLogout() {
+  await signOut(auth);
+  CURRENT = null;
+  document.getElementById('appView').style.display = 'none';
+  document.getElementById('loginView').style.display = 'flex';
+  document.getElementById('lgPass').value = '';
+  document.getElementById('lgErr').textContent = '';
+}
+
+function switchTab(t) {
+  if (t==='user' && CURRENT.role!=='admin') return;
+  curTab = t;
+  document.querySelectorAll('.sb-nav button').forEach(b => b.classList.toggle('active', b.dataset.tab===t));
+  document.getElementById('pageTitle').textContent = TAB_TITLE[t];
   renderTab();
 }
 
-/* ================= 各 Tab 渲染 ================= */
-function renderTab(){
-  const c=document.getElementById('content');
-  const act=document.getElementById('pageActions');
-  if(curTab==='ann'){ act.innerHTML='<button class="btn gold" onclick="openAnn()">＋ 新增公告</button>'; c.innerHTML=renderAnn(); }
-  else if(curTab==='event'){ act.innerHTML='<button class="btn gold" onclick="openEvent()">＋ 新增活動</button>'; c.innerHTML=renderEvent(); }
-  else if(curTab==='donation'){ act.innerHTML='<button class="btn gold" onclick="openDonation()">＋ 新增捐款</button>'; c.innerHTML=renderDonation(); }
-  else if(curTab==='gallery'){ act.innerHTML='<button class="btn gold" onclick="openGallery()">＋ 新增相簿</button>'; c.innerHTML=renderGallery(); }
-  else if(curTab==='user'){ act.innerHTML='<button class="btn gold" onclick="openUser()">＋ 新增使用者</button>'; c.innerHTML=renderUser(); }
+async function renderTab() {
+  const c = document.getElementById('content');
+  const act = document.getElementById('pageActions');
+  c.innerHTML = '<div class="empty">載入中…</div>';
+  if (curTab==='ann') { act.innerHTML='<button class="btn gold" onclick="openAnn()">＋ 新增公告</button>'; c.innerHTML=await renderAnn(); }
+  else if (curTab==='event') { act.innerHTML='<button class="btn gold" onclick="openEvent()">＋ 新增活動</button>'; c.innerHTML=await renderEvent(); }
+  else if (curTab==='donation') { act.innerHTML='<button class="btn gold" onclick="openDonation()">＋ 新增捐款</button>'; c.innerHTML=await renderDonation(); }
+  else if (curTab==='gallery') { act.innerHTML='<button class="btn gold" onclick="openGallery()">＋ 新增相簿</button>'; c.innerHTML=await renderGallery(); }
+  else if (curTab==='user') { act.innerHTML='<button class="btn gold" onclick="openUser()">＋ 新增使用者</button>'; c.innerHTML=await renderUser(); }
 }
 
-function renderAnn(){
-  const rows=[...DB.announcements].sort((a,b)=>(b.isPinned-a.isPinned)||b.publishDate.localeCompare(a.publishDate));
-  if(!rows.length) return emptyCard("尚無公告");
-  return card("公告列表",`<table class="data">
+async function getCol(name) {
+  const snap = await getDocs(collection(db, name));
+  return snap.docs.map(d => ({id:d.id,...d.data()}));
+}
+
+async function renderAnn() {
+  const rows = (await getCol('announcements')).sort((a,b)=>(b.isPinned-a.isPinned)||(b.publishDate||'').localeCompare(a.publishDate||''));
+  if (!rows.length) return emptyCard('尚無公告');
+  return card('公告列表',`<table class="data">
     <thead><tr><th>標題</th><th>分類</th><th>發布日</th><th>下架日</th><th>狀態</th><th></th></tr></thead>
     <tbody>${rows.map(a=>`<tr>
       <td>${a.isPinned?'<span class="pill green" style="margin-right:6px">置頂</span>':''}${esc(a.title)}</td>
       <td><span class="pill ${a.category}">${a.category}</span></td>
-      <td>${a.publishDate}</td>
-      <td>${a.unpublishDate||'—'}</td>
+      <td>${a.publishDate||'—'}</td><td>${a.unpublishDate||'—'}</td>
       <td>${a.status==='上架'?'<span class="pill green">上架</span>':'<span class="pill gray">下架</span>'}</td>
-      <td class="actions"><button class="btn ghost sm" onclick="openAnn(${a.id})">編輯</button><button class="btn danger sm" onclick="delRow('announcements',${a.id})">刪除</button></td>
+      <td class="actions">
+        <button class="btn ghost sm" onclick="openAnn('${a.id}')">編輯</button>
+        <button class="btn danger sm" onclick="delRow('announcements','${a.id}')">刪除</button>
+      </td>
     </tr>`).join('')}</tbody></table>`);
 }
-function renderEvent(){
-  const rows=[...DB.events].sort((a,b)=>a.startTime.localeCompare(b.startTime));
-  if(!rows.length) return emptyCard("尚無活動");
-  const now=new Date();
-  return card("活動列表（前台自動分流近期／過期）",`<table class="data">
+
+async function renderEvent() {
+  const rows = (await getCol('events')).sort((a,b)=>(a.startTime||'').localeCompare(b.startTime||''));
+  if (!rows.length) return emptyCard('尚無活動');
+  const now = new Date();
+  return card('活動列表（前台自動分流近期／過期）',`<table class="data">
     <thead><tr><th>活動名稱</th><th>開始時間</th><th>地點</th><th>狀態</th><th></th></tr></thead>
     <tbody>${rows.map(e=>{
-      const past=new Date(e.startTime.replace(' ','T'))<now;
+      const past = new Date((e.startTime||'').replace(' ','T')) < now;
       return `<tr>
-      <td>${esc(e.title)}</td><td>${e.startTime}</td><td>${esc(e.location)}</td>
-      <td>${past?'<span class="pill gray">過期</span>':'<span class="pill green">近期</span>'}</td>
-      <td class="actions"><button class="btn ghost sm" onclick="openEvent(${e.id})">編輯</button><button class="btn danger sm" onclick="delRow('events',${e.id})">刪除</button></td>
-    </tr>`;}).join('')}</tbody></table>`);
+        <td>${esc(e.title)}</td><td>${e.startTime||'—'}</td><td>${esc(e.location||'')}</td>
+        <td>${past?'<span class="pill gray">過期</span>':'<span class="pill green">近期</span>'}</td>
+        <td class="actions">
+          <button class="btn ghost sm" onclick="openEvent('${e.id}')">編輯</button>
+          <button class="btn danger sm" onclick="delRow('events','${e.id}')">刪除</button>
+        </td>
+      </tr>`;
+    }).join('')}</tbody></table>`);
 }
-function amtText(d){
-  if(d.amountMode==='精確') return 'NT$ '+Number(d.amountExact).toLocaleString();
-  if(d.amountMode==='級距') return d.amountTier;
+
+function amtText(d) {
+  if (d.amountMode==='精確') return 'NT$ '+Number(d.amountExact||0).toLocaleString();
+  if (d.amountMode==='級距') return d.amountTier||'—';
   return '不顯示';
 }
-function renderDonation(){
-  const rows=[...DB.donations].sort((a,b)=>b.term.localeCompare(a.term,'zh-Hant'));
-  if(!rows.length) return emptyCard("尚無捐款紀錄");
-  return card("捐款列表",`<table class="data">
+
+async function renderDonation() {
+  const rows = (await getCol('donations')).sort((a,b)=>(b.term||'').localeCompare(a.term||'','zh-Hant'));
+  if (!rows.length) return emptyCard('尚無捐款紀錄');
+  return card('捐款列表',`<table class="data">
     <thead><tr><th>屆別</th><th>捐款人</th><th>金額顯示</th><th>項目</th><th>日期</th><th></th></tr></thead>
     <tbody>${rows.map(d=>`<tr>
       <td>${d.term}</td>
-      <td>${d.isAnonymous?'<span class="pill gray">不具名</span> '+esc(d.donorName)+'<br><span class="hint">前台顯示：善心人士</span>':esc(d.donorName)}</td>
-      <td>${amtText(d)}</td>
-      <td>${esc(d.item)||'—'}</td>
-      <td>${d.donationDate}</td>
-      <td class="actions"><button class="btn ghost sm" onclick="openDonation(${d.id})">編輯</button><button class="btn danger sm" onclick="delRow('donations',${d.id})">刪除</button></td>
+      <td>${d.isAnonymous?'<span class="pill gray">不具名</span> '+esc(d.donorName)+'<br><span class="hint">前台：善心人士</span>':esc(d.donorName)}</td>
+      <td>${amtText(d)}</td><td>${esc(d.item)||'—'}</td><td>${d.donationDate||'—'}</td>
+      <td class="actions">
+        <button class="btn ghost sm" onclick="openDonation('${d.id}')">編輯</button>
+        <button class="btn danger sm" onclick="delRow('donations','${d.id}')">刪除</button>
+      </td>
     </tr>`).join('')}</tbody></table>`);
 }
-function renderGallery(){
-  const rows=[...DB.galleries].sort((a,b)=>b.date.localeCompare(a.date));
-  if(!rows.length) return emptyCard("尚無相簿");
-  return card("相簿連結清單",`<table class="data">
+
+async function renderGallery() {
+  const rows = (await getCol('galleries')).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  if (!rows.length) return emptyCard('尚無相簿');
+  return card('相簿連結清單',`<table class="data">
     <thead><tr><th>相簿標題</th><th>日期</th><th>連結</th><th></th></tr></thead>
     <tbody>${rows.map(g=>`<tr>
-      <td>${esc(g.title)}</td><td>${g.date}</td>
-      <td><a href="${g.driveUrl}" target="_blank" rel="noopener">開啟 ↗</a></td>
-      <td class="actions"><button class="btn ghost sm" onclick="openGallery(${g.id})">編輯</button><button class="btn danger sm" onclick="delRow('galleries',${g.id})">刪除</button></td>
+      <td>${esc(g.title)}</td><td>${g.date||'—'}</td>
+      <td><a href="${g.driveUrl||'#'}" target="_blank" rel="noopener">開啟 ↗</a></td>
+      <td class="actions">
+        <button class="btn ghost sm" onclick="openGallery('${g.id}')">編輯</button>
+        <button class="btn danger sm" onclick="delRow('galleries','${g.id}')">刪除</button>
+      </td>
     </tr>`).join('')}</tbody></table>`);
 }
-function renderUser(){
-  const rows=DB.users;
-  return card("使用者列表（最多 5 名，僅管理者可管理）",`<table class="data">
-    <thead><tr><th>帳號</th><th>顯示名稱</th><th>角色</th><th>狀態</th><th></th></tr></thead>
+
+async function renderUser() {
+  const rows = await getCol('users');
+  return card(`使用者列表（最多 5 名，僅管理者可管理）`,`<table class="data">
+    <thead><tr><th>電子郵件</th><th>顯示名稱</th><th>角色</th><th>狀態</th><th></th></tr></thead>
     <tbody>${rows.map(u=>`<tr>
-      <td>${esc(u.username)}</td><td>${esc(u.displayName)}</td>
+      <td>${esc(u.email||'')}</td><td>${esc(u.displayName||'')}</td>
       <td>${u.role==='admin'?'<span class="badge-admin">管理者</span>':'<span class="badge-editor">幹部</span>'}</td>
       <td>${u.isActive?'<span class="pill green">啟用</span>':'<span class="badge-off">停用</span>'}</td>
       <td class="actions">
-        <button class="btn ghost sm" onclick="openUser(${u.id})">編輯</button>
-        ${u.role==='admin'?'':`<button class="btn ghost sm" onclick="toggleUser(${u.id})">${u.isActive?'停用':'啟用'}</button><button class="btn danger sm" onclick="delRow('users',${u.id})">刪除</button>`}
+        <button class="btn ghost sm" onclick="openUser('${u.id}')">編輯</button>
+        ${u.role==='admin'?'':
+          `<button class="btn ghost sm" onclick="toggleUser('${u.id}')">${u.isActive?'停用':'啟用'}</button>
+           <button class="btn danger sm" onclick="delRow('users','${u.id}')">刪除</button>`}
       </td>
     </tr>`).join('')}</tbody></table>
     <div class="hint" style="padding:12px 20px">目前 ${rows.length} / 5 名。管理者帳號不可停用或刪除。</div>`);
@@ -331,140 +354,175 @@ function renderUser(){
 function card(title,inner){ return `<div class="card"><div class="card-head"><h3>${title}</h3></div>${inner}</div>`; }
 function emptyCard(msg){ return `<div class="card"><div class="empty">${msg}，點右上角新增。</div></div>`; }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function opt(arr,sel){ return arr.map(v=>`<option value="${v}" ${v===sel?'selected':''}>${v}</option>`).join(''); }
+function today(){ return new Date().toISOString().slice(0,10); }
 
-/* ================= 彈窗：表單 ================= */
-let editing={coll:null,id:null};
 function openModal(title,bodyHTML){ document.getElementById('mTitle').textContent=title; document.getElementById('mBody').innerHTML=bodyHTML; document.getElementById('modalMask').classList.add('open'); }
-function closeModal(){ document.getElementById('modalMask').classList.remove('open'); editing={coll:null,id:null}; }
+function closeModal(){ document.getElementById('modalMask').classList.remove('open'); editing={coll:null,id:null}; _editData=null; }
 
-/* --- 公告 --- */
-function openAnn(id){
-  const d=id?DB.announcements.find(x=>x.id===id):{title:"",category:"一般",content:"",publishDate:today(),isPinned:false,status:"上架",unpublishDate:""};
-  editing={coll:'announcements',id:id||null};
+async function openAnn(id) {
+  let d = {title:'',category:'一般',content:'',publishDate:today(),isPinned:false,status:'上架',unpublishDate:''};
+  if (id) { const s=await getDoc(doc(db,'announcements',id)); d={id,...s.data()}; }
+  _editData=d; editing={coll:'announcements',id:id||null};
   openModal(id?'編輯公告':'新增公告',`
     <div class="form-row"><label>標題</label><input id="f_title" value="${esc(d.title)}"></div>
     <div class="form-2">
       <div class="form-row"><label>分類</label><select id="f_category">${opt(['一般','緊急','活動'],d.category)}</select></div>
       <div class="form-row"><label>發布日</label><input id="f_publishDate" type="date" value="${d.publishDate}"></div>
     </div>
-    <div class="form-row"><label>內文</label><textarea id="f_content">${esc(d.content)}</textarea></div>
+    <div class="form-row"><label>內文</label><textarea id="f_content">${esc(d.content||'')}</textarea></div>
     <div class="form-2">
-      <div class="form-row"><label>自動下架日（留空＝不自動下架）</label><input id="f_unpublishDate" type="date" value="${d.unpublishDate}"></div>
+      <div class="form-row"><label>自動下架日（留空＝不自動下架）</label><input id="f_unpublishDate" type="date" value="${d.unpublishDate||''}"></div>
       <div class="form-row"><label>狀態</label><select id="f_status">${opt(['上架','下架'],d.status)}</select></div>
     </div>
     <div class="check-row"><input type="checkbox" id="f_isPinned" ${d.isPinned?'checked':''}><label for="f_isPinned">置頂顯示</label></div>
   `);
 }
-/* --- 活動 --- */
-function openEvent(id){
-  const d=id?DB.events.find(x=>x.id===id):{title:"",startTime:"",endTime:"",location:"",description:"",signupUrl:""};
-  editing={coll:'events',id:id||null};
+
+async function openEvent(id) {
+  let d = {title:'',startTime:'',endTime:'',location:'',description:'',signupUrl:''};
+  if (id) { const s=await getDoc(doc(db,'events',id)); d={id,...s.data()}; }
+  _editData=d; editing={coll:'events',id:id||null};
   openModal(id?'編輯活動':'新增活動',`
     <div class="form-row"><label>活動名稱</label><input id="f_title" value="${esc(d.title)}"></div>
     <div class="form-2">
-      <div class="form-row"><label>開始時間</label><input id="f_startTime" placeholder="2026-09-06 14:00" value="${esc(d.startTime)}"></div>
-      <div class="form-row"><label>結束時間</label><input id="f_endTime" placeholder="2026-09-06 16:00" value="${esc(d.endTime)}"></div>
+      <div class="form-row"><label>開始時間</label><input id="f_startTime" placeholder="2026-09-06 14:00" value="${esc(d.startTime||'')}"></div>
+      <div class="form-row"><label>結束時間</label><input id="f_endTime" placeholder="2026-09-06 16:00" value="${esc(d.endTime||'')}"></div>
     </div>
-    <div class="form-row"><label>地點</label><input id="f_location" value="${esc(d.location)}"></div>
-    <div class="form-row"><label>說明</label><textarea id="f_description">${esc(d.description)}</textarea></div>
-    <div class="form-row"><label>報名連結（選填）</label><input id="f_signupUrl" value="${esc(d.signupUrl)}"></div>
+    <div class="form-row"><label>地點</label><input id="f_location" value="${esc(d.location||'')}"></div>
+    <div class="form-row"><label>說明</label><textarea id="f_description">${esc(d.description||'')}</textarea></div>
+    <div class="form-row"><label>報名連結（選填）</label><input id="f_signupUrl" value="${esc(d.signupUrl||'')}"></div>
     <div class="hint">時間格式：YYYY-MM-DD HH:MM。前台依開始時間自動分流近期／過期。</div>
   `);
 }
-/* --- 捐款 --- */
-function openDonation(id){
-  const d=id?DB.donations.find(x=>x.id===id):{term:"",donorName:"",isAnonymous:false,amountMode:"精確",amountExact:0,amountTier:"10萬以下",item:"",donationDate:today()};
-  editing={coll:'donations',id:id||null};
+
+async function openDonation(id) {
+  let d = {term:'',donorName:'',isAnonymous:false,amountMode:'精確',amountExact:0,amountTier:'10萬以下',item:'',donationDate:today()};
+  if (id) { const s=await getDoc(doc(db,'donations',id)); d={id,...s.data()}; }
+  _editData=d; editing={coll:'donations',id:id||null};
   openModal(id?'編輯捐款':'新增捐款',`
     <div class="form-2">
-      <div class="form-row"><label>屆別（必填）</label><input id="f_term" placeholder="第40屆" value="${esc(d.term)}"></div>
-      <div class="form-row"><label>捐款日期</label><input id="f_donationDate" type="date" value="${d.donationDate}"></div>
+      <div class="form-row"><label>屆別（必填）</label><input id="f_term" placeholder="第40屆" value="${esc(d.term||'')}"></div>
+      <div class="form-row"><label>捐款日期</label><input id="f_donationDate" type="date" value="${d.donationDate||''}"></div>
     </div>
-    <div class="form-row"><label>捐款人姓名</label><input id="f_donorName" value="${esc(d.donorName)}"></div>
+    <div class="form-row"><label>捐款人姓名</label><input id="f_donorName" value="${esc(d.donorName||'')}"></div>
     <div class="check-row" style="margin-bottom:16px"><input type="checkbox" id="f_isAnonymous" ${d.isAnonymous?'checked':''}><label for="f_isAnonymous">不具名（前台顯示「善心人士」，屆別照常顯示）</label></div>
     <div class="form-row"><label>金額顯示方式</label><select id="f_amountMode" onchange="amtModeChange()">${opt(['精確','級距','不顯示'],d.amountMode)}</select></div>
     <div class="form-row" id="row_exact" style="display:${d.amountMode==='精確'?'block':'none'}"><label>精確金額（NT$）</label><input id="f_amountExact" type="number" value="${d.amountExact||''}"></div>
-    <div class="form-row" id="row_tier" style="display:${d.amountMode==='級距'?'block':'none'}"><label>金額級距</label><select id="f_amountTier">${opt(['100萬以上','50-100萬','10-50萬','10萬以下'],d.amountTier)}</select></div>
-    <div class="form-row"><label>捐款項目（選填）</label><input id="f_item" value="${esc(d.item)}"></div>
+    <div class="form-row" id="row_tier" style="display:${d.amountMode==='級距'?'block':'none'}"><label>金額級距</label><select id="f_amountTier">${opt(['100萬以上','50-100萬','10-50萬','10萬以下'],d.amountTier||'10萬以下')}</select></div>
+    <div class="form-row"><label>捐款項目（選填）</label><input id="f_item" value="${esc(d.item||'')}"></div>
   `);
 }
-function amtModeChange(){
-  const m=document.getElementById('f_amountMode').value;
-  document.getElementById('row_exact').style.display=m==='精確'?'block':'none';
-  document.getElementById('row_tier').style.display=m==='級距'?'block':'none';
-}
-/* --- 相簿 --- */
-function openGallery(id){
-  const d=id?DB.galleries.find(x=>x.id===id):{title:"",date:today(),driveUrl:"",coverUrl:""};
-  editing={coll:'galleries',id:id||null};
+
+async function openGallery(id) {
+  let d = {title:'',date:today(),driveUrl:'',coverUrl:''};
+  if (id) { const s=await getDoc(doc(db,'galleries',id)); d={id,...s.data()}; }
+  _editData=d; editing={coll:'galleries',id:id||null};
   openModal(id?'編輯相簿':'新增相簿',`
     <div class="form-row"><label>相簿標題</label><input id="f_title" value="${esc(d.title)}"></div>
-    <div class="form-row"><label>活動日期</label><input id="f_date" type="date" value="${d.date}"></div>
-    <div class="form-row"><label>Google 相簿連結</label><input id="f_driveUrl" placeholder="https://drive.google.com/..." value="${esc(d.driveUrl)}"></div>
-    <div class="form-row"><label>封面縮圖網址（選填）</label><input id="f_coverUrl" value="${esc(d.coverUrl)}"></div>
+    <div class="form-row"><label>活動日期</label><input id="f_date" type="date" value="${d.date||''}"></div>
+    <div class="form-row"><label>Google 相簿連結</label><input id="f_driveUrl" placeholder="https://drive.google.com/..." value="${esc(d.driveUrl||'')}"></div>
+    <div class="form-row"><label>封面縮圖網址（選填）</label><input id="f_coverUrl" value="${esc(d.coverUrl||'')}"></div>
   `);
 }
-/* --- 使用者 --- */
-function openUser(id){
-  if(!id && DB.users.length>=5){ toast("已達 5 名上限，請先刪除或停用其他帳號。"); return; }
-  const d=id?DB.users.find(x=>x.id===id):{username:"",displayName:"",role:"editor",isActive:true};
-  editing={coll:'users',id:id||null};
-  const isAdminRow=d.role==='admin';
-  openModal(id?'編輯使用者':'新增使用者',`
-    <div class="form-2">
-      <div class="form-row"><label>帳號</label><input id="f_username" value="${esc(d.username)}" ${isAdminRow?'disabled':''}></div>
-      <div class="form-row"><label>顯示名稱</label><input id="f_displayName" value="${esc(d.displayName)}"></div>
-    </div>
-    <div class="form-row"><label>密碼${id?'（留空＝不變更）':''}</label><input id="f_password" type="password" placeholder="${id?'不變更請留空':'設定登入密碼'}"></div>
-    <div class="form-row"><label>角色</label><select id="f_role" ${isAdminRow?'disabled':''}>${opt(['editor','admin'],d.role).replace('editor>editor','editor>幹部').replace('admin>admin','admin>管理者')}</select></div>
-    <div class="hint">幹部僅能編輯內容模組；管理者另可管理使用者。接 Firebase 後，密碼由 Firebase Authentication 加密保管。</div>
-  `);
-}
-function toggleUser(id){ const u=DB.users.find(x=>x.id===id); if(u.role==='admin')return; u.isActive=!u.isActive; saveDB(); renderTab(); toast(u.isActive?'已啟用':'已停用'); }
 
-/* ================= 儲存 ================= */
+async function openUser(id) {
+  const allUsers = await getCol('users');
+  if (!id && allUsers.length >= 5) { toast('已達 5 名上限，請先刪除或停用其他帳號。'); return; }
+  let d = {email:'',displayName:'',role:'editor',isActive:true};
+  if (id) { const s=await getDoc(doc(db,'users',id)); d={id,...s.data()}; }
+  _editData=d; editing={coll:'users',id:id||null};
+  const isAdminRow = d.role==='admin';
+  openModal(id?'編輯使用者':'新增使用者',`
+    <div class="form-row"><label>電子郵件</label><input id="f_email" type="email" value="${esc(d.email||'')}" ${isAdminRow||id?'disabled':''}></div>
+    <div class="form-row"><label>顯示名稱</label><input id="f_displayName" value="${esc(d.displayName||'')}"></div>
+    ${!id?`<div class="form-row"><label>初始密碼</label><input id="f_password" type="password" placeholder="至少 6 碼"></div>`:''}
+    <div class="form-row"><label>角色</label><select id="f_role" ${isAdminRow?'disabled':''}>
+      <option value="editor" ${d.role==='editor'?'selected':''}>幹部</option>
+      <option value="admin" ${d.role==='admin'?'selected':''}>管理者</option>
+    </select></div>
+    <div class="hint">${id?'如需更改電子郵件或密碼，請至 Firebase Console 操作。':'系統將自動在 Firebase 建立登入帳號。'}</div>
+  `);
+}
+
+function amtModeChange() {
+  const m = document.getElementById('f_amountMode').value;
+  document.getElementById('row_exact').style.display = m==='精確' ? 'block' : 'none';
+  document.getElementById('row_tier').style.display = m==='級距' ? 'block' : 'none';
+}
+
+async function toggleUser(id) {
+  const snap = await getDoc(doc(db,'users',id));
+  if (!snap.exists() || snap.data().role==='admin') return;
+  const newVal = !snap.data().isActive;
+  await updateDoc(doc(db,'users',id), {isActive:newVal, updatedAt:serverTimestamp()});
+  renderTab(); toast(newVal?'已啟用':'已停用');
+}
+
 function val(id){ const el=document.getElementById(id); return el?el.value:undefined; }
 function chk(id){ const el=document.getElementById(id); return el?el.checked:false; }
-function saveModal(){
-  const {coll,id}=editing;
-  let obj={};
-  if(coll==='announcements'){
-    if(!val('f_title').trim()){toast('請填標題');return;}
-    obj={title:val('f_title'),category:val('f_category'),content:val('f_content'),publishDate:val('f_publishDate'),unpublishDate:val('f_unpublishDate'),status:val('f_status'),isPinned:chk('f_isPinned')};
-  }else if(coll==='events'){
-    if(!val('f_title').trim()){toast('請填活動名稱');return;}
-    obj={title:val('f_title'),startTime:val('f_startTime'),endTime:val('f_endTime'),location:val('f_location'),description:val('f_description'),signupUrl:val('f_signupUrl')};
-  }else if(coll==='donations'){
-    if(!val('f_term').trim()){toast('屆別為必填');return;}
-    obj={term:val('f_term'),donorName:val('f_donorName'),isAnonymous:chk('f_isAnonymous'),amountMode:val('f_amountMode'),amountExact:Number(val('f_amountExact')||0),amountTier:val('f_amountTier'),item:val('f_item'),donationDate:val('f_donationDate')};
-  }else if(coll==='galleries'){
-    if(!val('f_title').trim()){toast('請填相簿標題');return;}
-    obj={title:val('f_title'),date:val('f_date'),driveUrl:val('f_driveUrl'),coverUrl:val('f_coverUrl')};
-  }else if(coll==='users'){
-    if(!val('f_username').trim()){toast('請填帳號');return;}
-    const existing=id?DB.users.find(x=>x.id===id):null;
-    obj={username:val('f_username'),displayName:val('f_displayName'),role:existing&&existing.role==='admin'?'admin':val('f_role'),isActive:existing?existing.isActive:true};
+
+async function saveModal() {
+  const {coll,id} = editing;
+  let obj = {};
+  if (coll==='announcements') {
+    if (!val('f_title').trim()) { toast('請填標題'); return; }
+    obj = {title:val('f_title'),category:val('f_category'),content:val('f_content'),publishDate:val('f_publishDate'),unpublishDate:val('f_unpublishDate'),status:val('f_status'),isPinned:chk('f_isPinned')};
+  } else if (coll==='events') {
+    if (!val('f_title').trim()) { toast('請填活動名稱'); return; }
+    obj = {title:val('f_title'),startTime:val('f_startTime'),endTime:val('f_endTime'),location:val('f_location'),description:val('f_description'),signupUrl:val('f_signupUrl')};
+  } else if (coll==='donations') {
+    if (!val('f_term').trim()) { toast('屆別為必填'); return; }
+    obj = {term:val('f_term'),donorName:val('f_donorName'),isAnonymous:chk('f_isAnonymous'),amountMode:val('f_amountMode'),amountExact:Number(val('f_amountExact')||0),amountTier:val('f_amountTier')||'',item:val('f_item'),donationDate:val('f_donationDate')};
+  } else if (coll==='galleries') {
+    if (!val('f_title').trim()) { toast('請填相簿標題'); return; }
+    obj = {title:val('f_title'),date:val('f_date'),driveUrl:val('f_driveUrl'),coverUrl:val('f_coverUrl')||''};
+  } else if (coll==='users') {
+    if (!id) {
+      const email = val('f_email'), password = val('f_password'), displayName = val('f_displayName')||val('f_email'), role = val('f_role');
+      if (!email) { toast('請填電子郵件'); return; }
+      if (!password || password.length < 6) { toast('密碼至少需要 6 碼'); return; }
+      try {
+        const cred = await createUserWithEmailAndPassword(auth2, email, password);
+        await signOut(auth2);
+        await setDoc(doc(db,'users',cred.user.uid), {email,displayName,role,isActive:true,createdAt:serverTimestamp()});
+        closeModal(); renderTab(); toast('使用者已建立');
+      } catch(e) {
+        toast(e.code==='auth/email-already-in-use'?'此電子郵件已被使用':'建立失敗：'+e.message);
+      }
+      return;
+    } else {
+      obj = {displayName:val('f_displayName')||_editData.displayName, role:_editData.role==='admin'?'admin':val('f_role')};
+    }
   }
-  const arr=DB[coll];
-  if(id){ Object.assign(arr.find(x=>x.id===id),obj); }
-  else { obj.id=nextId(arr); arr.push(obj); }
-  saveDB(); closeModal(); renderTab(); toast(id?'已更新':'已新增');
-}
-function delRow(coll,id){
-  const u=coll==='users'?DB.users.find(x=>x.id===id):null;
-  if(u&&u.role==='admin'){toast('管理者帳號不可刪除');return;}
-  if(!confirm('確定刪除這筆資料？此動作無法復原。'))return;
-  DB[coll]=DB[coll].filter(x=>x.id!==id); saveDB(); renderTab(); toast('已刪除');
+  try {
+    if (id) {
+      await updateDoc(doc(db,coll,id), {...obj, updatedAt:serverTimestamp()});
+      toast('已更新');
+    } else {
+      await addDoc(collection(db,coll), {...obj, createdBy:CURRENT.uid, createdAt:serverTimestamp()});
+      toast('已新增');
+    }
+    closeModal(); renderTab();
+  } catch(e) { toast('儲存失敗：'+e.message); }
 }
 
-/* ================= 小工具 ================= */
-function opt(arr,sel){ return arr.map(v=>`<option value="${v}" ${v===sel?'selected':''}>${v}</option>`).join(''); }
-function today(){ return new Date().toISOString().slice(0,10); }
+async function delRow(coll, id) {
+  if (coll==='users') {
+    const snap = await getDoc(doc(db,'users',id));
+    if (snap.exists() && snap.data().role==='admin') { toast('管理者帳號不可刪除'); return; }
+  }
+  if (!confirm('確定刪除這筆資料？此動作無法復原。')) return;
+  await deleteDoc(doc(db,coll,id));
+  renderTab(); toast('已刪除');
+}
+
 let toastTimer;
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2200); }
 
-/* Enter 鍵登入 */
-document.getElementById('lgPass').addEventListener('keydown',e=>{ if(e.key==='Enter')doLogin(); });
+Object.assign(window, {doLogin,doLogout,switchTab,closeModal,saveModal,openAnn,openEvent,openDonation,openGallery,openUser,toggleUser,delRow,amtModeChange});
+
+document.getElementById('lgPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 </script>
 </body>
 </html>
