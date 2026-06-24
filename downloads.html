@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>完整行事曆 | 政大企家班</title>
+<title>下載專區 | 政大企家班</title>
 <style>
   :root{
     --navy:#1b3a5b;--navy-dark:#13293f;--blue:#2c5f8a;--gold:#b8860b;
@@ -21,10 +21,10 @@
   .topbar{background:#fff;border-bottom:1px solid var(--border)}
   .topbar-inner{display:flex;align-items:center;gap:18px;padding:14px 20px;max-width:var(--maxw);margin:0 auto;flex-wrap:wrap}
   .brand{display:flex;align-items:center;gap:14px}
-  .brand-logo{width:62px;height:62px;border-radius:6px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;letter-spacing:1px;text-align:center;line-height:1.25}
+  .brand-logo{width:62px;height:62px;border-radius:6px}
   .brand-name{font-size:24px;font-weight:700;color:var(--navy);letter-spacing:2px}
   .brand-name small{display:block;font-size:12px;font-weight:400;color:var(--text-soft);letter-spacing:1px;margin-top:2px}
-  .top-actions{margin-left:auto;display:flex;align-items:center;gap:12px}
+  .top-actions{margin-left:auto}
 
   nav.main{background:var(--navy);position:sticky;top:0;z-index:50}
   .nav-inner{max-width:var(--maxw);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center}
@@ -39,30 +39,28 @@
   .submenu li a:hover{background:var(--bg-soft);color:var(--navy)}
   .nav-toggle{display:none}
 
-  .page-banner{background:var(--navy);color:#fff;padding:32px 0}
-  .page-banner h1{font-size:26px;font-weight:700;letter-spacing:3px}
+  .page-banner{background:var(--navy);color:#fff;padding:36px 0}
+  .page-banner h1{font-size:28px;font-weight:700;letter-spacing:3px}
   .page-banner .en{font-size:13px;color:var(--gold);letter-spacing:2px;margin-top:4px;font-weight:600}
   .breadcrumb{font-size:13px;color:#9fb4c8;margin-bottom:12px}
   .breadcrumb a{color:#9fb4c8}
   .breadcrumb a:hover{color:#fff}
 
-  section.block{padding:46px 0}
-  section.block.alt{background:var(--bg-soft)}
+  .block{padding:46px 0}
   .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;border-bottom:2px solid var(--navy);padding-bottom:10px}
   .sec-head h2{font-size:22px;color:var(--navy);font-weight:700;letter-spacing:2px}
   .sec-head .en{color:var(--gold);font-size:13px;letter-spacing:2px;font-weight:600}
-  .sec-head .count{margin-left:auto;font-size:13px;color:var(--text-soft)}
 
-  .event-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
-  .event-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff;display:flex}
-  .event-date-box{flex:0 0 84px;background:var(--navy);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px}
-  .event-date-box.past{background:#78909c}
-  .event-date-box .m{font-size:13px;letter-spacing:1px}
-  .event-date-box .d{font-size:30px;font-weight:700;line-height:1}
-  .event-body{padding:14px 16px;flex:1}
-  .event-body h3{font-size:16px;color:var(--navy);margin-bottom:6px}
-  .event-body h3.past{color:var(--text-soft)}
-  .event-meta{font-size:13px;color:var(--text-soft);margin-bottom:4px}
+  .dl-list{list-style:none}
+  .dl-item{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border)}
+  .dl-item:last-child{border-bottom:none}
+  .dl-icon{flex:0 0 44px;height:44px;background:var(--bg-soft);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px}
+  .dl-info{flex:1}
+  .dl-info h3{font-size:15px;color:var(--navy);margin-bottom:3px}
+  .dl-info .desc{font-size:13px;color:var(--text-soft)}
+  .dl-info .date{font-size:12px;color:#aaa;margin-top:3px}
+  .dl-btn{flex:0 0 auto;background:var(--navy);color:#fff;padding:8px 18px;border-radius:4px;font-size:13px;font-weight:600;white-space:nowrap}
+  .dl-btn:hover{background:var(--navy-dark);text-decoration:none}
 
   footer{background:var(--navy-dark);color:#c7d3df;padding:40px 0 24px;margin-top:10px}
   .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
@@ -81,10 +79,9 @@
     .nav-inner>ul{display:none;width:100%;flex-direction:column}
     .nav-inner>ul.open{display:flex}
     .nav-inner li{width:100%}
-    .submenu{position:static;box-shadow:none;border:none;border-top:none;background:rgba(255,255,255,.06)}
+    .submenu{position:static;box-shadow:none;border:none;background:rgba(255,255,255,.06)}
     .nav-inner li:hover>.submenu{display:none}
     .submenu.open{display:block}
-    .nav-inner li:hover>.submenu{display:none}
     .submenu li a{color:#cdd9e5;border-bottom:1px solid rgba(255,255,255,.08)}
   }
 </style>
@@ -94,7 +91,7 @@
 <header class="topbar">
   <div class="topbar-inner">
     <div class="brand">
-      <div class="brand-logo" style="background:none;padding:0"><img src="images/logo.gif" alt="政大企家班" style="width:62px;height:62px;object-fit:contain;border-radius:6px"></div>
+      <div class="brand-logo"><img src="images/logo.gif" alt="政大企家班" style="width:62px;height:62px;object-fit:contain;border-radius:6px"></div>
       <div class="brand-name">政大企家班<small>NCCU Business Administration · 企業家經營管理研究班</small></div>
     </div>
     <div class="top-actions"></div>
@@ -134,31 +131,16 @@
 
 <div class="page-banner">
   <div class="wrap">
-    <div class="breadcrumb"><a href="index.html">首頁</a> › 完整行事曆</div>
-    <h1>完整行事曆</h1>
-    <div class="en">FULL EVENTS CALENDAR</div>
+    <div class="breadcrumb"><a href="index.html">首頁</a> › 下載專區</div>
+    <h1>下載專區</h1>
+    <div class="en">DOWNLOADS</div>
   </div>
 </div>
 
-<!-- 近期活動 -->
-<section class="block" id="近期">
+<section class="block">
   <div class="wrap">
-    <div class="sec-head">
-      <h2>近期活動</h2><span class="en">UPCOMING</span>
-      <span class="count" id="upcomingCount"></span>
-    </div>
-    <div class="event-grid" id="upcomingGrid"></div>
-  </div>
-</section>
-
-<!-- 過去活動 -->
-<section class="block alt" id="過去">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>過去活動</h2><span class="en">ARCHIVE</span>
-      <span class="count" id="pastCount"></span>
-    </div>
-    <div class="event-grid" id="pastGrid"></div>
+    <div class="sec-head"><h2>下載專區</h2><span class="en">DOWNLOADS</span></div>
+    <ul class="dl-list" id="dlList"><li style="color:var(--text-soft);padding:14px 0">載入中…</li></ul>
   </div>
 </section>
 
@@ -170,16 +152,16 @@
          地址：11605 台北市文山區指南路二段64號<br>
          Email：<a href="mailto:nccu.ba.app@gmail.com">nccu.ba.app@gmail.com</a></p>
       <div class="foot-social">
-        <a href="https://www.youtube.com/channel/UC0n-O1ZDkga3oMpSxoQJduw/videos" target="_blank" rel="noopener" title="YouTube">YT</a>
-        <a href="https://page.line.me/nccuba" target="_blank" rel="noopener" title="Line">Line</a>
+        <a href="https://www.youtube.com/channel/UC0n-O1ZDkga3oMpSxoQJduw/videos" target="_blank" rel="noopener">YT</a>
+        <a href="https://page.line.me/nccuba" target="_blank" rel="noopener">Line</a>
       </div>
     </div>
     <div>
-      <h4>快速連結</h4>
+      <h4>關於企家班</h4>
       <ul>
-        <li><a href="#">天下第一班</a></li>
-        <li><a href="#">課程資訊</a></li>
-        <li><a href="#">歷屆校友</a></li>
+        <li><a href="about.html#天下第一班">天下第一班</a></li>
+        <li><a href="about.html#課程資訊">課程資訊</a></li>
+        <li><a href="alumni.html">校友名錄</a></li>
         <li><a href="events.html">活動行事曆</a></li>
       </ul>
     </div>
@@ -187,7 +169,6 @@
       <h4>校友服務</h4>
       <ul>
         <li><a href="donations.html">捐款芳名錄</a></li>
-        <li><a href="index.html#剪影">活動剪影</a></li>
         <li><a href="downloads.html">下載專區</a></li>
         <li><a href="https://page.line.me/nccuba" target="_blank" rel="noopener">加入 Line 好友</a></li>
       </ul>
@@ -209,60 +190,27 @@ const firebaseConfig = {
   appId: "1:933632898148:web:921d6bccaade9c4825db71"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-function eventCard(e, past) {
-  const dt = new Date((e.startTime||'').replace(' ','T'));
-  const valid = !isNaN(dt);
-  return `<div class="event-card">
-    <div class="event-date-box${past?' past':''}">
-      <div class="m">${valid?dt.getMonth()+1+'月':'—'}</div>
-      <div class="d">${valid?dt.getDate():'—'}</div>
-    </div>
-    <div class="event-body">
-      <h3 class="${past?'past':''}">${e.title}</h3>
-      <div class="event-meta">🕒 ${e.startTime||''}</div>
-      <div class="event-meta">📍 ${e.location||''}</div>
-      <div class="event-meta">${e.description||''}</div>
-      ${e.signupUrl?`<a href="${e.signupUrl}" target="_blank" rel="noopener" style="font-size:13px">立即報名 ›</a>`:''}
-    </div>
-  </div>`;
-}
+const db = getFirestore(initializeApp(firebaseConfig));
 
 (async () => {
-  const snap = await getDocs(collection(db, 'events'));
-  const items = snap.docs.map(d => ({id:d.id,...d.data()}));
-  const now = new Date();
-
-  const upcoming = items
-    .map(e => ({...e, dt:new Date((e.startTime||'').replace(' ','T'))}))
-    .filter(e => e.dt >= now)
-    .sort((a,b) => a.dt - b.dt);
-
-  const past = items
-    .map(e => ({...e, dt:new Date((e.startTime||'').replace(' ','T'))}))
-    .filter(e => e.dt < now)
-    .sort((a,b) => b.dt - a.dt);
-
-  document.getElementById('upcomingCount').textContent = upcoming.length ? `共 ${upcoming.length} 筆` : '';
-  document.getElementById('pastCount').textContent = past.length ? `共 ${past.length} 筆` : '';
-
-  document.getElementById('upcomingGrid').innerHTML =
-    upcoming.map(e => eventCard(e, false)).join('') ||
-    '<p style="color:var(--text-soft)">目前無近期活動。</p>';
-
-  document.getElementById('pastGrid').innerHTML =
-    past.map(e => eventCard(e, true)).join('') ||
-    '<p style="color:var(--text-soft)">無過去活動記錄。</p>';
+  const snap = await getDocs(collection(db,'downloads'));
+  const items = snap.docs.map(d=>({id:d.id,...d.data()}));
+  const sorted = [...items].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  document.getElementById('dlList').innerHTML = sorted.map(d=>`
+    <li class="dl-item">
+      <div class="dl-icon">📄</div>
+      <div class="dl-info">
+        <h3>${d.title}</h3>
+        ${d.description?`<div class="desc">${d.description}</div>`:''}
+        ${d.date?`<div class="date">${d.date}</div>`:''}
+      </div>
+      <a class="dl-btn" href="${d.fileUrl||'#'}" target="_blank" rel="noopener">下載 ↗</a>
+    </li>`).join('') || '<li style="color:var(--text-soft);padding:14px 0;font-size:14px">目前無下載項目。</li>';
 })();
 
-document.querySelectorAll('.has-sub>a').forEach(a => {
-  a.addEventListener('click', e => {
-    if (window.innerWidth <= 860) {
-      e.preventDefault();
-      a.parentElement.querySelector('.submenu').classList.toggle('open');
-    }
+document.querySelectorAll('.has-sub>a').forEach(a=>{
+  a.addEventListener('click',e=>{
+    if(window.innerWidth<=860){e.preventDefault();a.parentElement.querySelector('.submenu').classList.toggle('open');}
   });
 });
 </script>

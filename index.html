@@ -189,11 +189,10 @@
           <li><a href="events.html">近期活動行事曆</a></li>
           <li><a href="events.html#過去">過期活動行事曆</a></li>
           <li><a href="#">影音平台</a></li>
-          <li><a href="#剪影">活動剪影</a></li>
         </ul>
       </li>
-      <li><a href="#芳名錄">捐款芳名錄</a></li>
-      <li><a href="#下載">下載專區</a></li>
+      <li><a href="donations.html">捐款芳名錄</a></li>
+      <li><a href="downloads.html">下載專區</a></li>
     </ul>
   </div>
 </nav>
@@ -227,30 +226,6 @@
   </div>
 </section>
 
-<!-- 捐款芳名錄 -->
-<section class="block" id="芳名錄">
-  <div class="wrap">
-    <div class="sec-head"><h2>捐款芳名錄</h2><span class="en">DONORS</span></div>
-    <p style="color:var(--text-soft);margin-bottom:22px">感謝各屆校友與善心人士對企家班的支持與贊助。</p>
-    <div id="donorWrap"></div>
-  </div>
-</section>
-
-<!-- 活動剪影 -->
-<section class="block alt" id="剪影">
-  <div class="wrap">
-    <div class="sec-head"><h2>活動剪影</h2><span class="en">GALLERY</span></div>
-    <div class="gallery-grid" id="galleryGrid"></div>
-  </div>
-</section>
-
-<!-- 下載專區 -->
-<section class="block" id="下載">
-  <div class="wrap">
-    <div class="sec-head"><h2>下載專區</h2><span class="en">DOWNLOADS</span></div>
-    <ul class="dl-list" id="dlList"></ul>
-  </div>
-</section>
 
 <!-- 頁尾 -->
 <footer>
@@ -277,9 +252,8 @@
     <div>
       <h4>校友服務</h4>
       <ul>
-        <li><a href="#芳名錄">捐款芳名錄</a></li>
-        <li><a href="#剪影">活動剪影</a></li>
-        <li><a href="#">讀書會</a></li>
+        <li><a href="donations.html">捐款芳名錄</a></li>
+        <li><a href="downloads.html">下載專區</a></li>
         <li><a href="https://page.line.me/nccuba" target="_blank" rel="noopener">加入 Line 好友</a></li>
       </ul>
     </div>
@@ -306,12 +280,6 @@ const db = getFirestore(app);
 async function getCol(name) {
   const snap = await getDocs(collection(db, name));
   return snap.docs.map(d => ({id:d.id,...d.data()}));
-}
-
-function fmtAmt(d) {
-  if (d.amountMode==='精確') return '<span class="amt">NT$ '+Number(d.amountExact||0).toLocaleString()+'</span>';
-  if (d.amountMode==='級距') return '<span class="amt-tier">'+(d.amountTier||'')+'</span>';
-  return '<span class="amt-hidden">—</span>';
 }
 
 const todayStr = new Date().toISOString().slice(0,10);
@@ -352,49 +320,6 @@ const todayStr = new Date().toISOString().slice(0,10);
     </div>`).join('') || '<p style="color:var(--text-soft)">目前無近期活動。</p>';
 })();
 
-(async () => {
-  const items = await getCol('donations');
-  const sorted = [...items].sort((a,b) => (b.date||'').localeCompare(a.date||''));
-  document.getElementById('donorWrap').innerHTML = sorted.length ? `
-    <table class="donor-table">
-      <thead><tr><th style="width:10%">屆別</th><th style="width:22%">捐款人</th><th style="width:22%">金額</th><th style="width:22%">捐款項目</th><th>日期</th></tr></thead>
-      <tbody>${sorted.map(d=>`<tr>
-        <td>${d.term||'—'}</td>
-        <td>${d.isAnonymous?'善心人士':d.donorName}</td>
-        <td>${fmtAmt(d)}</td>
-        <td>${d.item||'—'}</td>
-        <td style="color:var(--text-soft);font-size:13px">${d.date||'—'}</td>
-      </tr>`).join('')}</tbody>
-    </table>` : '<p style="color:var(--text-soft)">目前無捐款紀錄。</p>';
-})();
-
-(async () => {
-  const items = await getCol('galleries');
-  const sorted = [...items].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
-  document.getElementById('galleryGrid').innerHTML = sorted.map(g=>`
-    <a class="gallery-card" href="${g.driveUrl||'#'}" target="_blank" rel="noopener">
-      <div class="gallery-cover">${g.coverUrl?`<img src="${g.coverUrl}" alt="">`:'相簿封面'}</div>
-      <div class="gallery-info">
-        <h3>${g.title}</h3>
-        <div class="date">${g.date||''}</div>
-        <div class="ext">🔗 開啟 Google 相簿 ›</div>
-      </div>
-    </a>`).join('') || '<p style="color:var(--text-soft)">目前無活動剪影。</p>';
-})();
-
-(async () => {
-  const items = await getCol('downloads');
-  const sorted = [...items].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
-  document.getElementById('dlList').innerHTML = sorted.map(d=>`
-    <li class="dl-item">
-      <div class="dl-icon">📄</div>
-      <div class="dl-info">
-        <h3>${d.title}</h3>
-        ${d.description?`<div class="desc">${d.description}</div>`:''}
-      </div>
-      <a class="dl-btn" href="${d.fileUrl||'#'}" target="_blank" rel="noopener">下載 ↗</a>
-    </li>`).join('') || '<li style="color:var(--text-soft);padding:14px 0;font-size:14px">目前無下載項目。</li>';
-})();
 
 document.querySelectorAll('.has-sub>a').forEach(a => {
   a.addEventListener('click', e => {
