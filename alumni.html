@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>部分校友名錄 | 政大企家班</title>
+<style>
+  :root{
+    --navy:#1b3a5b;--navy-dark:#13293f;--blue:#2c5f8a;--gold:#b8860b;
+    --bg:#ffffff;--bg-soft:#f4f6f9;--text:#2b2b2b;--text-soft:#5a5a5a;
+    --border:#e2e6ec;--maxw:1100px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;color:var(--text);line-height:1.7;background:var(--bg);font-size:16px}
+  a{color:var(--blue);text-decoration:none}
+  a:hover{text-decoration:underline}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+  .topbar{background:#fff;border-bottom:1px solid var(--border)}
+  .topbar-inner{display:flex;align-items:center;gap:18px;padding:14px 20px;max-width:var(--maxw);margin:0 auto;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand-logo{width:62px;height:62px;border-radius:6px}
+  .brand-name{font-size:24px;font-weight:700;color:var(--navy);letter-spacing:2px}
+  .brand-name small{display:block;font-size:12px;font-weight:400;color:var(--text-soft);letter-spacing:1px;margin-top:2px}
+  .top-actions{margin-left:auto}
+
+  nav.main{background:var(--navy);position:sticky;top:0;z-index:50}
+  .nav-inner{max-width:var(--maxw);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center}
+  .nav-inner>ul{list-style:none;display:flex;flex-wrap:wrap}
+  .nav-inner li{position:relative}
+  .nav-inner a{color:#eaf0f6;display:block;padding:14px 16px;font-size:15px;font-weight:500}
+  .nav-inner a:hover{background:rgba(255,255,255,.12);text-decoration:none}
+  .nav-inner .has-sub>a::after{content:"▾";margin-left:5px;font-size:11px;opacity:.8}
+  .submenu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:210px;box-shadow:0 8px 24px rgba(0,0,0,.15);border:1px solid var(--border);border-top:2px solid var(--gold);z-index:60}
+  .nav-inner li:hover>.submenu{display:block}
+  .submenu li a{color:var(--text);padding:11px 16px;font-size:14px;border-bottom:1px solid #f0f0f0}
+  .submenu li a:hover{background:var(--bg-soft);color:var(--navy)}
+  .nav-toggle{display:none}
+
+  .page-banner{background:var(--navy);color:#fff;padding:36px 0}
+  .page-banner h1{font-size:28px;font-weight:700;letter-spacing:3px}
+  .page-banner .en{font-size:13px;color:var(--gold);letter-spacing:2px;margin-top:4px;font-weight:600}
+  .breadcrumb{font-size:13px;color:#9fb4c8;margin-bottom:12px}
+  .breadcrumb a{color:#9fb4c8}
+  .breadcrumb a:hover{color:#fff}
+
+  .block{padding:46px 0}
+
+  /* 篩選列 */
+  .filter-bar{display:flex;gap:12px;margin-bottom:22px;flex-wrap:wrap;align-items:center}
+  .filter-bar input{flex:1;min-width:200px;padding:9px 14px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:inherit}
+  .filter-bar input:focus{outline:none;border-color:var(--navy)}
+  .filter-bar select{padding:9px 14px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:inherit;background:#fff;min-width:120px}
+  .filter-bar select:focus{outline:none;border-color:var(--navy)}
+  .result-count{font-size:13px;color:var(--text-soft);white-space:nowrap}
+
+  /* 表格 */
+  .table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:8px}
+  table.alumni{width:100%;border-collapse:collapse}
+  table.alumni th{background:var(--navy);color:#fff;padding:11px 16px;text-align:left;font-size:13px;font-weight:600;white-space:nowrap;cursor:pointer;user-select:none}
+  table.alumni th:hover{background:#254e7a}
+  table.alumni th .sort-icon{opacity:.5;margin-left:4px;font-size:11px}
+  table.alumni th.asc .sort-icon::after{content:"▲"}
+  table.alumni th.desc .sort-icon::after{content:"▼"}
+  table.alumni th:not(.asc):not(.desc) .sort-icon::after{content:"⇅"}
+  table.alumni td{padding:11px 16px;font-size:14px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+  table.alumni tr:last-child td{border-bottom:none}
+  table.alumni tr:hover td{background:#f8fafc}
+  .term-badge{display:inline-block;background:var(--bg-soft);color:var(--navy);font-size:12px;font-weight:700;padding:2px 9px;border-radius:3px;min-width:36px;text-align:center}
+  .no-result{text-align:center;padding:40px 20px;color:var(--text-soft);font-size:14px}
+
+  footer{background:var(--navy-dark);color:#c7d3df;padding:40px 0 24px;margin-top:10px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
+  footer h4{color:#fff;font-size:15px;margin-bottom:12px;letter-spacing:1px}
+  footer p,footer li{font-size:14px;line-height:1.9;list-style:none}
+  footer a{color:#9fb4c8}
+  footer a:hover{color:#fff}
+  .foot-social{display:flex;gap:12px;margin-top:12px}
+  .foot-social a{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff}
+  .foot-social a:hover{background:#06c755;text-decoration:none}
+  .foot-bottom{text-align:center;margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);font-size:13px;color:#7e93a7}
+
+  @media(max-width:860px){
+    .foot-grid{grid-template-columns:1fr}
+    .nav-toggle{display:block;background:none;border:none;color:#fff;font-size:22px;padding:12px 16px;cursor:pointer;margin-left:auto}
+    .nav-inner>ul{display:none;width:100%;flex-direction:column}
+    .nav-inner>ul.open{display:flex}
+    .nav-inner li{width:100%}
+    .submenu{position:static;box-shadow:none;border:none;background:rgba(255,255,255,.06)}
+    .nav-inner li:hover>.submenu{display:none}
+    .submenu.open{display:block}
+    .submenu li a{color:#cdd9e5;border-bottom:1px solid rgba(255,255,255,.08)}
+    table.alumni td:nth-child(3){display:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-logo"><img src="images/logo.gif" alt="政大企家班" style="width:62px;height:62px;object-fit:contain;border-radius:6px"></div>
+      <div class="brand-name">政大企家班<small>NCCU Business Administration · 企業家經營管理研究班</small></div>
+    </div>
+    <div class="top-actions"></div>
+  </div>
+</header>
+
+<nav class="main">
+  <div class="nav-inner wrap" style="padding-left:0;padding-right:0">
+    <button class="nav-toggle" aria-label="選單" onclick="document.getElementById('navlist').classList.toggle('open')">☰</button>
+    <ul id="navlist">
+      <li><a href="index.html">首頁</a></li>
+      <li class="has-sub"><a href="about.html">關於企家班</a>
+        <ul class="submenu">
+          <li><a href="about.html#天下第一班">天下第一班</a></li>
+          <li><a href="about.html#課程資訊">課程資訊</a></li>
+          <li><a href="about.html#司徒專欄">司徒專欄</a></li>
+          <li><a href="about.html#企家班之歌">企家班之歌</a></li>
+        </ul>
+      </li>
+      <li class="has-sub"><a href="alumni.html">歷屆校友</a>
+        <ul class="submenu">
+          <li><a href="alumni.html">部分校友名錄(在學時或結業後職務)</a></li>
+        </ul>
+      </li>
+      <li class="has-sub"><a href="events.html">活動訊息</a>
+        <ul class="submenu">
+          <li><a href="events.html">近期活動行事曆</a></li>
+          <li><a href="events.html#過去">過期活動行事曆</a></li>
+          <li><a href="#">影音平台</a></li>
+          <li><a href="index.html#剪影">活動剪影</a></li>
+        </ul>
+      </li>
+      <li><a href="index.html#芳名錄">捐款芳名錄</a></li>
+      <li><a href="index.html#下載">下載專區</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-banner">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="index.html">首頁</a> › <a href="#">歷屆校友</a> › 部分校友名錄</div>
+    <h1>部分校友名錄</h1>
+    <div class="en">ALUMNI DIRECTORY (IN-STUDY OR POST-GRADUATION POSITIONS)</div>
+  </div>
+</div>
+
+<section class="block">
+  <div class="wrap">
+    <div class="filter-bar">
+      <input type="search" id="searchBox" placeholder="搜尋姓名、公司、職稱…">
+      <select id="termFilter">
+        <option value="">全部屆別</option>
+      </select>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+    <div class="table-wrap">
+      <table class="alumni" id="alumniTable">
+        <thead>
+          <tr>
+            <th data-col="0">屆別 <span class="sort-icon"></span></th>
+            <th data-col="1">姓名 <span class="sort-icon"></span></th>
+            <th data-col="2">公司名稱 <span class="sort-icon"></span></th>
+            <th data-col="3">職稱 <span class="sort-icon"></span></th>
+          </tr>
+        </thead>
+        <tbody id="alumniBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <h4>國立政治大學 企業家管理發展進修班</h4>
+      <p>電話：02-29393091 EXT 87071-5, 87063-5<br>
+         地址：11605 台北市文山區指南路二段64號<br>
+         Email：<a href="mailto:nccu.ba.app@gmail.com">nccu.ba.app@gmail.com</a></p>
+      <div class="foot-social">
+        <a href="https://www.youtube.com/channel/UC0n-O1ZDkga3oMpSxoQJduw/videos" target="_blank" rel="noopener">YT</a>
+        <a href="https://page.line.me/nccuba" target="_blank" rel="noopener">Line</a>
+      </div>
+    </div>
+    <div>
+      <h4>關於企家班</h4>
+      <ul>
+        <li><a href="about.html#天下第一班">天下第一班</a></li>
+        <li><a href="about.html#課程資訊">課程資訊</a></li>
+        <li><a href="about.html#司徒專欄">司徒專欄</a></li>
+        <li><a href="about.html#企家班之歌">企家班之歌</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>校友服務</h4>
+      <ul>
+        <li><a href="alumni.html">校友名錄</a></li>
+        <li><a href="index.html#芳名錄">捐款芳名錄</a></li>
+        <li><a href="index.html#剪影">活動剪影</a></li>
+        <li><a href="index.html#下載">下載專區</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">© 政大企家班 NCCU BA. 本站為校友會資訊網站。</div>
+</footer>
+
+<script>
+const DATA = [
+  [1,"王祺","楷盈關係企業","會長"],
+  [1,"李成家","美吾華懷特生技集團","董事長"],
+  [2,"林昌和","龍門食品工業(股)公司","總經理"],
+  [3,"李焜耀","明基電通(股)公司","董事長"],
+  [3,"林志雄","長江國際專利商標法律事務所","所長"],
+  [3,"陳盛泉","聲寶(股)公司","董事長"],
+  [4,"段津華","宏普建設(股)公司","董事長"],
+  [5,"江誠榮","台旭環境科技中心(股)公司","董事長"],
+  [5,"張昭焚","鈺德科技(股)公司","董事長"],
+  [5,"楊青峰","台南企業(股)公司","董事長"],
+  [5,"陳盛沺","聲寶(股)公司","總裁"],
+  [6,"李英新","精技電腦(股)公司","總經理"],
+  [6,"林茂桂","群光電子(股)公司","副董事長兼總經理"],
+  [6,"陶君亮","巨星造船(股)公司","董事長"],
+  [7,"林信義","行政院","副院長"],
+  [7,"梁茂生","志聖工業(股)公司","董事長"],
+  [7,"裴信祐","雄獅旅行社(股)公司","總經理"],
+  [8,"朱炳昱","台灣人壽金融集團","董事長"],
+  [8,"汪林祥","萊爾富國際(股)公司","董事長"],
+  [8,"許育瑞","仰德集團(士電,國賓,竹貨)","董事長"],
+  [9,"王振堂","宏碁(股)公司","董事長"],
+  [9,"李翼文","雄獅鉛筆廠(股)公司","董事長"],
+  [9,"謝宏波","啟碁科技(股)公司","董事長暨策略長"],
+  [9,"陳義誠","晶訊科技(股)公司","董事長"],
+  [9,"盧明光","中美矽晶製品(股)公司","董事長"],
+  [10,"李文源","愛的世界(股)公司","董事長"],
+  [10,"王正一","桂冠實業(股)公司","創辦人"],
+  [10,"周俊吉","信義房屋","董事長"],
+  [10,"林清輝","中美聯合實業(股)公司","董事長"],
+  [10,"梁永煌","今周刊","社長"],
+  [10,"陳焜耀","合隆毛廠(股)公司","董事長"],
+  [11,"朱秋龍","台灣保來得(股)公司","總經理"],
+  [11,"宮榮敏","立弘生化科技(股)公司","董事長"],
+  [11,"楊正利","鈞寶電子工業(股)公司","董事長"],
+  [11,"葉寅夫","億光電子工業(股)公司","董事長"],
+  [11,"莊永順","研揚科技(股)公司","董事長"],
+  [11,"黃平璋","千翔保全(股)公司","董事長"],
+  [12,"王坤山","桂冠實業(股)公司","董事長"],
+  [12,"王超群","國眾電腦(股)公司","董事長"],
+  [12,"余宏揚","資通電腦(股)公司","董事長"],
+  [12,"吳良材","力泰建設企業(股)公司","總經理"],
+  [12,"宋文琪","台北金融大樓(股)公司(TAIPEI 101)","董事長"],
+  [12,"景虎士","聯華實業(股)公司","總經理"],
+  [12,"馮先勉","基泰建設(股)公司","總經理"],
+  [12,"葉佳紋","德宏管理顧問(股)公司","董事長"],
+  [12,"葉國筌","精技電腦(股)公司","董事長"],
+  [13,"游金章","易遊網旅行社(股)公司","總經理"],
+  [13,"曾崧柱","美利達工業(股)公司","總經理"],
+  [13,"高志君","明耀百貨(股)公司","副總經理"],
+  [14,"王以偉","誠隆汽車(股)公司","董事長"],
+  [14,"王榮文","遠流出版事業(股)公司","董事長"],
+  [14,"王正明","桂冠實業(股)公司","總經理"],
+  [14,"奚志雄","信昌機械","總經理"],
+  [14,"汪世堯","台灣神戶電池(股)公司","董事長CEO"],
+  [14,"謝國寶","昱辰科技(股)公司","總經理"],
+  [15,"羅志承","漢珍數位圖書(股)公司","總經理"],
+  [15,"胡秋江","威健實業(股)公司","董事長"],
+  [15,"鍾梁權","巨匠電腦(股)公司","董事長"],
+  [15,"黃廷賢","元大投顧(股)公司","董事長"],
+  [15,"葉漢祥","震大建設(股)公司","董事長"],
+  [15,"陳敦仁","統振(股)公司","董事長"],
+  [15,"王勝輝","中強光電(股)公司","投影事業群總經理"],
+  [15,"涂偉華","台橡(股)公司","總經理"],
+  [15,"王堅倉","佰龍機械廠(股)公司","總經理"],
+  [17,"蘇素珍","成翌(股)公司","董事長"],
+  [18,"黃志聰","巨匠電腦(股)公司","總經理"],
+  [18,"林忠平","亞洲光學(股)公司","副總經理"],
+  [18,"莊王垂貞","新昕纖維(股)公司","董事長"],
+  [18,"楊舜如","虎門科技(股)公司","總裁"],
+  [18,"蔡明賢","台北雙星(股)公司","副董事長"],
+  [18,"楊慰芬","錸德科技(股)公司","副總裁"],
+  [19,"葉培城","技嘉科技(股)公司","董事長"],
+  [19,"許東隆","展悅開發(股)公司","董事長"],
+  [19,"詹信忠","泰山企業(股)公司","副董事長"],
+  [19,"王德林","渣打國際商業銀行","獨立董事"],
+  [19,"林武田","元大國際資產管理(股)公司","董事長"],
+  [19,"曠湘霞","公共電視","總經理"],
+  [19,"侯榮惠","東方廣告公司台灣事業部","總經理"],
+  [20,"曾慶豐","西湖渡假村","董事長"],
+  [20,"黃柏漙","緯創資通(股)公司","總經理"],
+  [20,"周筱玲","元大金控(股)公司法金事業處","執行長"],
+  [20,"沈方正","老爺大酒店集團","執行長"],
+  [21,"馬志玲","元大金融控股(股)公司","總裁"],
+  [21,"蔡伯宜","亞矽科技(股)公司","董事長"],
+  [21,"鄭以萍","PUBLICIS China 中國區","首席執行官"],
+  [21,"許旭輝","台灣航空貨運承攬(股)公司","董事長"],
+  [21,"王重平","李祖原建築師事務所","副董事長"],
+  [21,"佟德望","太古集團運通汽車(股)公司","總經理"],
+  [21,"孫天山","群益期貨(股)公司","董事長"],
+  [21,"楊秋福","金石堂圖書(股)公司","副總經理"],
+  [21,"李依達","禾伸堂企業(股)公司","副總經理"],
+  [21,"徐景輝","廣達電腦(股)公司","副總經理"],
+  [22,"董俊仁","佳能企業(股)公司","董事長"],
+  [22,"莊信義","欣技資訊(股)公司","總經理"],
+  [22,"廖宜彥","欣技資訊(股)公司","董事長"],
+  [22,"劉明松","博上廣告(股)公司","總經理"],
+  [22,"馬孟明","技嘉科技(股)公司","總經理"],
+  [22,"李文琳","台灣三洋電機(股)公司","總經理"],
+  [22,"陳月卿","財團法人癌症關懷基金會","董事長"],
+  [23,"汪才銘","台灣神戶電池(股)公司","副董事長"],
+  [23,"黃正雄","群益期貨(股)公司","執行副總"],
+  [23,"周明芬","皇家可口(股)公司","總經理"],
+  [23,"林文正","科林儀器(股)公司","董事長"],
+  [23,"李雅彬","元大證券金融(股)公司","總經理"],
+  [23,"周永明","宏達國際電子(股)公司","執行長"],
+  [24,"曾國棟","友尚(股)公司","董事長"],
+  [24,"陳世怡","宏泰電工(股)公司","董事長"],
+  [24,"申時勻","禾伸堂企業(股)公司","中國區首席執行長"],
+  [24,"林廷芳","三聯科技(股)公司","總經理"],
+  [24,"蔡英智","益鼎工程(股)公司","總經理"],
+  [24,"林金淵","晟鈦(股)公司","總經理"],
+  [24,"邱春龍","進階生物科技(股)公司","董事長"],
+  [24,"洪善群","空中英語教室雜誌社","總經理"],
+  [24,"鄧富吉","富鼎先進電子(股)公司","董事長"],
+  [24,"張永豐","吉鴻電子(股)公司","總經理"],
+  [24,"張瑞川","宏碁(股)公司","技術總監"],
+  [24,"黃志明","惠普科技(股)公司","副總裁"],
+  [24,"林育良","西園醫院永越健康管理中心","總經理"],
+  [25,"曲榮福","富瑋科技(股)公司","董事長"],
+  [25,"吳守謙","可樂旅遊旅行社(股)公司","副董事長"],
+  [25,"唐瑞伯","台灣希捷科技(股)公司","總經理"],
+  [25,"陳宏欽","驊陞科技(股)公司","董事長"],
+  [25,"林佳璋","建智(股)公司","總經理"],
+  [25,"廖裕輝","華國大飯店","總經理"],
+  [25,"林明毅","旭辰資訊(股)公司","董事長"],
+  [25,"金家琳","元大商業銀行","總經理"],
+  [26,"馬維辰","元大金控(股)公司／臺灣證券交易所","董事"],
+  [26,"袁万丁","宏致電子(股)公司","董事長"],
+  [26,"王嘉昇","台灣惠普科技(股)公司","董事長暨企業群總經理"],
+  [26,"王柯逸民","康福旅行社(股)公司","董事長"],
+  [26,"王年清","迅得機械(股)公司","總經理"],
+  [26,"嚴基棟","萬鼎工程(股)公司","董事長"],
+  [26,"林大成","飛捷科技(股)公司","董事長"],
+  [26,"周青麟","至寶電腦興業(股)公司","董事長兼執行長"],
+  [26,"謝漢章","士林電機廠(股)公司","執行長兼總經理"],
+  [27,"朱河村","欣彰天然氣(股)公司","副董事長"],
+  [27,"吳增峰","昇陽電腦(股)公司","總經理"],
+  [27,"李漢邦","新美光(股)公司","總經理"],
+  [27,"曾繼立","佳總興業(股)公司","總經理"],
+  [27,"余維斌","宜特科技(股)公司","董事長"],
+  [27,"謝敦仁","台灣英文雜誌社(股)公司","執行長"],
+  [27,"孫明台","雄獅旅行社(股)公司","全球通路事業處總經理"],
+  [27,"黃連榮","巨路國際(股)公司","副總經理"],
+  [27,"葉曉甄","文心建設(股)公司","總經理"],
+  [28,"蘇百煌","集盛實業(股)公司","總經理"],
+  [28,"林昌亮","帛漢(股)公司","董事長"],
+  [28,"歐敏輝","新天地國際實業(股)公司","董事長"],
+  [28,"陳有仁","台灣英文雜誌社(股)公司","總經理"],
+  [28,"郭昭宏","關貿網路(股)公司","副總經理"],
+  [28,"陳彥誠","合隆毛廠(股)公司","董事長"],
+  [28,"吳界欣","佳龍科技工程(股)公司","總經理"],
+  [28,"亓甯","財團法人永齡教育基金會","執行長"],
+  [29,"陳麗如","杏一醫療用品(股)公司","董事長"],
+  [29,"凃志佶","華南產物保險(股)公司","董事長"],
+  [29,"李忠義","一詮精密工業(股)公司","總經理"],
+  [29,"劉慶懿","悠克電子(股)公司","總經理"],
+  [29,"劉琍綺","安勤科技(股)公司","董事長"],
+  [29,"黃光明","光洋波斯特國際展覽(股)公司","董事長"],
+  [29,"謝慧敏","京都念慈菴藥廠(股)公司","副總經理"],
+  [30,"蔡朝陽","上緯企業(股)公司","董事長"],
+  [30,"黃建豐","穎台科技(股)公司","董事長"],
+  [30,"熊怡之","日勝化工(股)公司","總經理"],
+  [30,"陳明賢","精華光學(股)公司","董事長"],
+  [30,"林志峰","科嘉國際(股)公司","董事長"],
+  [30,"莊自強","海霸王國際集團","董事長"],
+  [30,"張世杰","鬍鬚張(股)公司","總經理"],
+  [30,"施養謙","台灣三花棉製業(股)公司","總經理"],
+  [31,"葉慶元","紅心辣椒娛樂科技(股)公司","總經理"],
+  [31,"陳世通","隆通工程(股)公司","董事長"],
+  [31,"陳俊安","佳尼特(股)公司","董事長"],
+  [31,"謝宏明","五福旅行社(股)公司","總經理"],
+  [31,"黃瑞明","國際通商法律事務所","所長"],
+  [31,"王伯綸","天明製藥(股)公司","董事長"],
+  [31,"陳毅航","饗賓餐旅事業(股)公司","總經理"],
+  [31,"鄧學凱","凱馨實業(股)公司","總經理"],
+  [32,"張云綺","宏亞食品(股)公司","總經理"],
+  [32,"戴秀玲","康那香企業(股)公司","總經理"],
+  [32,"紀春錦","全鋒汽車(股)公司","董事長"],
+  [32,"林英俊","岱宇國際(股)公司","董事長"],
+  [32,"李瓊淑","台灣大車隊(股)公司","總經理"],
+  [32,"劉俊北","德記洋行(股)公司","總經理"],
+  [32,"陳正威","海聖(股)公司(老協珍)","總經理"],
+  [33,"王興","VerizonMedia／雅虎亞太區","共同董事總經理"],
+  [33,"江俊彥","台虹科技(股)公司","總經理"],
+  [33,"呂平幸","聯發科技(股)公司","董事長暨總經理室特別助理"],
+  [33,"林武宗","良達科技(股)公司","總經理"],
+  [33,"許燕福","旭軟電子科技(股)公司","總經理"],
+  [33,"陳榮源","均昇科技有限公司","董事長"],
+  [33,"戴治中","海霆國際物流(股)公司","董事長"],
+  [33,"王志信","茂達電子(股)公司","董事長兼總經理"],
+  [33,"高星璜","中華航空(股)公司","董事長"],
+  [34,"呂學人","DELL (TAIWAN) B.V. Taiwan Branch","Executive Director"],
+  [34,"林正峯","神腦國際企業(股)公司","董事兼總裁特助"],
+  [34,"林梅燕","芳德鑄鋁(股)公司","董事長"],
+  [34,"張家豪","億鴻系統科技(股)公司","董事長"],
+  [34,"楊龍光","精英電腦(股)公司","總經理"],
+  [34,"鄭宏達","歐事達企業有限公司","總經理"],
+  [35,"江文容","新洲全球(股)公司","總經理"],
+  [35,"吳金宏","樸鯨科技(股)公司","總經理"],
+  [35,"李正榮","崇越科技(股)公司","營運長"],
+  [35,"洪芳興","毅太企業(股)公司","總經理"],
+  [35,"梁文源","聖德科斯(股)公司","總經理"],
+  [35,"詹千慧","台灣萊雅(股)公司","醫學美容事業部總經理"],
+  [35,"詹棣傢","華友旅行社有限公司","總經理"],
+  [35,"蕭漢平","旺德電通(股)公司","總經理"],
+  [36,"毛振華","群益期貨(股)公司","總經理"],
+  [36,"何麗萍","山水民意研究(股)公司","總經理"],
+  [36,"陳聿聖","三商美邦人壽保險(股)公司","業務總監"],
+  [36,"羅文倩","華威國際CID GROUP","合夥人"],
+  [37,"方盈傑","雅虎數位行銷有限公司","事業群總經理"],
+  [37,"盛剛","茂達電子(股)公司","執行副總經理"],
+  [37,"郭昭良","合作金庫票券金融(股)公司","董事長"],
+  [37,"蔡奇峯","匯豐汽車(股)公司","總經理"],
+  [37,"盧炳勳","台灣貝立德(股)公司","總經理"],
+  [37,"蘇德智","台灣三星電子(股)公司","副總經理"],
+  [38,"伍穗華","侏羅紀(股)公司","董事長"],
+  [38,"吳國豪","江蘇聯煒誠電子科技有限公司","總經理"],
+  [38,"林柏蒼","萬年春茶業(股)公司","總經理"],
+  [38,"曾國維","士林電機廠(股)公司","人資長"],
+  [38,"劉朝淵","新東豐機械(股)公司","總經理"],
+  [38,"許阿南","凱創實業(股)公司","董事長"],
+  [39,"邱銘乾","家登精密工業(股)公司","董事長"],
+  [39,"洪英超","昱泉國際(股)公司","總經理"],
+  [39,"秦永澤","橘熊科技(股)公司","總經理"],
+  [39,"張迺森","中興保全(股)公司","副總經理"],
+  [39,"陳宣宇","靈智精實整合行銷傳播集團","董事總經理暨首席創意"],
+  [39,"陳建志","嘉楠食品工業(股)公司","總經理"],
+  [39,"蔡國輝","正美企業(股)公司","董事長"],
+  [40,"吳誌雄","高力熱處理工業(股)公司","總經理"],
+  [40,"姜信欽","晶焱科技(股)公司","創辦人及總經理"],
+  [40,"梁又文","志聖工業(股)公司","總經理"],
+  [40,"黃安台","信通交通器材(股)公司","總經理"],
+  [40,"廖家欣","創業家兄弟(股)公司","共同創辦人暨總經理"],
+  [40,"顏永裕","瑋鋒科技(股)公司","董事長"],
+  [41,"王貴增","金醇臻品(股)公司","董事長"],
+  [41,"李傳德","維田科技(股)公司","董事長"],
+  [41,"沈淳浤","寀奕國際(股)公司","總經理"],
+  [41,"卓豐閔","車麗屋汽車百貨(股)公司","董事長"],
+  [41,"林大鈞","三聯科技(股)公司","董事長"],
+  [41,"林宮男","台灣可果美(股)公司","總經理"],
+  [41,"許銀雄","宏碁智醫(股)公司","總經理"],
+  [42,"李亦華","紅心辣椒娛樂科技(股)公司","執行長"],
+  [42,"李帷榛","格力高台灣(股)公司","董事總經理"],
+  [42,"林彥良","和潤企業股份有限公司","總經理"],
+  [42,"紀緻謙","電通行銷傳播集團創意事業群及安索帕公司","執行長"],
+  [42,"黃銘文","濾能(股)公司","董事長"],
+  [42,"蔡正欽","儒鴻企業(股)公司","副總經理"],
+  [43,"吳俊男","精湛光學科技(股)公司","董事長"],
+  [43,"林伯全","中國砂輪企業(股)公司","董事長"],
+  [43,"陳滿萍","隨意鳥地方(股)公司","負責人"],
+  [43,"劉展豪","緯創資通(股)公司","事業群副總經理"],
+  [43,"鄭智文","奇鼎科技(股)公司","董事長"],
+  [44,"邱繼鋒","加利利旅行社(股)有限公司","總經理"],
+  [44,"陳勇任","DQS Taiwan Inc.優麗國際管理系統驗證(股)公司","董事總經理"],
+  [44,"陳政興","均豪精密工業(股)公司","負責人"],
+  [44,"黃光彧","群光電子(股)公司事業部","總經理"],
+  [44,"黃建嘉","大房食品(股)公司","總經理"],
+  [44,"簡忠正","鴻呈實業(股)公司","董事長"],
+  [44,"嚴璐","東台精機(股)公司","副總經理"],
+  [45,"黃朝豊","美律實業股份有限公司","執行長"],
+  [45,"楊巧銀","順益汽車股份有限公司","總經理"],
+  [45,"王冠懿","富隆精密股份有限公司","董事長"],
+  [45,"王彥人","台灣富士通股份有限公司","董事長兼總經理"],
+  [45,"鄭偉柏","台灣大哥大股份有限公司","副總經理"],
+  [45,"王献堂","科科科技(股)公司","董事長兼總經理"],
+  [45,"邱聰敏","緯創資通股份有限公司","會計長"],
+  [45,"胡孝揚","台灣飛利浦股份有限公司","董事長兼總經理"]
+];
+
+let sortCol = 0, sortAsc = true;
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function render() {
+  const q = document.getElementById('searchBox').value.trim().toLowerCase();
+  const term = document.getElementById('termFilter').value;
+  let rows = DATA.filter(r => {
+    if (term && String(r[0]) !== term) return false;
+    if (q) { return r.some(c => String(c).toLowerCase().includes(q)); }
+    return true;
+  });
+  rows.sort((a,b) => {
+    let va = a[sortCol], vb = b[sortCol];
+    if (typeof va === 'number') return sortAsc ? va-vb : vb-va;
+    return sortAsc ? String(va).localeCompare(String(vb),'zh-Hant') : String(vb).localeCompare(String(va),'zh-Hant');
+  });
+  document.getElementById('resultCount').textContent = `共 ${rows.length} 筆`;
+  document.getElementById('alumniBody').innerHTML = rows.length
+    ? rows.map(r=>`<tr>
+        <td><span class="term-badge">第${r[0]}屆</span></td>
+        <td>${esc(r[1])}</td>
+        <td>${esc(r[2])}</td>
+        <td>${esc(r[3])}</td>
+      </tr>`).join('')
+    : `<tr><td colspan="4" class="no-result">無符合結果</td></tr>`;
+}
+
+// 填屆別下拉
+const terms = [...new Set(DATA.map(r=>r[0]))].sort((a,b)=>a-b);
+const sel = document.getElementById('termFilter');
+terms.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=`第${t}屆`; sel.appendChild(o); });
+
+// 排序點擊
+document.querySelectorAll('table.alumni th').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = +th.dataset.col;
+    if (sortCol===col) sortAsc=!sortAsc; else { sortCol=col; sortAsc=true; }
+    document.querySelectorAll('table.alumni th').forEach(h=>h.classList.remove('asc','desc'));
+    th.classList.add(sortAsc?'asc':'desc');
+    render();
+  });
+});
+
+document.getElementById('searchBox').addEventListener('input', render);
+document.getElementById('termFilter').addEventListener('change', render);
+
+// 初始排序標示
+document.querySelector('table.alumni th[data-col="0"]').classList.add('asc');
+render();
+
+document.querySelectorAll('.has-sub>a').forEach(a => {
+  a.addEventListener('click', e => {
+    if (window.innerWidth <= 860) {
+      e.preventDefault();
+      a.parentElement.querySelector('.submenu').classList.toggle('open');
+    }
+  });
+});
+</script>
+</body>
+</html>
