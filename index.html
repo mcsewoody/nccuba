@@ -354,21 +354,18 @@ const todayStr = new Date().toISOString().slice(0,10);
 
 (async () => {
   const items = await getCol('donations');
-  const groups = {};
-  items.forEach(d => { (groups[d.term]=groups[d.term]||[]).push(d); });
-  const terms = Object.keys(groups).sort((a,b)=>b.localeCompare(a,'zh-Hant'));
-  document.getElementById('donorWrap').innerHTML = terms.map(t=>`
-    <div class="term-block">
-      <div class="term-head">${t}</div>
-      <table class="donor-table">
-        <thead><tr><th style="width:30%">捐款人</th><th style="width:30%">金額</th><th>捐款項目</th></tr></thead>
-        <tbody>${groups[t].map(d=>`<tr>
-          <td>${d.isAnonymous?'善心人士':d.donorName}</td>
-          <td>${fmtAmt(d)}</td>
-          <td>${d.item||'—'}</td>
-        </tr>`).join('')}</tbody>
-      </table>
-    </div>`).join('') || '<p style="color:var(--text-soft)">目前無捐款紀錄。</p>';
+  const sorted = [...items].sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  document.getElementById('donorWrap').innerHTML = sorted.length ? `
+    <table class="donor-table">
+      <thead><tr><th style="width:10%">屆別</th><th style="width:22%">捐款人</th><th style="width:22%">金額</th><th style="width:22%">捐款項目</th><th>日期</th></tr></thead>
+      <tbody>${sorted.map(d=>`<tr>
+        <td>${d.term||'—'}</td>
+        <td>${d.isAnonymous?'善心人士':d.donorName}</td>
+        <td>${fmtAmt(d)}</td>
+        <td>${d.item||'—'}</td>
+        <td style="color:var(--text-soft);font-size:13px">${d.date||'—'}</td>
+      </tr>`).join('')}</tbody>
+    </table>` : '<p style="color:var(--text-soft)">目前無捐款紀錄。</p>';
 })();
 
 (async () => {
