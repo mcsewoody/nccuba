@@ -172,6 +172,7 @@
 </div>
 
 <div class="toast" id="toast"></div>
+<input type="file" id="csvFileInput" accept=".csv" style="display:none">
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
@@ -249,7 +250,7 @@ async function renderTab() {
   const act = document.getElementById('pageActions');
   c.innerHTML = '<div class="empty">載入中…</div>';
   if (curTab==='ann') { act.innerHTML='<button class="btn gold" onclick="openAnn()">＋ 新增公告</button>'; c.innerHTML=await renderAnn(); }
-  else if (curTab==='event') { act.innerHTML='<button class="btn gold" onclick="openEvent()">＋ 新增活動</button>'; c.innerHTML=await renderEvent(); }
+  else if (curTab==='event') { act.innerHTML='<button class="btn ghost" onclick="triggerCSV()">📥 匯入 CSV</button> <button class="btn gold" onclick="openEvent()">＋ 新增活動</button>'; c.innerHTML=await renderEvent(); }
   else if (curTab==='donation') { act.innerHTML='<button class="btn gold" onclick="openDonation()">＋ 新增捐款</button>'; c.innerHTML=await renderDonation(); }
   else if (curTab==='gallery') { act.innerHTML='<button class="btn gold" onclick="openGallery()">＋ 新增相簿</button>'; c.innerHTML=await renderGallery(); }
   else if (curTab==='user') { act.innerHTML='<button class="btn gold" onclick="openUser()">＋ 新增使用者</button>'; c.innerHTML=await renderUser(); }
@@ -520,7 +521,72 @@ async function delRow(coll, id) {
 let toastTimer;
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2200); }
 
-Object.assign(window, {doLogin,doLogout,switchTab,closeModal,saveModal,openAnn,openEvent,openDonation,openGallery,openUser,toggleUser,delRow,amtModeChange});
+/* ================= CSV 匯入 ================= */
+function triggerCSV() {
+  const input = document.getElementById('csvFileInput');
+  input.value = '';
+  input.click();
+}
+
+document.getElementById('csvFileInput').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const text = await file.text();
+  const rows = parseCSV(text);
+  if (rows.length < 2) { toast('CSV 格式錯誤或無資料'); return; }
+  const headers = rows[0];
+  const data = rows.slice(1).filter(r => r[0] && r[0].trim());
+  if (!data.length) { toast('無有效資料列'); return; }
+
+  const preview = data.slice(0, 5).map(r =>
+    `<tr>${r.map(c => `<td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px">${esc(c)}</td>`).join('')}</tr>`
+  ).join('');
+
+  openModal(`確認匯入 ${data.length} 筆活動`,`
+    <p style="margin-bottom:14px;color:var(--text-soft);font-size:13px">預覽前 ${Math.min(5,data.length)} 筆（共 ${data.length} 筆）：</p>
+    <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse">
+      <thead><tr>${headers.map(h=>`<th style="padding:6px 10px;background:#f8fafc;font-size:12px;color:var(--text-soft);text-align:left">${esc(h)}</th>`).join('')}</tr></thead>
+      <tbody>${preview}</tbody>
+    </table></div>
+    <p style="margin-top:14px;font-size:12px;color:#9aa6b2">確認後將全部匯入，不會覆蓋已有活動。</p>
+  `);
+
+  document.getElementById('mSave').onclick = async () => {
+    closeModal();
+    let count = 0;
+    for (const r of data) {
+      const obj = {
+        title: r[0]||'', startTime: r[1]||'', endTime: r[2]||'',
+        location: r[3]||'', description: r[4]||'', signupUrl: r[5]||'',
+        createdBy: CURRENT.uid, createdAt: serverTimestamp()
+      };
+      await addDoc(collection(db,'events'), obj);
+      count++;
+    }
+    renderTab(); toast(`已匯入 ${count} 筆活動`);
+  };
+});
+
+function parseCSV(text) {
+  const rows = [];
+  const lines = text.split(/\r?\n/);
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    const cells = [];
+    let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === ',' && !inQ) { cells.push(cur); cur = ''; }
+      else { cur += ch; }
+    }
+    cells.push(cur);
+    rows.push(cells.map(c => c.trim()));
+  }
+  return rows;
+}
+
+Object.assign(window, {doLogin,doLogout,switchTab,closeModal,saveModal,openAnn,openEvent,openDonation,openGallery,openUser,toggleUser,delRow,amtModeChange,triggerCSV});
 
 document.getElementById('lgPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 </script>
