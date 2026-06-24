@@ -184,10 +184,10 @@
           <li><a href="#">企家班學員專訪</a></li>
         </ul>
       </li>
-      <li class="has-sub"><a href="#活動">活動訊息</a>
+      <li class="has-sub"><a href="events.html">活動訊息</a>
         <ul class="submenu">
-          <li><a href="#活動">近期活動行事曆</a></li>
-          <li><a href="#">過期活動行事曆</a></li>
+          <li><a href="events.html">近期活動行事曆</a></li>
+          <li><a href="events.html#過去">過期活動行事曆</a></li>
           <li><a href="#">影音平台</a></li>
           <li><a href="#剪影">活動剪影</a></li>
         </ul>
@@ -222,7 +222,7 @@
 <!-- 行事曆 -->
 <section class="block alt">
   <div class="wrap">
-    <div class="sec-head"><h2>近期活動行事曆</h2><span class="en">EVENTS</span><a class="more" href="#">完整行事曆 ›</a></div>
+    <div class="sec-head"><h2>近期活動行事曆</h2><span class="en">EVENTS</span><a class="more" href="events.html">完整行事曆 ›</a></div>
     <div class="event-grid" id="eventGrid"></div>
   </div>
 </section>
@@ -334,7 +334,7 @@ const todayStr = new Date().toISOString().slice(0,10);
   const now = new Date();
   const upcoming = items
     .map(e => ({...e, dt:new Date((e.startTime||'').replace(' ','T'))}))
-    .filter(e => e.dt >= now)
+    .filter(e => { const t=e.dt; return t>=now && t<=new Date(now.getFullYear(),now.getMonth()+3,now.getDate()); })
     .sort((a,b) => a.dt - b.dt);
   document.getElementById('eventGrid').innerHTML = upcoming.map(e=>`
     <div class="event-card">
