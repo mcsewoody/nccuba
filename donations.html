@@ -205,8 +205,8 @@ function fmtAmt(d) {
     <table class="donor-table">
       <thead><tr><th>屆別</th><th>捐款人</th><th>金額</th><th>捐款項目</th><th>日期</th></tr></thead>
       <tbody>${sorted.map(d=>`<tr>
-        <td>${d.term||'—'}</td>
-        <td>${d.isAnonymous?'善心人士':d.donorName}</td>
+        <td style="font-size:20px;font-weight:700;color:var(--navy)">${d.term||'—'}</td>
+        <td style="font-size:20px;font-weight:700">${d.isAnonymous?'善心人士':d.donorName}</td>
         <td>${fmtAmt(d)}</td>
         <td>${d.item||'—'}</td>
         <td style="color:var(--text-soft);font-size:13px">${d.date||'—'}</td>
