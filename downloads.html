@@ -217,6 +217,8 @@ const db = getFirestore(initializeApp(firebaseConfig));
     </li>`).join('') || '<li style="color:var(--text-soft);padding:14px 0;font-size:14px">目前無下載項目。</li>';
 })();
 
+</script>
+<script>
 document.querySelectorAll('.has-sub>a').forEach(a=>{
   a.addEventListener('click',e=>{
     if(window.innerWidth<=860){e.preventDefault();a.parentElement.querySelector('.submenu').classList.toggle('open');}

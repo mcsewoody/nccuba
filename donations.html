@@ -225,6 +225,8 @@ function fmtAmt(d) {
     </table>` : '<p style="color:var(--text-soft)">目前無捐款紀錄。</p>';
 })();
 
+</script>
+<script>
 document.querySelectorAll('.has-sub>a').forEach(a=>{
   a.addEventListener('click',e=>{
     if(window.innerWidth<=860){e.preventDefault();a.parentElement.querySelector('.submenu').classList.toggle('open');}

@@ -328,8 +328,8 @@ const todayStr = new Date().toISOString().slice(0,10);
       </div>
     </div>`).join('') || '<p style="color:var(--text-soft)">目前無近期活動。</p>';
 })();
-
-
+</script>
+<script>
 document.querySelectorAll('.has-sub>a').forEach(a => {
   a.addEventListener('click', e => {
     if (window.innerWidth<=860) { e.preventDefault(); a.parentElement.querySelector('.submenu').classList.toggle('open'); }
