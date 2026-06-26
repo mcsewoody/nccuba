@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>企家班校友會 | 政大企家班</title>
+<style>
+  :root{
+    --navy:#1b3a5b;--navy-dark:#13293f;--blue:#2c5f8a;--gold:#b8860b;
+    --bg:#ffffff;--bg-soft:#f4f6f9;--text:#2b2b2b;--text-soft:#5a5a5a;
+    --border:#e2e6ec;--maxw:1100px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;color:var(--text);line-height:1.8;background:var(--bg);font-size:16px}
+  a{color:var(--blue);text-decoration:none}
+  a:hover{text-decoration:underline}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+  .topbar{background:#fff;border-bottom:1px solid var(--border)}
+  .topbar-inner{display:flex;align-items:center;gap:18px;padding:14px 20px;max-width:var(--maxw);margin:0 auto;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand-logo{width:62px;height:62px;border-radius:6px}
+  .brand-name{font-size:24px;font-weight:700;color:var(--navy);letter-spacing:2px}
+  .brand-name small{display:block;font-size:12px;font-weight:400;color:var(--text-soft);letter-spacing:1px;margin-top:2px}
+  .top-actions{margin-left:auto}
+
+  nav.main{background:var(--navy);position:sticky;top:0;z-index:50}
+  .nav-inner{max-width:var(--maxw);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center}
+  .nav-inner>ul{list-style:none;display:flex;flex-wrap:wrap}
+  .nav-inner li{position:relative}
+  .nav-inner a{color:#eaf0f6;display:block;padding:14px 16px;font-size:15px;font-weight:500}
+  .nav-inner a:hover{background:rgba(255,255,255,.12);text-decoration:none}
+  .nav-inner .has-sub>a::after{content:"▾";margin-left:5px;font-size:11px;opacity:.8}
+  .submenu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:210px;box-shadow:0 8px 24px rgba(0,0,0,.15);border:1px solid var(--border);border-top:2px solid var(--gold);z-index:60}
+  .nav-inner li:hover>.submenu{display:block}
+  .submenu li a{color:var(--text);padding:11px 16px;font-size:14px;border-bottom:1px solid #f0f0f0}
+  .submenu li a:hover{background:var(--bg-soft);color:var(--navy)}
+  .nav-toggle{display:none}
+
+  .page-banner{background:var(--navy);color:#fff;padding:36px 0}
+  .page-banner h1{font-size:28px;font-weight:700;letter-spacing:3px}
+  .page-banner .en{font-size:13px;color:var(--gold);letter-spacing:2px;margin-top:4px;font-weight:600}
+  .breadcrumb{font-size:13px;color:#9fb4c8;margin-bottom:12px}
+  .breadcrumb a{color:#9fb4c8}
+  .breadcrumb a:hover{color:#fff}
+
+  .sub-nav{background:#fff;border-bottom:2px solid var(--border);position:sticky;top:52px;z-index:40}
+  .sub-nav ul{list-style:none;display:flex;max-width:var(--maxw);margin:0 auto;padding:0 20px;gap:0;overflow-x:auto}
+  .sub-nav li a{display:block;padding:14px 20px;font-size:14px;font-weight:600;color:var(--text-soft);white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px}
+  .sub-nav li a:hover,.sub-nav li a.active{color:var(--navy);border-bottom-color:var(--gold);text-decoration:none}
+
+  section.block{padding:56px 0}
+  section.block.alt{background:var(--bg-soft)}
+  .sec-head{margin-bottom:32px;padding-bottom:12px;border-bottom:2px solid var(--navy)}
+  .sec-head h2{font-size:24px;color:var(--navy);font-weight:700;letter-spacing:2px}
+  .sec-head .en{color:var(--gold);font-size:13px;letter-spacing:2px;font-weight:600;margin-top:4px}
+
+  /* 共用文章樣式 */
+  .assoc-lead{font-size:17px;color:var(--navy);font-weight:600;line-height:1.9;margin-bottom:24px;padding:18px 22px;background:var(--bg-soft);border-left:4px solid var(--gold);border-radius:0 6px 6px 0}
+  .assoc-body p{margin-bottom:16px;color:var(--text)}
+  .assoc-sub-head{font-size:15px;font-weight:700;color:var(--navy);margin:22px 0 10px;padding-left:10px;border-left:3px solid var(--gold);letter-spacing:1px}
+  .assoc-portrait{float:right;width:170px;margin:0 0 16px 24px;border-radius:8px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.15);clear:right}
+  .assoc-portrait img{width:100%;display:block}
+  .assoc-portrait .cap{font-size:11px;color:var(--text-soft);text-align:center;padding:5px 8px;background:#f8f9fa}
+  .assoc-quote{background:var(--navy);color:#eaf0f6;padding:22px 28px;border-radius:8px;margin:24px 0;font-size:15px;line-height:1.9;text-align:center}
+  .assoc-quote .ql{font-size:24px;color:var(--gold);line-height:.8;vertical-align:bottom;margin-right:2px}
+  .assoc-quote .qr{font-size:24px;color:var(--gold);line-height:.8;vertical-align:bottom;margin-left:2px}
+  .assoc-bullets{padding-left:0;list-style:none;margin:10px 0 18px}
+  .assoc-bullets li{padding:5px 0 5px 18px;position:relative;color:var(--text);font-size:14px;line-height:1.8}
+  .assoc-bullets li::before{content:"▪";color:var(--gold);position:absolute;left:0}
+  .assoc-byline{text-align:right;font-size:13px;color:var(--text-soft);margin-top:28px;padding-top:12px;border-top:1px solid var(--border)}
+  .clearfix::after{content:"";display:table;clear:both}
+
+  /* 高爾夫球隊 */
+  .golf-intro-img{margin:0 auto 32px;max-width:560px}
+  .golf-intro-img img{width:100%;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+  .team-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:28px 0}
+  .team-card{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  .team-card-head{background:var(--navy);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:14px}
+  .team-card-head img{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid rgba(255,255,255,.4);flex-shrink:0}
+  .team-card-name{font-size:16px;font-weight:700;letter-spacing:2px}
+  .team-card-body{padding:16px 18px;font-size:14px;color:var(--text);line-height:1.9}
+  .team-card-body p{margin-bottom:10px}
+  .team-card-body p:last-child{margin-bottom:0}
+
+  /* iBowl */
+  .ibowl-banner{background:linear-gradient(135deg,#1b3a5b,#2c5f8a);color:#fff;padding:24px 28px;border-radius:8px;margin-bottom:28px;text-align:center}
+  .ibowl-banner h3{font-size:20px;color:var(--gold);letter-spacing:3px;margin-bottom:8px}
+  .ibowl-banner p{font-size:14px;color:#c8d8e8;line-height:1.8}
+  .president-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+  .president-item{background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px 12px}
+  .president-item .no{color:var(--gold);font-weight:700;font-size:11px;display:block;margin-bottom:2px}
+  .president-item .nick{color:var(--navy);font-weight:700;font-size:13px}
+  .president-item .pname{color:var(--text-soft);font-size:12px;display:block;margin-top:2px}
+  .ibowl-act-list{list-style:none;padding:0;margin:12px 0}
+  .ibowl-act-list li{padding:8px 0 8px 22px;position:relative;font-size:14px;color:var(--text);border-bottom:1px solid var(--border)}
+  .ibowl-act-list li:last-child{border-bottom:none}
+  .ibowl-act-list li::before{content:"▶";color:var(--gold);position:absolute;left:0;font-size:10px;top:11px}
+  .ibowl-act-list li strong{color:var(--navy)}
+  .ibowl-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+  .ibowl-photos img{width:100%;border-radius:6px;height:160px;object-fit:cover;object-position:top}
+
+  /* 家長聯誼會 */
+  .parents-scene{float:right;width:240px;margin:0 0 16px 24px;border-radius:8px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.15)}
+  .parents-scene img{width:100%;display:block}
+  .parents-scene .cap{font-size:11px;color:var(--text-soft);text-align:center;padding:5px 8px;background:#f8f9fa}
+  .officer-tags{margin:10px 0 18px;line-height:2.2}
+  .officer-tags span{display:inline-block;background:#eef3f8;color:var(--blue);padding:3px 12px;border-radius:4px;font-size:13px;margin:3px 4px 3px 0}
+  .parents-box{background:#fff;border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:0 6px 6px 0;padding:18px 22px;margin:18px 0;font-size:14px;line-height:1.9;color:var(--text)}
+
+  footer{background:var(--navy-dark);color:#c7d3df;padding:40px 0 24px;margin-top:10px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
+  footer h4{color:#fff;font-size:15px;margin-bottom:12px;letter-spacing:1px}
+  footer p,footer li{font-size:14px;line-height:1.9;list-style:none}
+  footer a{color:#9fb4c8}
+  footer a:hover{color:#fff}
+  .foot-social{display:flex;gap:12px;margin-top:12px}
+  .foot-social a{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff}
+  .foot-social a:hover{background:#06c755;text-decoration:none}
+  .foot-bottom{text-align:center;margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);font-size:13px;color:#7e93a7}
+
+  @media(max-width:860px){
+    .team-grid{grid-template-columns:1fr}
+    .president-grid{grid-template-columns:repeat(2,1fr)}
+    .ibowl-photos{grid-template-columns:1fr 1fr}
+    .assoc-portrait{float:none;width:100%;max-width:220px;margin:0 0 20px}
+    .parents-scene{float:none;width:100%;max-width:240px;margin:0 0 20px}
+    .foot-grid{grid-template-columns:1fr}
+    .nav-toggle{display:block;background:none;border:none;color:#fff;font-size:22px;padding:12px 16px;cursor:pointer;margin-left:auto}
+    .nav-inner>ul{display:none;width:100%;flex-direction:column}
+    .nav-inner>ul.open{display:flex}
+    .nav-inner li{width:100%}
+    .submenu{position:static;box-shadow:none;border:none;border-top:none;background:rgba(255,255,255,.06)}
+    .nav-inner li:hover>.submenu{display:none}
+    .submenu.open{display:block}
+    .submenu li a{color:#cdd9e5;border-bottom:1px solid rgba(255,255,255,.08)}
+    .sub-nav{top:44px}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-logo"><img src="images/logo.gif" alt="政大企家班" style="width:62px;height:62px;object-fit:contain;border-radius:6px"></div>
+      <div class="brand-name">政大企家班<small>NCCU Business Administration · 企業家經營管理研究班</small></div>
+    </div>
+    <div class="top-actions"></div>
+  </div>
+</header>
+
+<nav class="main">
+  <div class="nav-inner wrap" style="padding-left:0;padding-right:0">
+    <button class="nav-toggle" aria-label="選單" onclick="document.getElementById('navlist').classList.toggle('open')">☰</button>
+    <ul id="navlist">
+      <li><a href="index.html">首頁</a></li>
+      <li class="has-sub"><a href="about.html">關於企家班</a>
+        <ul class="submenu">
+          <li><a href="about.html#天下第一班">天下第一班</a></li>
+          <li><a href="about.html#課程資訊">課程資訊</a></li>
+          <li><a href="about.html#總導師的話">總導師的話</a></li>
+          <li><a href="about.html#達賢圖書館">達賢圖書館</a></li>
+          <li><a href="about.html#企家班之歌">企家班之歌</a></li>
+        </ul>
+      </li>
+      <li class="has-sub"><a href="association.html">企家班校友會</a>
+        <ul class="submenu">
+          <li><a href="association.html#讀書會">讀書會</a></li>
+          <li><a href="association.html#健康講座">健康講座</a></li>
+          <li><a href="association.html#高爾夫球隊">高爾夫球隊</a></li>
+          <li><a href="association.html#iBowl">iBowl</a></li>
+          <li><a href="association.html#家長聯誼會">家長聯誼會</a></li>
+        </ul>
+      </li>
+      <li class="has-sub"><a href="alumni.html">歷屆校友</a>
+        <ul class="submenu">
+          <li><a href="alumni.html">部分校友名錄(在學時或結業後職務)</a></li>
+        </ul>
+      </li>
+      <li class="has-sub"><a href="events.html">活動訊息</a>
+        <ul class="submenu">
+          <li><a href="events.html">近期活動行事曆</a></li>
+          <li><a href="events.html#過去">過期活動行事曆</a></li>
+          <li><a href="#">影音平台</a></li>
+          <li><a href="index.html#剪影">活動剪影</a></li>
+        </ul>
+      </li>
+      <li><a href="donations.html">捐款芳名錄</a></li>
+      <li><a href="downloads.html">下載專區</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-banner">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="index.html">首頁</a> › 企家班校友會</div>
+    <h1>企家班校友會</h1>
+    <div class="en">NCCU BA ALUMNI ASSOCIATION</div>
+  </div>
+</div>
+
+<div class="sub-nav">
+  <ul>
+    <li><a href="#讀書會">讀書會</a></li>
+    <li><a href="#健康講座">健康講座</a></li>
+    <li><a href="#高爾夫球隊">高爾夫球隊</a></li>
+    <li><a href="#iBowl">iBowl</a></li>
+    <li><a href="#家長聯誼會">家長聯誼會</a></li>
+  </ul>
+</div>
+
+<!-- 讀書會 -->
+<section class="block" id="讀書會">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>讀書會</h2>
+      <div class="en">BOOK CLUB</div>
+    </div>
+    <div class="assoc-body clearfix">
+      <div class="assoc-portrait">
+        <img src="images/assoc_09.jpg" alt="戴治中">
+        <div class="cap">讀書會發起人　戴治中</div>
+      </div>
+      <div class="assoc-lead">企家班讀書會的成立宗旨，是希望除了在各大高爾夫球隊中進行球技交流之外，也能建立一個知識與經驗分享的平台，讓企家班的學長姐們在彼此交流中達到「允文允武」的精神。</div>
+
+      <div class="assoc-sub-head">一、讀書會宗旨</div>
+      <p>從事國際物流多年的戴治中，以利他共好、創新傳承為核心理念，結合供應鏈、區塊鏈、AI與金融科技的專業背景，帶領企家班進入數位時代。他強調校友的連結不僅是情感，更是一種共創價值的生態系，推動企家大平台與校友捐助計畫，延續前輩精神並開啟新篇章。</p>
+
+      <div class="assoc-sub-head">二、舉辦方式</div>
+      <ul class="assoc-bullets">
+        <li>讀書會由各屆學長姐輪流擔任爐主與邀請嘉賓。</li>
+        <li>每年原則上舉辦<strong>四次</strong>，以線上與線下並行的方式進行。</li>
+        <li>雖名為「讀書會」，但並不限定特定書籍，而是邀請學長姐或外部嘉賓進行演講與分享。</li>
+      </ul>
+
+      <div class="assoc-sub-head">三、演講主題建議</div>
+      <p>為了吸引更多學長姐參與並促進交流，建議演講主題可聚焦於：</p>
+      <ul class="assoc-bullets">
+        <li>軟性知識（如生活智慧、心理成長、文化藝術）</li>
+        <li>時事交流與趨勢觀察</li>
+        <li>產業發展與經營分享</li>
+      </ul>
+      <p style="font-size:14px;color:var(--text-soft)">避免涉及宗教、政治及過於專業或艱澀的議題。</p>
+
+      <div class="assoc-sub-head">四、精神寄語</div>
+      <div class="assoc-quote">
+        <span class="ql">"</span>打球有益健康，而知識則能豐富人生。<span class="qr">"</span>
+        <div style="font-size:13px;color:#9fb4c8;margin-top:10px">—— 司徒達賢</div>
+      </div>
+      <p>企家班讀書會正是希望透過這個平台，讓我們在健康的身心與豐盛的智慧之間取得平衡，實現知識文化的交流與傳承。</p>
+      <div class="assoc-byline">撰文：李志祥</div>
+    </div>
+  </div>
+</section>
+
+<!-- 健康講座 -->
+<section class="block alt" id="健康講座">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>健康講座</h2>
+      <div class="en">HEALTH SEMINAR</div>
+    </div>
+    <div class="assoc-body clearfix">
+      <div class="assoc-portrait">
+        <img src="images/assoc_11.jpg" alt="健康講座">
+      </div>
+      <div class="assoc-lead">健康與智慧同行 ── 政大企家班持續推動健康講座<br><span style="font-size:15px;font-weight:400">在政大企家班的大家庭裡，學長姐們深知「健康」是人生最大的資產。唯有保持身心健康，才能在接下來的每一天持續奔跑，迎接更多挑戰與可能。</span></div>
+
+      <p>自2024年起，政大企家班校友會便開始規劃並持續推動一系列健康講座，邀請專業醫師及醫藥相關領域的專家與校友，定期一年舉辦一場與大家面對面交流，分享醫療新知與健康觀念。這不僅是一場場的講座，更是學長姐們在學期間與畢業後，彼此關懷、共同成長的重要平台，講座內容廣泛而深入，從生活保健涵蓋多面向的健康主題，進入到身心靈的平衡。</p>
+
+      <div class="assoc-sub-head">政大企家班健康講座宗旨</div>
+      <ul class="assoc-bullets">
+        <li>推廣正確且實用的健康知識</li>
+        <li>促進校友之間的情感連結與支持</li>
+        <li>建立長期、可持續的健康學習平台</li>
+        <li>引導企業領導者，將健康文化帶入組織與社會</li>
+      </ul>
+
+      <div class="assoc-sub-head">校友社群的支持與凝聚</div>
+      <div class="assoc-portrait">
+        <img src="images/assoc_12.jpg" alt="健康講座 醫療專家">
+      </div>
+      <p>健康講座的價值，不僅在於專業知識的傳遞，更在於校友之間的情感連結。政大企家班的校友們，來自不同世代與產業，但每一次的聚會，都因「健康」這個共同目標而凝聚在一起。許多學長姐分享，平日工作繁忙，鮮少有機會深入接觸醫療專業，透過這樣的平台，不僅能獲得實用知識，也能彼此提醒與鼓勵，讓健康真正成為行動。</p>
+      <p>此外，講座前的餐敘，讓學長姐們與老師在輕鬆氛圍中交流近況，延續了企家班一貫的「學習＋友情」文化。這種融合了學術性、實用性與人情味的聚會模式，使健康講座成為校友社群中最受歡迎的固定活動之一。</p>
+
+      <div class="assoc-quote">
+        企業領導者的健康，不僅影響自身與家庭，也關係到企業與社會的永續發展。當企業家以行動重視健康，並將良好的生活方式帶入團隊時，便能在組織文化中種下正向發展的種子，讓健康理念逐步向外擴散、影響更多人。
+      </div>
+
+      <div class="assoc-sub-head">展望未來 ── 打造持續的健康學習平台</div>
+      <p>回顧過去幾場講座，主題涵蓋癌症防治、身心靈平衡、臨床新知與生活保健，每一次都得到熱烈回響。展望未來，企家班校友會將持續定期邀請醫界專家，針對不同年齡層與需求規劃多元健康主題，例如：</p>
+      <ul class="assoc-bullets">
+        <li>高齡化社會下的長照與養生</li>
+        <li>慢性病防治與飲食管理</li>
+        <li>心理健康與壓力調適</li>
+        <li>新醫療科技的應用與趨勢</li>
+      </ul>
+      <p>政大企家班健康講座，不只是一次又一次的聚會，而是一段段共同學習、互相扶持的旅程。透過專業醫師的分享，校友們獲得了守護健康的關鍵觀念；透過校友間的交流，大家又彼此提醒與支持。「健康是人生最大的財富，而這個聚會，就是提醒我們不忘為自己與家人存下最重要的本錢。」</p>
+      <div class="assoc-byline">撰文：柯皓瀚</div>
+    </div>
+  </div>
+</section>
+
+<!-- 高爾夫球隊 -->
+<section class="block" id="高爾夫球隊">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>四大高爾夫球隊</h2>
+      <div class="en">GOLF TEAMS</div>
+    </div>
+    <div class="golf-intro-img">
+      <img src="images/assoc_19.jpg" alt="政大企家班高爾夫球隊">
+    </div>
+    <div class="assoc-body">
+      <p>企家班致力於結合理論與實務的進修教育，學員多為創業家、企業二代與高階主管，重視專業學習之餘，也格外看重人脈連結。每個學年僅設一班，為了讓在校新生與歷屆優秀校友能夠有交流的機會，校友會發展出以球會友、跨屆交流的重要媒介，以高爾夫做為聚會重心。</p>
+      <p>每年舉辦春、夏、秋、冬四季賽及「鐵人杯」等專屬賽事，更進一步發展出班級年度對抗賽（PK賽）。為鼓勵各屆學長姐積極參與，司徒老師更自掏腰包對於出席人數達標的屆別給予獎勵。日常例賽由師徒隊、妖怪隊、快樂隊與在校聯盟四大隊分別籌辦，每月的前四周週末依序舉辦。球隊的會長由在校最後一年之班級輪值擔任三年，負責球隊會務的經營發展。</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-card-head">
+          <img src="images/assoc_15.jpg" alt="師徒隊">
+          <div class="team-card-name">政大師徒隊</div>
+        </div>
+        <div class="team-card-body">
+          <p>旨在透過高爾夫運動深化師徒情誼，並推動全人教育理念。核心精神為「傳承與共榮」——師長們親授經驗與技巧，不僅協助學生提升球技，更傳遞職涯發展、人生智慧與人際禮儀的寶貴知識。</p>
+          <p>球隊定期舉辦球敘、教學訓練與友誼賽，積極參與校內外賽事，以賽代訓，增進球員實戰經驗與團隊合作精神。鼓勵成員在球場內外建立真誠友誼，期盼更多同學認識這項優雅且富挑戰性的運動，體悟耐心、策略與禮儀的重要性。</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-card-head">
+          <img src="images/assoc_14.jpg" alt="妖怪隊">
+          <div class="team-card-name">妖怪隊</div>
+        </div>
+        <div class="team-card-body">
+          <p>名稱源於第17屆王震華學長捐出一張廣達股票作為球隊基金，「17」在軍中發音為「么拐」，取諧音而得名。呂國雄學長為第一任會長，目前已傳承至第28屆。</p>
+          <p>妖怪隊約定每月第一個禮拜天，無論風雨晴陰皆會現身球場。「不在於多強，而在於從不缺席；不為了贏誰，而是為了不忘自己。」見證的不只是球技的成長，更是一段段兄弟情誼的深厚沉澱。</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-card-head">
+          <img src="images/assoc_13.jpg" alt="快樂隊">
+          <div class="team-card-name">快樂隊</div>
+        </div>
+        <div class="team-card-body">
+          <p>民國94年秋，司徒老師把「學習」與「運動」的種子灑下。第25、26屆學長姐在相互激盪中共同誕生了「快樂隊」，「快樂打球有益健康」成為不變的信條，每月第二個星期日的例賽如同一種儀式。</p>
+          <p>多年後，快樂隊被列為政大企家班四大球隊之一，近期更連續超過兩年半的週日都遇上晴空萬里。快樂隊承載了友情、榮耀與無數奇蹟，每一次揮桿都是與天地對話。</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-card-head">
+          <img src="images/assoc_16.jpg" alt="在校聯盟">
+          <div class="team-card-name">在校聯盟</div>
+        </div>
+        <div class="team-card-body">
+          <p>創立目的是讓在校生有聯誼與練習高爾夫的平台，由第30屆汪群凱擔任第一屆會長，讓在校生更積極參與跨屆活動，也能與歷屆校友深入交流。</p>
+          <p>賽事中常見老師、資深校友與在校學員混組出賽，新生入學後，司徒老師更親自邀請同學同場PK，讓班級間產生強烈凝聚力與自我挑戰精神，在運動中學習、在交流中成長。</p>
+        </div>
+      </div>
+    </div>
+    <div class="assoc-byline">撰文：劉恕偉</div>
+  </div>
+</section>
+
+<!-- iBowl -->
+<section class="block alt" id="iBowl">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>iBowl 企業家二代會</h2>
+      <div class="en">iBowl — SECOND GENERATION ENTREPRENEURS</div>
+    </div>
+    <div class="ibowl-banner">
+      <h3>「手捧炙熱鐵飯碗的革命家」</h3>
+      <p>Iron Bowl → iBowl：象徵企業二代承接家業的責任，更是開創者、學習者與陪伴者</p>
+    </div>
+    <div class="assoc-body clearfix">
+      <div class="assoc-portrait">
+        <img src="images/assoc_22.jpg" alt="iBowl 月例聚會">
+        <div class="cap">iBowl 月例聚會</div>
+      </div>
+      <p>在政大企家班這個鑽石磨鑽石的大家庭裡，企業家精神不僅在課堂中流轉，也在人與人之間的對話中延續。iBowl的誕生，要從創會會長第28屆陳政鴻學長說起——某次課後把酒言歡，凝聚了企業家二代當惺惺相惜、一起把鐵飯碗磨亮成金飯碗的共識，進而鐵飯碗便成為iBowl命名的靈感來源——「Iron Bowl」的諧音iBowl，演繹了企業二代承接家業的責任，同時象徵企業家二代不只是繼承者，更是開創者、學習者與陪伴者。</p>
+      <p>iBowl的成員來自政大企家班不同屆別，包含正在接班、已承接家業、甚至創業再闖天下的二代、三代們，涵蓋製造業、建設、不動產、食品、科技與服務業各行各業，各個在家族企業中肩負重任，卻在iBowl裡找到放下「身份」後最真實的連結與對話。</p>
+      <p>每次聚會，都是企業家精神的「雞湯研討會」——有人分享經營心得，有人傾吐接班甘苦，有人帶著新創的火花尋求合作，也有人默默貢獻資源、成為其他人轉型的推手。</p>
+
+      <div class="assoc-sub-head">歷屆會長傳承接力</div>
+      <div class="president-grid">
+        <div class="president-item"><span class="no">第一屆 創會</span><span class="nick">開疆會長</span><span class="pname">陳政鴻學長</span></div>
+        <div class="president-item"><span class="no">第二屆</span><span class="nick">奶王會長</span><span class="pname">汪群凱學長</span></div>
+        <div class="president-item"><span class="no">第三屆</span><span class="nick">愛家會長</span><span class="pname">韓駿逸學長</span></div>
+        <div class="president-item"><span class="no">第四屆</span><span class="nick">鐵人會長</span><span class="pname">詹景超學長</span></div>
+        <div class="president-item"><span class="no">第五屆</span><span class="nick">姐夫會長</span><span class="pname">林志峰學長</span></div>
+        <div class="president-item"><span class="no">第六屆</span><span class="nick">小麥會長</span><span class="pname">周俊賢學長</span></div>
+        <div class="president-item"><span class="no">第七屆</span><span class="nick">機車會長</span><span class="pname">黃俊榮學長</span></div>
+        <div class="president-item"><span class="no">第八屆</span><span class="nick">海量會長</span><span class="pname">廖海帆學長</span></div>
+        <div class="president-item"><span class="no">第九屆</span><span class="nick">發哥會長</span><span class="pname">張書賓學長</span></div>
+        <div class="president-item"><span class="no">第十屆</span><span class="nick">極限會長</span><span class="pname">陳彥誠學長</span></div>
+        <div class="president-item"><span class="no">第十一屆</span><span class="nick">大衛會長</span><span class="pname">林士堯學長</span></div>
+        <div class="president-item"><span class="no">第十二屆</span><span class="nick">小司徒會長</span><span class="pname">司徒嘉恆學長</span></div>
+        <div class="president-item"><span class="no">第十三屆</span><span class="nick">夏娃會長</span><span class="pname">魏于婷學姊</span></div>
+        <div class="president-item"><span class="no">第十四屆</span><span class="nick">老實會長</span><span class="pname">吳奕成學長</span></div>
+        <div class="president-item"><span class="no">第十五屆 現任</span><span class="nick">新婚會長</span><span class="pname">謝易辰學長</span></div>
+      </div>
+
+      <div class="assoc-sub-head">年度會務活動</div>
+      <ul class="ibowl-act-list">
+        <li><strong>每月主題聚會</strong>：天南地北毫不設限的真誠交流，iBowler們情比金堅的真摯友誼彌足珍貴。</li>
+        <li><strong>企業參訪與見學</strong>：走進iBowl成員企業內部，從真實場域中切磋經營細節、汲取靈感。</li>
+        <li><strong>跨代對話沙龍</strong>：邀請一代老闆與二代接班人進行深度對話，有時像心理諮商，有時則是商業拳擊。</li>
+        <li><strong>運動挑戰活動</strong>：上山下海挑戰毅力與極限，讓二代們鍛鍊耐力與心智，流汗之餘也能「搏感情」。</li>
+        <li><strong>海外參訪計畫</strong>：一同踏遍世界各地實踐「見學」的真諦，旅行時的相互交流與腦力激盪，是彼此拓展視野的好典範。</li>
+      </ul>
+
+      <div class="ibowl-photos">
+        <img src="images/assoc_21.jpg" alt="iBowl 海外參訪">
+        <img src="images/assoc_17.jpg" alt="iBowl 正式活動">
+        <img src="images/assoc_18.jpg" alt="iBowl 會長">
+      </div>
+
+      <p>iBowl的核心宗旨很簡單但不容易——讓二代之路不再孤單，讓接班成為一種選擇而非命運，讓下一代在愛與理解中被培養成未來的企業家。現任第36屆吳奕成會長持續強化跨屆聯繫、擴展外部學習資源，讓iBowl不只是個「好聚會」，更是資源交換與共創的平台。</p>
+      <p>未來，iBowl不僅期待持續陪伴每位二代走過轉型、交接與創業的挑戰，更希望成為一個能夠「培育優質下一代」的搖籃。這個「鐵飯碗」的故事，是關於一群願意學習的人——用行動證明，在傳承的路上，只要彼此相挺、互相切磋，就能把燙手的鐵飯碗幻化成富有希望與韌性的金飯碗。</p>
+      <div class="assoc-byline">撰文：魏于婷</div>
+    </div>
+  </div>
+</section>
+
+<!-- 家長聯誼會 -->
+<section class="block" id="家長聯誼會">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>家長聯誼會</h2>
+      <div class="en">FAMILY LIAISON ASSOCIATION</div>
+    </div>
+    <div class="assoc-body clearfix">
+      <div class="parents-scene">
+        <img src="images/assoc_23.jpg" alt="企業傳承個案研討">
+        <div class="cap">企業傳承個案研討現場</div>
+      </div>
+      <div class="assoc-lead">多年前司徒達賢老師有感於家族傳承課題與企業交棒接棒規劃的重要性和急迫性，為了讓上、下世代皆為企家班的學長姐有一個適合交流的跨世代平台，於2018年成立了「家長聯誼會」。</div>
+
+      <p>目前家長聯誼會成員近百人，幾乎涵蓋了食、衣、住、行各行各業，會長由選舉產生。</p>
+
+      <div class="assoc-sub-head">歷任會長</div>
+      <div class="officer-tags">
+        <span>王正明學長</span><span>奚志明學長</span><span>汪林祥學長</span>
+        <span>葉佳紋學長</span><span>陳焜耀學長</span><span>林文正學長</span>
+      </div>
+      <p style="font-size:13px;color:var(--text-soft);margin-bottom:18px">歷任會長所屬企業涵蓋：桂冠、信昌、光泉、弘憶、合隆、科林等知名企業領導人。</p>
+
+      <div class="assoc-sub-head">每年定期活動</div>
+      <p>每年定期舉辦兩次活動，近年曾與iBowl合辦傳承個案研討會，由司徒達賢教授、彭朱如老師主持，以天下雜誌精選個案「二代該爭還是該忍？」進行討論。2024年邀請方燕玲學姐分享「家族財富傳承以信託與股權規劃為中心之相關議題」，也曾舉辦企業參訪，參觀濰視眼科、光泉集團等。</p>
+
+      <div class="assoc-sub-head">企業交棒傳承分享</div>
+      <div class="parents-box">
+        核心活動「企業交棒傳承分享」係司徒達賢老師所發想：每次先由年輕的學長姐做個人背景、公司介紹，說明接班的訓練過程、親身體驗與遭遇問題，而後由其上一代的學長姐陪同一起接受提問或建議。上、下世代的學長姐能藉此機會暢所欲言，說出平常不易開口的難言之隱，促成雙方開放心胸、化解歧異，達成良性溝通，並透過群體集思廣益激盪出更好的解決方案。
+      </div>
+
+      <div class="assoc-sub-head">傳承洞見</div>
+      <p>經過十多組案例（父子、父女、母子檔）的分享，以及司徒老師的啟發指導，我們發現：</p>
+      <ul class="assoc-bullets">
+        <li>傳承是現在進行式、並非完成式；接班計畫會隨企業領導型態、決策溝通方式、老臣與二代互動等因素而有所不同。</li>
+        <li>傳承和接班要盡早，趁著企業還在成功、賺錢或正常運作時交棒比較理想。萬一年輕世代有失誤，上一代還可以隨時協助或補救。</li>
+        <li>上一代要當下一代的靠山，凡事如能有上一代支持或罩著，企業傳承將能更為順利成功。</li>
+      </ul>
+      <p>企家班家長聯誼會的運作模式極其獨特，在台灣甚至全球知名大學商學院都未見過這樣的組織。華人的傳承接班課題與西方不同，格外受人注目與重視——<strong>歡迎對此有興趣的學長姐加入家長聯誼會！</strong></p>
+      <div class="assoc-byline">撰文：賴志明</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <h4>國立政治大學 企業家管理發展進修班</h4>
+      <p>電話：02-29393091 EXT 87071-5, 87063-5<br>
+         地址：11605 台北市文山區指南路二段64號<br>
+         Email：<a href="mailto:nccu.ba.app@gmail.com">nccu.ba.app@gmail.com</a></p>
+      <div class="foot-social">
+        <a href="https://www.youtube.com/channel/UC0n-O1ZDkga3oMpSxoQJduw/videos" target="_blank" rel="noopener" title="YouTube">YT</a>
+      </div>
+    </div>
+    <div>
+      <h4>關於企家班</h4>
+      <ul>
+        <li><a href="about.html#天下第一班">天下第一班</a></li>
+        <li><a href="about.html#課程資訊">課程資訊</a></li>
+        <li><a href="about.html#總導師的話">總導師的話</a></li>
+        <li><a href="about.html#達賢圖書館">達賢圖書館</a></li>
+        <li><a href="about.html#企家班之歌">企家班之歌</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>校友服務</h4>
+      <ul>
+        <li><a href="donations.html">捐款芳名錄</a></li>
+        <li><a href="index.html#剪影">活動剪影</a></li>
+        <li><a href="downloads.html">下載專區</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">© 政大企家班 NCCU BA. 本站為校友會資訊網站。</div>
+</footer>
+
+<script>
+document.querySelectorAll('.has-sub>a').forEach(a => {
+  a.addEventListener('click', e => {
+    if (window.innerWidth <= 860) {
+      e.preventDefault();
+      a.parentElement.querySelector('.submenu').classList.toggle('open');
+    }
+  });
+});
+
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.sub-nav a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.sub-nav a[href="#${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, {rootMargin:'-30% 0px -60% 0px'});
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
