@@ -83,8 +83,7 @@
     .nav-inner li{width:100%}
     .submenu{position:static;box-shadow:none;border:none;border-top:none;background:rgba(255,255,255,.06)}
     .nav-inner li:hover>.submenu{display:none}
-    .submenu.open{display:block}
-    .nav-inner li:hover>.submenu{display:none}
+    .submenu.open{display:block!important}
     .submenu li a{color:#cdd9e5;border-bottom:1px solid rgba(255,255,255,.08)}
   }
 </style>
@@ -266,6 +265,8 @@ function eventCard(e, past) {
     '<p style="color:var(--text-soft)">無過去活動記錄。</p>';
 })();
 
+</script>
+<script>
 document.querySelectorAll('.has-sub>a').forEach(a => {
   a.addEventListener('click', e => {
     if (window.innerWidth <= 860) {

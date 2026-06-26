@@ -15,6 +15,7 @@
   body{font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;color:var(--text);line-height:1.8;background:var(--bg);font-size:16px}
   a{color:var(--blue);text-decoration:none}
   a:hover{text-decoration:underline}
+  img{max-width:100%;display:block}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
 
   .topbar{background:#fff;border-bottom:1px solid var(--border)}
@@ -90,6 +91,9 @@
     .pres-intro,.era-row{flex-direction:column}
     .pres-intro-photo,.era-photo{flex:0 0 auto;width:100%;max-width:280px}
   }
+  @media(max-width:480px){
+    .pres-grid{grid-template-columns:repeat(2,1fr)}
+  }
 
   /* 高爾夫球隊 */
   .team-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:28px 0}
@@ -141,7 +145,7 @@
     .nav-inner li{width:100%}
     .submenu{position:static;box-shadow:none;border:none;border-top:none;background:rgba(255,255,255,.06)}
     .nav-inner li:hover>.submenu{display:none}
-    .submenu.open{display:block}
+    .submenu.open{display:block!important}
     .submenu li a{color:#cdd9e5;border-bottom:1px solid rgba(255,255,255,.08)}
     .sub-nav{top:44px}
   }
@@ -230,9 +234,6 @@
     </div>
     <div class="assoc-body">
       <div class="pres-intro">
-        <div class="pres-intro-photo">
-          <img src="images/assoc_07.jpg" alt="歷任會長代表" style="object-fit:cover;height:260px">
-        </div>
         <div class="pres-intro-text">
           <p style="font-size:17px;color:var(--navy);font-weight:600;line-height:1.9;margin-bottom:16px">政大企家班校友會歷屆會長、秘書長群像：承先啟後、共築榮光</p>
           <p>自創立以來，政大企家班以政大精神、企家榮光為信念，凝聚了各界企業菁英，成為台灣產業與學術界的重要橋樑。歷屆會長以無私奉獻與卓越領導，歷經七大里程碑，推動校友組織持續成長，奠定政大EMBA及企家班今日的榮耀。</p>
@@ -295,18 +296,12 @@
           <div class="assoc-sub-head">四、厚植文化與社會影響力</div>
           <p>胡秋江、陳和宗、廖宜彥等會長，強化班級文化與社會影響力。胡秋江推動公益活動，提倡取之社會、用之社會；陳和宗則積極促進與學校的互動，強化產學合作與資源回饋；廖宜彥以溫和而堅定的領導，凝聚不同屆別情感，成為班友間的精神支柱。</p>
         </div>
-        <div class="era-photo">
-          <img src="images/assoc_08b.jpg" alt="歷任會長" style="object-fit:cover;height:240px">
-        </div>
       </div>
 
       <div class="assoc-sub-head">五、現代化與全球視野</div>
       <p>陳茂仁、鄧富吉、李忠義、陳世通、周青麟，皆在全球化浪潮下重新定義企家班的定位。他們結合國際觀與本土根，推動海外參訪與跨國企業交流，帶領班友走向世界舞台。尤其鄧富吉與周青麟，強化政大企家品牌力，讓政大成為企業界的精神象徵。</p>
 
       <div class="era-row">
-        <div class="era-photo">
-          <img src="images/assoc_06.jpg" alt="歷任會長" style="object-fit:cover;height:220px">
-        </div>
         <div class="era-text">
           <div class="assoc-sub-head" style="margin-top:0">六、數位轉型與共好理念</div>
           <p>從事國際物流多年的戴治中，以利他共好、創新傳承為核心理念，結合供應鏈、區塊鏈、AI與金融科技的專業背景，帶領企家班進入數位時代。他強調校友的連結不僅是情感，更是一種共創價值的生態系，推動企家大平台，延續前輩精神並開啟新篇章。</p>
