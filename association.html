@@ -15,7 +15,6 @@
   body{font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;color:var(--text);line-height:1.8;background:var(--bg);font-size:16px}
   a{color:var(--blue);text-decoration:none}
   a:hover{text-decoration:underline}
-  img{max-width:100%;display:block}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
 
   .topbar{background:#fff;border-bottom:1px solid var(--border)}
@@ -60,10 +59,7 @@
   /* 共用文章樣式 */
   .assoc-lead{font-size:17px;color:var(--navy);font-weight:600;line-height:1.9;margin-bottom:24px;padding:18px 22px;background:var(--bg-soft);border-left:4px solid var(--gold);border-radius:0 6px 6px 0}
   .assoc-body p{margin-bottom:16px;color:var(--text)}
-  .assoc-sub-head{font-size:15px;font-weight:700;color:var(--navy);margin:22px 0 10px;padding-left:10px;border-left:3px solid var(--gold);letter-spacing:1px}
-  .assoc-portrait{float:right;width:170px;margin:0 0 16px 24px;border-radius:8px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.15);clear:right}
-  .assoc-portrait img{width:100%;display:block}
-  .assoc-portrait .cap{font-size:11px;color:var(--text-soft);text-align:center;padding:5px 8px;background:#f8f9fa}
+  .assoc-sub-head{font-size:15px;font-weight:700;color:var(--navy);margin:24px 0 10px;padding-left:10px;border-left:3px solid var(--gold);letter-spacing:1px}
   .assoc-quote{background:var(--navy);color:#eaf0f6;padding:22px 28px;border-radius:8px;margin:24px 0;font-size:15px;line-height:1.9;text-align:center}
   .assoc-quote .ql{font-size:24px;color:var(--gold);line-height:.8;vertical-align:bottom;margin-right:2px}
   .assoc-quote .qr{font-size:24px;color:var(--gold);line-height:.8;vertical-align:bottom;margin-left:2px}
@@ -71,41 +67,33 @@
   .assoc-bullets li{padding:5px 0 5px 18px;position:relative;color:var(--text);font-size:14px;line-height:1.8}
   .assoc-bullets li::before{content:"▪";color:var(--gold);position:absolute;left:0}
   .assoc-byline{text-align:right;font-size:13px;color:var(--text-soft);margin-top:28px;padding-top:12px;border-top:1px solid var(--border)}
-  .clearfix::after{content:"";display:table;clear:both}
 
   /* 高爾夫球隊 */
-  .golf-intro-img{margin:0 auto 32px;max-width:560px}
-  .golf-intro-img img{width:100%;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.15)}
   .team-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:28px 0}
   .team-card{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-  .team-card-head{background:var(--navy);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:14px}
-  .team-card-head img{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid rgba(255,255,255,.4);flex-shrink:0}
+  .team-card-head{background:var(--navy);color:#fff;padding:14px 20px}
   .team-card-name{font-size:16px;font-weight:700;letter-spacing:2px}
-  .team-card-body{padding:16px 18px;font-size:14px;color:var(--text);line-height:1.9}
+  .team-card-body{padding:18px 20px;font-size:14px;color:var(--text);line-height:1.9}
   .team-card-body p{margin-bottom:10px}
   .team-card-body p:last-child{margin-bottom:0}
+  .team-poem{font-size:15px;color:var(--navy);font-weight:600;line-height:2;text-align:center;padding:12px 0;margin-bottom:12px;letter-spacing:1px}
 
   /* iBowl */
   .ibowl-banner{background:linear-gradient(135deg,#1b3a5b,#2c5f8a);color:#fff;padding:24px 28px;border-radius:8px;margin-bottom:28px;text-align:center}
   .ibowl-banner h3{font-size:20px;color:var(--gold);letter-spacing:3px;margin-bottom:8px}
   .ibowl-banner p{font-size:14px;color:#c8d8e8;line-height:1.8}
-  .president-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
-  .president-item{background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px 12px}
-  .president-item .no{color:var(--gold);font-weight:700;font-size:11px;display:block;margin-bottom:2px}
-  .president-item .nick{color:var(--navy);font-weight:700;font-size:13px}
-  .president-item .pname{color:var(--text-soft);font-size:12px;display:block;margin-top:2px}
+  .president-list{list-style:none;padding:0;margin:16px 0}
+  .president-list li{padding:10px 14px;border-bottom:1px solid var(--border);font-size:14px;color:var(--text);line-height:1.8}
+  .president-list li:last-child{border-bottom:none}
+  .president-list li .no{color:var(--gold);font-weight:700;margin-right:6px}
+  .president-list li .nick{color:var(--navy);font-weight:700;margin-right:6px}
   .ibowl-act-list{list-style:none;padding:0;margin:12px 0}
   .ibowl-act-list li{padding:8px 0 8px 22px;position:relative;font-size:14px;color:var(--text);border-bottom:1px solid var(--border)}
   .ibowl-act-list li:last-child{border-bottom:none}
   .ibowl-act-list li::before{content:"▶";color:var(--gold);position:absolute;left:0;font-size:10px;top:11px}
   .ibowl-act-list li strong{color:var(--navy)}
-  .ibowl-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
-  .ibowl-photos img{width:100%;border-radius:6px;height:160px;object-fit:cover;object-position:top}
 
   /* 家長聯誼會 */
-  .parents-scene{float:right;width:240px;margin:0 0 16px 24px;border-radius:8px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.15)}
-  .parents-scene img{width:100%;display:block}
-  .parents-scene .cap{font-size:11px;color:var(--text-soft);text-align:center;padding:5px 8px;background:#f8f9fa}
   .officer-tags{margin:10px 0 18px;line-height:2.2}
   .officer-tags span{display:inline-block;background:#eef3f8;color:var(--blue);padding:3px 12px;border-radius:4px;font-size:13px;margin:3px 4px 3px 0}
   .parents-box{background:#fff;border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:0 6px 6px 0;padding:18px 22px;margin:18px 0;font-size:14px;line-height:1.9;color:var(--text)}
@@ -123,10 +111,6 @@
 
   @media(max-width:860px){
     .team-grid{grid-template-columns:1fr}
-    .president-grid{grid-template-columns:repeat(2,1fr)}
-    .ibowl-photos{grid-template-columns:1fr 1fr}
-    .assoc-portrait{float:none;width:100%;max-width:220px;margin:0 0 20px}
-    .parents-scene{float:none;width:100%;max-width:240px;margin:0 0 20px}
     .foot-grid{grid-template-columns:1fr}
     .nav-toggle{display:block;background:none;border:none;color:#fff;font-size:22px;padding:12px 16px;cursor:pointer;margin-left:auto}
     .nav-inner>ul{display:none;width:100%;flex-direction:column}
@@ -219,11 +203,7 @@
       <h2>讀書會</h2>
       <div class="en">BOOK CLUB</div>
     </div>
-    <div class="assoc-body clearfix">
-      <div class="assoc-portrait">
-        <img src="images/assoc_09.jpg" alt="戴治中">
-        <div class="cap">讀書會發起人　戴治中</div>
-      </div>
+    <div class="assoc-body">
       <div class="assoc-lead">企家班讀書會的成立宗旨，是希望除了在各大高爾夫球隊中進行球技交流之外，也能建立一個知識與經驗分享的平台，讓企家班的學長姐們在彼此交流中達到「允文允武」的精神。</div>
 
       <div class="assoc-sub-head">一、讀書會宗旨</div>
@@ -232,7 +212,7 @@
       <div class="assoc-sub-head">二、舉辦方式</div>
       <ul class="assoc-bullets">
         <li>讀書會由各屆學長姐輪流擔任爐主與邀請嘉賓。</li>
-        <li>每年原則上舉辦<strong>四次</strong>，以線上與線下並行的方式進行。</li>
+        <li>每年原則上舉辦<strong>四次</strong>，並以線上與線下並行的方式進行。</li>
         <li>雖名為「讀書會」，但並不限定特定書籍，而是邀請學長姐或外部嘉賓進行演講與分享。</li>
       </ul>
 
@@ -247,8 +227,7 @@
 
       <div class="assoc-sub-head">四、精神寄語</div>
       <div class="assoc-quote">
-        <span class="ql">"</span>打球有益健康，而知識則能豐富人生。<span class="qr">"</span>
-        <div style="font-size:13px;color:#9fb4c8;margin-top:10px">—— 司徒達賢</div>
+        司徒老師常說：<span class="ql">"</span>打球有益健康，而知識則能豐富人生。<span class="qr">"</span>
       </div>
       <p>企家班讀書會正是希望透過這個平台，讓我們在健康的身心與豐盛的智慧之間取得平衡，實現知識文化的交流與傳承。</p>
       <div class="assoc-byline">撰文：李志祥</div>
@@ -263,13 +242,10 @@
       <h2>健康講座</h2>
       <div class="en">HEALTH SEMINAR</div>
     </div>
-    <div class="assoc-body clearfix">
-      <div class="assoc-portrait">
-        <img src="images/assoc_11.jpg" alt="健康講座">
-      </div>
-      <div class="assoc-lead">健康與智慧同行 ── 政大企家班持續推動健康講座<br><span style="font-size:15px;font-weight:400">在政大企家班的大家庭裡，學長姐們深知「健康」是人生最大的資產。唯有保持身心健康，才能在接下來的每一天持續奔跑，迎接更多挑戰與可能。</span></div>
-
-      <p>自2024年起，政大企家班校友會便開始規劃並持續推動一系列健康講座，邀請專業醫師及醫藥相關領域的專家與校友，定期一年舉辦一場與大家面對面交流，分享醫療新知與健康觀念。這不僅是一場場的講座，更是學長姐們在學期間與畢業後，彼此關懷、共同成長的重要平台，講座內容廣泛而深入，從生活保健涵蓋多面向的健康主題，進入到身心靈的平衡。</p>
+    <div class="assoc-body">
+      <div class="assoc-lead">健康與智慧同行 —— 政大企家班持續推動健康講座</div>
+      <p>在政大企家班的大家庭裡，學長姐們除了在事業上各有成就，更深知「健康」是人生最大的資產。唯有保持身心健康，才能在接下來的每一天持續奔跑，迎接更多挑戰與可能。基於這樣的共識，自2024年起，政大企家班校友會便開始規劃並持續推動一系列健康講座，邀請專業醫師及醫藥相關領域的專家與校友，定期一年舉辦一場與大家面對面交流，分享醫療新知與健康觀念。</p>
+      <p>這不僅是一場場的講座，更是學長姐們在學期間與畢業後，彼此關懷、共同成長的重要平台，講座內容廣泛而深入，從生活保健，涵蓋多面向的健康主題，進入到身心靈的平衡。</p>
 
       <div class="assoc-sub-head">政大企家班健康講座宗旨</div>
       <ul class="assoc-bullets">
@@ -280,25 +256,29 @@
       </ul>
 
       <div class="assoc-sub-head">校友社群的支持與凝聚</div>
-      <div class="assoc-portrait">
-        <img src="images/assoc_12.jpg" alt="健康講座 醫療專家">
-      </div>
       <p>健康講座的價值，不僅在於專業知識的傳遞，更在於校友之間的情感連結。政大企家班的校友們，來自不同世代與產業，但每一次的聚會，都因「健康」這個共同目標而凝聚在一起。許多學長姐分享，平日工作繁忙，鮮少有機會深入接觸醫療專業，透過這樣的平台，不僅能獲得實用知識，也能彼此提醒與鼓勵，讓健康真正成為行動。</p>
       <p>此外，講座前的餐敘，讓學長姐們與老師在輕鬆氛圍中交流近況，延續了企家班一貫的「學習＋友情」文化。這種融合了學術性、實用性與人情味的聚會模式，使健康講座成為校友社群中最受歡迎的固定活動之一。</p>
 
       <div class="assoc-quote">
-        企業領導者的健康，不僅影響自身與家庭，也關係到企業與社會的永續發展。當企業家以行動重視健康，並將良好的生活方式帶入團隊時，便能在組織文化中種下正向發展的種子，讓健康理念逐步向外擴散、影響更多人。
+        企業領導者的健康，不僅影響自身與家庭，也關係到企業與社會的永續發展。<br>
+        當企業家以行動重視健康，並將良好的生活方式帶入團隊時，便能在組織文化中種下正向發展的種子，讓健康理念逐步向外擴散、影響更多人。<br>
+        我們也期盼健康講座在未來持續深化，成為一項溫暖且穩定能為社會帶來共享價值的活動。
       </div>
 
-      <div class="assoc-sub-head">展望未來 ── 打造持續的健康學習平台</div>
-      <p>回顧過去幾場講座，主題涵蓋癌症防治、身心靈平衡、臨床新知與生活保健，每一次都得到熱烈回響。展望未來，企家班校友會將持續定期邀請醫界專家，針對不同年齡層與需求規劃多元健康主題，例如：</p>
+      <div class="assoc-sub-head">展望未來 —— 打造持續的健康學習平台</div>
+      <p>回顧過去幾場講座，主題涵蓋癌症防治、身心靈平衡、臨床新知與生活保健，每一次都得到熱烈回響。展望未來，企家班校友會將持續延續這樣的精神，定期邀請醫界專家，針對不同年齡層與需求規劃多元的健康主題，例如：</p>
       <ul class="assoc-bullets">
         <li>高齡化社會下的長照與養生</li>
         <li>慢性病防治與飲食管理</li>
         <li>心理健康與壓力調適</li>
         <li>新醫療科技的應用與趨勢</li>
       </ul>
-      <p>政大企家班健康講座，不只是一次又一次的聚會，而是一段段共同學習、互相扶持的旅程。透過專業醫師的分享，校友們獲得了守護健康的關鍵觀念；透過校友間的交流，大家又彼此提醒與支持。「健康是人生最大的財富，而這個聚會，就是提醒我們不忘為自己與家人存下最重要的本錢。」</p>
+      <p>期盼透過這樣的長期規劃，讓健康講座成為一種持續的「知識養分」，陪伴學長姐們在人生各個階段，都能以最佳狀態面對挑戰，享受生活。</p>
+      <p>政大企家班健康講座，不只是一次又一次的聚會，而是一段段共同學習、互相扶持的旅程。這是一種「知識傳承」與「生命對話」的結合。透過專業醫師的分享，校友們獲得了守護健康的關鍵觀念；透過校友間的交流，大家又彼此提醒與支持。</p>
+      <div class="assoc-quote">
+        <span class="ql">"</span>健康是人生最大的財富，而這個聚會，就是提醒我們不忘為自己與家人存下最重要的本錢～健康。<span class="qr">"</span>
+      </div>
+      <p>政大企家班健康講座，將持續帶來知識、能量與光，照亮彼此的生命。</p>
       <div class="assoc-byline">撰文：柯皓瀚</div>
     </div>
   </div>
@@ -311,52 +291,54 @@
       <h2>四大高爾夫球隊</h2>
       <div class="en">GOLF TEAMS</div>
     </div>
-    <div class="golf-intro-img">
-      <img src="images/assoc_19.jpg" alt="政大企家班高爾夫球隊">
-    </div>
     <div class="assoc-body">
-      <p>企家班致力於結合理論與實務的進修教育，學員多為創業家、企業二代與高階主管，重視專業學習之餘，也格外看重人脈連結。每個學年僅設一班，為了讓在校新生與歷屆優秀校友能夠有交流的機會，校友會發展出以球會友、跨屆交流的重要媒介，以高爾夫做為聚會重心。</p>
-      <p>每年舉辦春、夏、秋、冬四季賽及「鐵人杯」等專屬賽事，更進一步發展出班級年度對抗賽（PK賽）。為鼓勵各屆學長姐積極參與，司徒老師更自掏腰包對於出席人數達標的屆別給予獎勵。日常例賽由師徒隊、妖怪隊、快樂隊與在校聯盟四大隊分別籌辦，每月的前四周週末依序舉辦。球隊的會長由在校最後一年之班級輪值擔任三年，負責球隊會務的經營發展。</p>
+      <p>「企家班」自1970年代起開辦，致力於結合理論與實務的進修教育，學員多為創業家、企業二代與高階主管，重視專業學習之餘，也格外看重人脈連結；而企家班每個學年僅設一班，為了讓在校新生與歷屆優秀校友能夠有交流的機會，企家班校友會發展出以球會友、跨屆交流的重要媒介，以高爾夫做為聚會重心，每年舉辦春、夏、秋、冬四季賽及「鐵人杯」等專屬賽事！</p>
+      <p>此外，為凝聚班級力量與比賽趣味性，校友會更進一步發展出班級年度對抗賽（PK賽），此傳統已成為每年企家班的熱門話題，為鼓勵各屆學長姐的積極參與，司徒老師更自掏腰包對於出席人數達標的屆別給予獎勵。</p>
+      <p>日常例賽則由「師徒隊」「妖怪隊」「快樂隊」與「在校聯盟」四大隊分別籌辦，每月的前四周的週末依序舉辦，依據畢業屆別，畢業屆別之學員會依序編入「師徒」「妖怪」「快樂」三隊之一作為母隊，持續球隊的發展與跨屆交流，但也歡迎加入其他球隊。球隊的會長由在校最後一年之班級輪值擔任三年，負責球隊會務的經營發展。</p>
     </div>
     <div class="team-grid">
       <div class="team-card">
         <div class="team-card-head">
-          <img src="images/assoc_15.jpg" alt="師徒隊">
           <div class="team-card-name">政大師徒隊</div>
         </div>
         <div class="team-card-body">
-          <p>旨在透過高爾夫運動深化師徒情誼，並推動全人教育理念。核心精神為「傳承與共榮」——師長們親授經驗與技巧，不僅協助學生提升球技，更傳遞職涯發展、人生智慧與人際禮儀的寶貴知識。</p>
-          <p>球隊定期舉辦球敘、教學訓練與友誼賽，積極參與校內外賽事，以賽代訓，增進球員實戰經驗與團隊合作精神。鼓勵成員在球場內外建立真誠友誼，期盼更多同學認識這項優雅且富挑戰性的運動，體悟耐心、策略與禮儀的重要性。</p>
+          <p>政大師徒隊高爾夫球隊，成立於國立政治大學校友與在校生之間的緊密合作交流下，旨在透過高爾夫運動深化師徒情誼，並推動全人教育理念。球隊成員涵蓋校內各學院學生、校友，以及長年支持政大的企業界、專業界菁英，形成跨世代、多元背景的溫暖社群。</p>
+          <p>本隊的核心精神為「傳承與共榮」。透過高爾夫球這項講究技術與心態的運動，師長們親授經驗與技巧，不僅協助學生提升球技，更傳遞職涯發展、人生智慧與人際禮儀的寶貴知識。球隊定期舉辦球敘、教學訓練與友誼賽，並積極參與校內外賽事，以賽代訓，增進球員實戰經驗與團隊合作精神。</p>
+          <p>政大師徒隊重視「以球會友、以友輔學」的文化，鼓勵成員在球場內外建立真誠友誼。無論是初學者還是資深球友，都能在這個平台中找到歸屬感，並藉由定期的練習與交流，不斷精進自我。此外，球隊也積極推廣高爾夫運動在校園內的普及，期盼更多同學能認識這項優雅且富挑戰性的運動，並從中體悟到耐心、策略與禮儀的重要性。</p>
+          <p>未來，政大師徒隊高爾夫球隊將持續秉持「互助成長、世代傳承」的信念，串聯更多校友資源，擴大影響力，並以高爾夫為橋樑，連結學術與實務、理想與現實，共同推動政大精神的薪火相傳，讓每一位隊員在球場上揮灑自信，也在人生旅程中揮出屬於自己的精彩篇章。</p>
         </div>
       </div>
       <div class="team-card">
         <div class="team-card-head">
-          <img src="images/assoc_14.jpg" alt="妖怪隊">
           <div class="team-card-name">妖怪隊</div>
         </div>
         <div class="team-card-body">
-          <p>名稱源於第17屆王震華學長捐出一張廣達股票作為球隊基金，「17」在軍中發音為「么拐」，取諧音而得名。呂國雄學長為第一任會長，目前已傳承至第28屆。</p>
-          <p>妖怪隊約定每月第一個禮拜天，無論風雨晴陰皆會現身球場。「不在於多強，而在於從不缺席；不為了贏誰，而是為了不忘自己。」見證的不只是球技的成長，更是一段段兄弟情誼的深厚沉澱。</p>
+          <p>妖怪隊的由來，起於第17屆王震華學長捐了一張五百多元廣達股票，作為球隊基金開始成立，而17在軍中發音為「么拐」，因此球隊取諧音稱為妖怪隊。在一群不安分的靈魂決定將熱血與汗水注入一場高爾夫球戰役，於是「妖怪隊」誕生了。呂國雄學長為第一任會長，目前已傳承至28屆。</p>
+          <p>這不是一支尋常的球隊。妖怪隊的名字，本就註定與眾不同。隊中成員各懷絕技，每位隊員，彷彿都帶著某種異能，在球場上施展無法量化的能量。球隊約定，每個月的第一個禮拜天，無論風雨晴陰，皆會現身球場。這樣的約定，如同月之引力般準時。</p>
+          <p>有人從遠方搭車趕來，有人一夜未眠仍不缺席，只為了征服各個高爾夫球場，聽擊球的聲響與隊友呼喊的聲音，交織成一種只屬於妖怪隊的旋律。在這裡，沒有名次的壓力，也不必爭奪勝負的定義。球，是連結彼此的語言；妖怪隊見證的不只是球技的成長，更是一段段兄弟情誼的深厚沉澱。</p>
+          <p>每次比賽過程中或結束後的合照，總多一點皺褶、少一些髮量，但眼中的光卻從未褪色。因為他們知道，不論世界怎麼變，生活如何忙，「每月第一個禮拜天」這個承諾，仍會像妖怪般神秘地守候在球場邊。這，就是妖怪隊的魔法。不在於多強，而在於從不缺席。不為了贏誰，而是為了不忘自己。</p>
         </div>
       </div>
       <div class="team-card">
         <div class="team-card-head">
-          <img src="images/assoc_13.jpg" alt="快樂隊">
           <div class="team-card-name">快樂隊</div>
         </div>
         <div class="team-card-body">
-          <p>民國94年秋，司徒老師把「學習」與「運動」的種子灑下。第25、26屆學長姐在相互激盪中共同誕生了「快樂隊」，「快樂打球有益健康」成為不變的信條，每月第二個星期日的例賽如同一種儀式。</p>
-          <p>多年後，快樂隊被列為政大企家班四大球隊之一，近期更連續超過兩年半的週日都遇上晴空萬里。快樂隊承載了友情、榮耀與無數奇蹟，每一次揮桿都是與天地對話。</p>
+          <div class="team-poem">天降甘霖，笑聲為虹；綠茵為証，陽光作盟。<br>莘莘學子，揮桿啟夢；快樂之隊，就此傳承。</div>
+          <p>政大快樂高爾夫球隊的起源，彷彿帶著天意。民國94年秋季，企家班第25期新生入學之時，司徒老師把「學習」與「運動」的種子灑下。在他的啟發下，幾位已有球齡的學長自告奮勇，帶領同學們踏入綠茵球場。雖然當時沒有隊名，也沒有制度，但那股熱情與笑聲，已經像一道光芒，注定要開啟一段傳奇。</p>
+          <p>隨著第26屆的加入讓這顆種子瞬間萌芽。兩屆同學在相互激盪中，共同誕生了「快樂隊」的名字。這並非只是隨意的稱號，而像是天地間早已安排好的旨意——「快樂打球有益健康」成了不變的信條。自此，每個月第二個星期日的例賽，就像是一種儀式，一場屬於快樂信仰的慶典。</p>
+          <p>奇蹟從此開始。多年後，快樂隊被列為政大企家班四大球隊之一。而更神秘的是，近期竟然連續超過兩年半的週日都遇上晴空萬里。就算有暴雨，也會在前一日停歇，陰霾總在球隊集合時散去，陽光總是恰如其分地灑在球道上。有人說，這是上天疼惜快樂；有人笑稱，是球隊擊球聲驚動了天神；更有人深信，這是一種祝福，象徵快樂精神必將代代相傳。</p>
+          <p>今日的快樂隊，不只是高爾夫球隊，而是一段被書寫的承諾。它承載了友情、榮耀與無數奇蹟，每一次揮桿都是與天地對話，每一場例賽都是信念的驗證。快樂隊的傳奇仍在延續，而那份被陽光庇佑的力量，將帶領學長姐與學弟妹們，在球場上創造更多不可能的奇蹟。</p>
         </div>
       </div>
       <div class="team-card">
         <div class="team-card-head">
-          <img src="images/assoc_16.jpg" alt="在校聯盟">
           <div class="team-card-name">在校聯盟</div>
         </div>
         <div class="team-card-body">
-          <p>創立目的是讓在校生有聯誼與練習高爾夫的平台，由第30屆汪群凱擔任第一屆會長，讓在校生更積極參與跨屆活動，也能與歷屆校友深入交流。</p>
-          <p>賽事中常見老師、資深校友與在校學員混組出賽，新生入學後，司徒老師更親自邀請同學同場PK，讓班級間產生強烈凝聚力與自我挑戰精神，在運動中學習、在交流中成長。</p>
+          <p>「在校聯盟高爾夫球隊」的創立，是希望讓在校的學生，可以有聯誼或是開始練習高爾夫球的平台，於是請三十屆汪群凱擔任第一屆的會長。目的是為了讓在校生能更積極參與在校的跨屆活動，也能與歷屆校友有交流的平台。</p>
+          <p>高爾夫運動適合各年齡層參與，既講求專注與技術，也蘊含禮儀與修養。許多畢業數十年的學長、學姐與在校學員，縱使事業繁忙，仍堅持投入時間「加班」練球，把球場當作交流的延伸教室，於擊球之間體悟節奏、戰略與人生的平衡。透過每月例賽、盃賽與球敘聯誼，建立跨屆友誼，也塑造出企家班「一家人」的文化。賽事中常見老師、資深校友與在校學員混組出賽，新生入學後，司徒老師更親自邀請同學推派高手同場PK，讓班級間產生強烈凝聚力與自我挑戰精神。</p>
+          <p>在校聯盟高爾夫球隊的精神，不在於爭奪勝負，而在於延續情誼與共創榮耀。球場上的每一次揮桿，都是對專注與禮儀的實踐；每一次聚會，都是對政大企家班精神的再現。這支球隊讓學員在運動中學習、在交流中成長，並在代代傳承中，將「學以致用、以球會友」的理念持續發光，成為政大企家班最具凝聚力與象徵意義的團隊之一。</p>
         </div>
       </div>
     </div>
@@ -373,53 +355,49 @@
     </div>
     <div class="ibowl-banner">
       <h3>「手捧炙熱鐵飯碗的革命家」</h3>
-      <p>Iron Bowl → iBowl：象徵企業二代承接家業的責任，更是開創者、學習者與陪伴者</p>
+      <p>政大企家班二代會的誕生與前行</p>
     </div>
-    <div class="assoc-body clearfix">
-      <div class="assoc-portrait">
-        <img src="images/assoc_22.jpg" alt="iBowl 月例聚會">
-        <div class="cap">iBowl 月例聚會</div>
-      </div>
-      <p>在政大企家班這個鑽石磨鑽石的大家庭裡，企業家精神不僅在課堂中流轉，也在人與人之間的對話中延續。iBowl的誕生，要從創會會長第28屆陳政鴻學長說起——某次課後把酒言歡，凝聚了企業家二代當惺惺相惜、一起把鐵飯碗磨亮成金飯碗的共識，進而鐵飯碗便成為iBowl命名的靈感來源——「Iron Bowl」的諧音iBowl，演繹了企業二代承接家業的責任，同時象徵企業家二代不只是繼承者，更是開創者、學習者與陪伴者。</p>
-      <p>iBowl的成員來自政大企家班不同屆別，包含正在接班、已承接家業、甚至創業再闖天下的二代、三代們，涵蓋製造業、建設、不動產、食品、科技與服務業各行各業，各個在家族企業中肩負重任，卻在iBowl裡找到放下「身份」後最真實的連結與對話。</p>
+    <div class="assoc-body">
+      <p>在政大企家班這個鑽石磨鑽石的大家庭裡，企業家精神不僅在課堂中流轉，也在人與人之間的對話中延續。而就在這群熱血學員之中，有一群「捧著燙手鐵飯碗的年輕力量」——他們是企業接班路上的奔跑者、思維激盪的挑戰者，也是創新與傳承並行的革命家。他們就是——iBowl，政大企家班二代會。</p>
+      <p>iBowl的誕生，要從創會會長第28屆陳政鴻學長說起。某次在課後小酌一邊把酒一邊說笑之時，會長與上下屆學長們凝聚了企業家二代當惺惺相惜、一起努力把鐵飯碗磨亮成金飯碗的共識，進而鐵飯碗便成為iBowl命名的靈感來源——「Iron Bowl」的諧音iBowl，演繹了企業二代承接家業的責任，同時象徵企業家二代不只是繼承者，更是開創者、學習者與陪伴者。</p>
+      <p>iBowl的成員來自政大企家班不同屆別，包含正在接班、已承接家業、甚至創業再闖天下的二代∕三代們。不乏各行各業的代表，如製造業、建設、不動產、食品、科技與服務業，各個在家族企業中肩負重任，卻在iBowl裡找到放下「身份」後，最真實的連結與對話。</p>
       <p>每次聚會，都是企業家精神的「雞湯研討會」——有人分享經營心得，有人傾吐接班甘苦，有人帶著新創的火花尋求合作，也有人默默貢獻資源、成為其他人轉型的推手。</p>
 
-      <div class="assoc-sub-head">歷屆會長傳承接力</div>
-      <div class="president-grid">
-        <div class="president-item"><span class="no">第一屆 創會</span><span class="nick">開疆會長</span><span class="pname">陳政鴻學長</span></div>
-        <div class="president-item"><span class="no">第二屆</span><span class="nick">奶王會長</span><span class="pname">汪群凱學長</span></div>
-        <div class="president-item"><span class="no">第三屆</span><span class="nick">愛家會長</span><span class="pname">韓駿逸學長</span></div>
-        <div class="president-item"><span class="no">第四屆</span><span class="nick">鐵人會長</span><span class="pname">詹景超學長</span></div>
-        <div class="president-item"><span class="no">第五屆</span><span class="nick">姐夫會長</span><span class="pname">林志峰學長</span></div>
-        <div class="president-item"><span class="no">第六屆</span><span class="nick">小麥會長</span><span class="pname">周俊賢學長</span></div>
-        <div class="president-item"><span class="no">第七屆</span><span class="nick">機車會長</span><span class="pname">黃俊榮學長</span></div>
-        <div class="president-item"><span class="no">第八屆</span><span class="nick">海量會長</span><span class="pname">廖海帆學長</span></div>
-        <div class="president-item"><span class="no">第九屆</span><span class="nick">發哥會長</span><span class="pname">張書賓學長</span></div>
-        <div class="president-item"><span class="no">第十屆</span><span class="nick">極限會長</span><span class="pname">陳彥誠學長</span></div>
-        <div class="president-item"><span class="no">第十一屆</span><span class="nick">大衛會長</span><span class="pname">林士堯學長</span></div>
-        <div class="president-item"><span class="no">第十二屆</span><span class="nick">小司徒會長</span><span class="pname">司徒嘉恆學長</span></div>
-        <div class="president-item"><span class="no">第十三屆</span><span class="nick">夏娃會長</span><span class="pname">魏于婷學姊</span></div>
-        <div class="president-item"><span class="no">第十四屆</span><span class="nick">老實會長</span><span class="pname">吳奕成學長</span></div>
-        <div class="president-item"><span class="no">第十五屆 現任</span><span class="nick">新婚會長</span><span class="pname">謝易辰學長</span></div>
-      </div>
-
-      <div class="assoc-sub-head">年度會務活動</div>
-      <ul class="ibowl-act-list">
-        <li><strong>每月主題聚會</strong>：天南地北毫不設限的真誠交流，iBowler們情比金堅的真摯友誼彌足珍貴。</li>
-        <li><strong>企業參訪與見學</strong>：走進iBowl成員企業內部，從真實場域中切磋經營細節、汲取靈感。</li>
-        <li><strong>跨代對話沙龍</strong>：邀請一代老闆與二代接班人進行深度對話，有時像心理諮商，有時則是商業拳擊。</li>
-        <li><strong>運動挑戰活動</strong>：上山下海挑戰毅力與極限，讓二代們鍛鍊耐力與心智，流汗之餘也能「搏感情」。</li>
-        <li><strong>海外參訪計畫</strong>：一同踏遍世界各地實踐「見學」的真諦，旅行時的相互交流與腦力激盪，是彼此拓展視野的好典範。</li>
+      <div class="assoc-sub-head">歷屆會長傳承接力 —— 一棒接一棒，溫度不熄火</div>
+      <p>iBowl至今已走過十五屆，每一位會長都是用心力、熱血與一點點自我掏空，換來大家一年年的團聚與前行：</p>
+      <ul class="president-list">
+        <li><span class="no">第一屆 創會會長</span><span class="nick">陳政鴻學長</span>：開疆闢土以「鐵飯碗」打開情誼序章</li>
+        <li><span class="no">第二屆 奶王會長</span><span class="nick">汪群凱學長</span>：溫暖務實，守護每場聚會如家人</li>
+        <li><span class="no">第三屆 愛家會長</span><span class="nick">韓駿逸學長</span>：展現家庭與事業共舞的最佳典範</li>
+        <li><span class="no">第四屆 鐵人會長</span><span class="nick">詹景超學長</span>：超強耐力與堅持是為最強領航者</li>
+        <li><span class="no">第五屆 姐夫會長</span><span class="nick">林志峰學長</span>：用以兄長姿態撐起大家的信賴與愛戴</li>
+        <li><span class="no">第六屆 小麥會長</span><span class="nick">周俊賢學長</span>：時以博學的身影照亮前行之路的好大哥</li>
+        <li><span class="no">第七屆 機車會長</span><span class="nick">黃俊榮學長</span>：幽默詼諧、熱血海派的形象令人推崇</li>
+        <li><span class="no">第八屆 海量會長</span><span class="nick">廖海帆學長</span>：酒量驚人，致力於事業與iBowl的能量更驚人</li>
+        <li><span class="no">第九屆 發哥會長</span><span class="nick">張書賓學長</span>：iBowl歡樂總承包，有他在的地方笑聲不斷</li>
+        <li><span class="no">第十屆 極限會長</span><span class="nick">陳彥誠學長</span>：每一滴血液都流淌著革命家與開拓家的完美詮釋者</li>
+        <li><span class="no">第十一屆 大衛會長</span><span class="nick">林士堯學長</span>：紳士外表 × 行動派核心 × 智慧頂標 ＝ 什麼都好</li>
+        <li><span class="no">第十二屆 小司徒會長</span><span class="nick">司徒嘉恆學長</span>：儒雅睿智不負頂流血脈的理性×感性擔當</li>
+        <li><span class="no">第十三屆 夏娃會長</span><span class="nick">魏于婷學姊</span>：巾幗不讓鬚眉，會長群裡的唯一一點紅</li>
+        <li><span class="no">第十四屆 老實會長</span><span class="nick">吳奕成學長</span>：認真做事最踏實</li>
+        <li><span class="no">第十五屆 新婚會長</span><span class="nick">謝易辰學長</span>：持續帥氣乘風逆流而上，經營企業與建構人生新篇章兩不誤！</li>
       </ul>
 
-      <div class="ibowl-photos">
-        <img src="images/assoc_21.jpg" alt="iBowl 海外參訪">
-        <img src="images/assoc_17.jpg" alt="iBowl 正式活動">
-        <img src="images/assoc_18.jpg" alt="iBowl 會長">
-      </div>
+      <div class="assoc-sub-head">iBowl 的年度會務</div>
+      <p>iBowl是個讓企業家二代們「玩中學、學中拼」的行動社群。年度活動包含：</p>
+      <ul class="ibowl-act-list">
+        <li><strong>每月主題聚會</strong>：天南地北毫不設限、無私的真誠交流，是iBowl延伸自企家班精神最好的文化，iBowler們間情比金堅的真摯友誼彌足珍貴。</li>
+        <li><strong>企業參訪與見學</strong>：走進iBowl成員企業內部，從真實場域中切磋經營細節、汲取靈感。</li>
+        <li><strong>跨代對話沙龍</strong>：邀請一代老闆與二代接班人進行深度對話，有時像是心理諮商，有時則是商業拳擊。</li>
+        <li><strong>運動挑戰活動</strong>：上山下海、挑戰毅力與極限，讓二代們鍛鍊耐力與心智及流汗之餘也能「搏感情」。</li>
+        <li><strong>海外參訪計畫</strong>：一同踏遍世界各地實踐「見學」的真諦，每每於旅行時的相互交流與腦力激盪，都是彼此拓展廣闊視野的好典範。</li>
+      </ul>
 
-      <p>iBowl的核心宗旨很簡單但不容易——讓二代之路不再孤單，讓接班成為一種選擇而非命運，讓下一代在愛與理解中被培養成未來的企業家。現任第36屆吳奕成會長持續強化跨屆聯繫、擴展外部學習資源，讓iBowl不只是個「好聚會」，更是資源交換與共創的平台。</p>
-      <p>未來，iBowl不僅期待持續陪伴每位二代走過轉型、交接與創業的挑戰，更希望成為一個能夠「培育優質下一代」的搖籃。這個「鐵飯碗」的故事，是關於一群願意學習的人——用行動證明，在傳承的路上，只要彼此相挺、互相切磋，就能把燙手的鐵飯碗幻化成富有希望與韌性的金飯碗。</p>
+      <p>iBowl的核心宗旨很簡單但不容易——讓二代之路不再孤單，讓接班成為一種選擇而非命運，讓下一代在愛與理解中被培養成未來的企業家。</p>
+      <p>現任會長第36屆吳奕成會長則為iBowl注入更多實際行動與能量。他期許iBowl不只是分享情緒的地方，更是資源交換與共創的平台。他持續強化跨屆聯繫、擴展外部學習資源，讓iBowl不只是個「好聚會」，更深化了iBowler們因應時代快速發展，展現豐富多元面向「能夠吃盡苦山珍海味、也吞得下酸甜苦辣」的真實寫照。</p>
+      <p>未來，iBowl不僅期待持續陪伴每位二代走過轉型、交接與創業的挑戰，更希望成為一個能夠「培育優質下一代」的搖籃。許多成員已為人父母，開始思考：「我們該如何讓下一代不是含著金湯匙長大，而是願意拿起責任之匙、走上創造價值的路？」</p>
+      <p>iBowl的願景，不只是共學共好，更是世代傳承中的集體覺醒。這個「鐵飯碗」的故事，其實從來不只是關於穩定或特權，而是關於一群願意學習的人，用行動證明——在傳承的路上，只要彼此相挺、互相切磋，就能把原本燙手的鐵飯碗幻化成富有希望與韌性的金飯碗。</p>
+      <p><strong>這就是iBowl，我們的企業家二代會，也是我們共同的溫度與願景。</strong></p>
       <div class="assoc-byline">撰文：魏于婷</div>
     </div>
   </div>
@@ -432,38 +410,19 @@
       <h2>家長聯誼會</h2>
       <div class="en">FAMILY LIAISON ASSOCIATION</div>
     </div>
-    <div class="assoc-body clearfix">
-      <div class="parents-scene">
-        <img src="images/assoc_23.jpg" alt="企業傳承個案研討">
-        <div class="cap">企業傳承個案研討現場</div>
-      </div>
-      <div class="assoc-lead">多年前司徒達賢老師有感於家族傳承課題與企業交棒接棒規劃的重要性和急迫性，為了讓上、下世代皆為企家班的學長姐有一個適合交流的跨世代平台，於2018年成立了「家長聯誼會」。</div>
-
-      <p>目前家長聯誼會成員近百人，幾乎涵蓋了食、衣、住、行各行各業，會長由選舉產生。</p>
-
-      <div class="assoc-sub-head">歷任會長</div>
-      <div class="officer-tags">
-        <span>王正明學長</span><span>奚志明學長</span><span>汪林祥學長</span>
-        <span>葉佳紋學長</span><span>陳焜耀學長</span><span>林文正學長</span>
-      </div>
-      <p style="font-size:13px;color:var(--text-soft);margin-bottom:18px">歷任會長所屬企業涵蓋：桂冠、信昌、光泉、弘憶、合隆、科林等知名企業領導人。</p>
-
-      <div class="assoc-sub-head">每年定期活動</div>
-      <p>每年定期舉辦兩次活動，近年曾與iBowl合辦傳承個案研討會，由司徒達賢教授、彭朱如老師主持，以天下雜誌精選個案「二代該爭還是該忍？」進行討論。2024年邀請方燕玲學姐分享「家族財富傳承以信託與股權規劃為中心之相關議題」，也曾舉辦企業參訪，參觀濰視眼科、光泉集團等。</p>
+    <div class="assoc-body">
+      <div class="assoc-lead">企家班家長聯誼會簡介</div>
+      <p>多年前司徒達賢老師有感於家族傳承課題與企業交班接棒規劃的重要性和急迫性，衡量企家班學長姐日益增加，許多上一代學長姐紛紛推薦其下一代進入企家班學習磨鍊，為了讓上、下世代皆為企家班的學長姐有一個適合交流的跨世代平台，能夠切磋分享，彼此交換接班傳承的心得、經驗或想法，以期達成良性互動循環，在多位資深學長姐和校友會幹部共同努力之下，於2018年成立了「家長聯誼會」。</p>
+      <p>目前家長聯誼會成員近百人，幾乎涵蓋了食、衣、住、行各行各業，會長由選舉產生，歷任會長為：王正明學長、奚志明學長、汪林祥學長、葉佳紋學長、陳焜耀學長、林文正學長，皆為歷史悠久的知名企業領導人（包括：桂冠、信昌、光泉、弘憶、合隆、科林等）。</p>
+      <p>每年定期舉辦兩次活動，近年曾與iBowl合辦傳承個案研討會（司徒達賢教授、彭朱如老師主持），以天下雜誌的精選個案「二代該爭還是該忍？」進行討論，2024年邀請方燕玲學姐分享「家族財富傳承以信託與股權規劃為中心之相關議題」，也曾舉辦企業參訪，參觀濰視眼科、光泉集團等。</p>
 
       <div class="assoc-sub-head">企業交棒傳承分享</div>
-      <div class="parents-box">
-        核心活動「企業交棒傳承分享」係司徒達賢老師所發想：每次先由年輕的學長姐做個人背景、公司介紹，說明接班的訓練過程、親身體驗與遭遇問題，而後由其上一代的學長姐陪同一起接受提問或建議。上、下世代的學長姐能藉此機會暢所欲言，說出平常不易開口的難言之隱，促成雙方開放心胸、化解歧異，達成良性溝通，並透過群體集思廣益激盪出更好的解決方案。
-      </div>
+      <p>值得一提的是家長聯誼會定期舉辦「企業交棒傳承分享」，該活動係司徒達賢老師所發想，每次先由年輕的學長姐先做個人背景、公司介紹，接著說明其接班的訓練過程、親身體驗與遭遇問題等，而後由其上一代的學長姐陪同一起接受提問或建議，大家有機會了解別人的想法和作法，以及可供自身參考的借鏡例子，彼此互換心得。</p>
+      <p>上、下世代的學長姐也能藉由此機會暢所欲言，說出平常不易開口的難言之隱或苦衷，促成雙方開放心胸、化解歧異，達成良性溝通，並透過群體集思廣益激盪出更好的解決方案，減少交棒過程上無謂的困擾與磨合；傳承需要適當的醞釀及事先部署，在還沒開始之前，一代二代就要先行溝通討論，以取得彼此對未來的共識。</p>
 
       <div class="assoc-sub-head">傳承洞見</div>
-      <p>經過十多組案例（父子、父女、母子檔）的分享，以及司徒老師的啟發指導，我們發現：</p>
-      <ul class="assoc-bullets">
-        <li>傳承是現在進行式、並非完成式；接班計畫會隨企業領導型態、決策溝通方式、老臣與二代互動等因素而有所不同。</li>
-        <li>傳承和接班要盡早，趁著企業還在成功、賺錢或正常運作時交棒比較理想。萬一年輕世代有失誤，上一代還可以隨時協助或補救。</li>
-        <li>上一代要當下一代的靠山，凡事如能有上一代支持或罩著，企業傳承將能更為順利成功。</li>
-      </ul>
-      <p>企家班家長聯誼會的運作模式極其獨特，在台灣甚至全球知名大學商學院都未見過這樣的組織。華人的傳承接班課題與西方不同，格外受人注目與重視——<strong>歡迎對此有興趣的學長姐加入家長聯誼會！</strong></p>
+      <p>經過十多組案例（父子、父女、母子檔）的分享，以及司徒老師的啟發指導，我們發現傳承是現在進行式、並非完成式，接班計劃會隨著每個企業的領導型態、決策溝通方式、老臣與二代的互動等因素而有所不同，天有不測風雲，傳承和接班要盡早，趁著企業還在成功、賺錢或是正常的時候交棒比較理想，萬一年輕世代有什麼失誤，上一代還可以隨時協助或補救，而且上一代要當下一代的靠山，凡事如能有上一代支持或罩著，那企業傳承將能更為順利成功。</p>
+      <p>企家班家長聯誼會的運作模式極其獨特，在台灣甚至全球知名大學商學院都未見過這樣的組織，而華人的傳承接班課題又與西方不同，格外受人注目與重視，<strong>歡迎對此有興趣的學長姐加入家長聯誼會！</strong></p>
       <div class="assoc-byline">撰文：賴志明</div>
     </div>
   </div>
