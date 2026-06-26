@@ -58,12 +58,20 @@
   .nav-toggle{display:none}
 
   /* ---------- Hero ---------- */
-  .hero{background:linear-gradient(180deg,#f4f6f9 0%,#fff 100%);padding:40px 0}
-  .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
-  .hero-title{font-size:30px;color:var(--navy);font-weight:700;letter-spacing:2px;margin-bottom:8px}
-  .hero-sub{color:var(--gold);font-weight:600;letter-spacing:3px;margin-bottom:18px;font-size:15px}
-  .hero p{color:var(--text-soft);margin-bottom:14px}
-  .hero-img{border-radius:8px;overflow:hidden;box-shadow:0 10px 30px rgba(27,58,91,.15);background:#dfe5ec;aspect-ratio:485/360;display:flex;align-items:center;justify-content:center;color:#8a99aa;font-size:14px}
+  .hero{position:relative;height:520px;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 55%}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,25,44,.18) 0%,rgba(10,25,44,.62) 55%,rgba(10,25,44,.80) 100%)}
+  .hero-content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:0 20px 52px;max-width:var(--maxw);margin:0 auto}
+  .hero-en{font-size:12px;color:var(--gold);letter-spacing:4px;font-weight:700;margin-bottom:10px;text-transform:uppercase}
+  .hero-title{font-size:42px;color:#fff;font-weight:800;letter-spacing:4px;line-height:1.15;margin-bottom:10px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+  .hero-sub{color:rgba(255,255,255,.85);font-size:16px;letter-spacing:2px;margin-bottom:24px}
+  .hero-divider{width:48px;height:3px;background:var(--gold);margin-bottom:20px;border-radius:2px}
+  .hero-desc{color:rgba(255,255,255,.78);font-size:14px;line-height:1.9;max-width:600px}
+  @media(max-width:680px){
+    .hero{height:420px}
+    .hero-title{font-size:30px}
+    .hero-sub{font-size:14px}
+  }
 
   /* ---------- 區塊通用 ---------- */
   section.block{padding:46px 0}
@@ -210,14 +218,14 @@
 
 <!-- Hero -->
 <section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <div class="hero-title">政大企家班</div>
-      <div class="hero-sub">天下第一班 · 華人世界第一總裁班</div>
-      <p>民國70年起，國立政治大學企業管理研究所開辦「企業家管理發展進修班」碩士學分班，以提供企業家培養管理才能之機會，期望提昇企業家進修風氣以求管理紮根，進而促進企業升級。</p>
-      <p>自90年起，更名為「企業家經營管理研究班」。近年來每年招生一屆，每屆錄取42名，歷屆校友在各行業中傑出之表現，使企家班在企業界聲譽日隆。</p>
-    </div>
-    <div class="hero-img"><img src="images/home1.jpg" alt="政大企家班" style="width:100%;height:100%;object-fit:cover"></div>
+  <img class="hero-bg" src="images/campus_hero.jpg" alt="政大公企中心">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-en">NCCU Business Administration</div>
+    <div class="hero-title">政大企家班</div>
+    <div class="hero-sub">天下第一班 · 華人世界第一總裁班</div>
+    <div class="hero-divider"></div>
+    <div class="hero-desc">民國70年起，國立政治大學企業管理研究所開辦「企業家管理發展進修班」，凝聚各界企業菁英，成為台灣產業與學術界的重要橋樑。</div>
   </div>
 </section>
 
