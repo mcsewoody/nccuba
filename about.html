@@ -74,13 +74,15 @@
   .course-card p,.course-card li{font-size:14px;color:var(--text-soft);line-height:1.9}
   .course-card ul{padding-left:18px}
 
-  /* 司徒專欄 */
-  .situ-intro{display:flex;gap:32px;align-items:flex-start;margin-bottom:32px}
-  .situ-badge{flex:0 0 120px;text-align:center}
-  .situ-badge .icon{width:100px;height:100px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;margin:0 auto 10px}
-  .situ-badge .name{font-size:15px;font-weight:700;color:var(--navy);letter-spacing:1px}
-  .situ-badge .title{font-size:12px;color:var(--text-soft)}
-  .situ-text p{margin-bottom:16px;color:var(--text)}
+  /* 總導師的話 */
+  .mentor-article{}
+  .mentor-header{display:flex;gap:36px;align-items:flex-start;margin-bottom:36px}
+  .mentor-photo{flex:0 0 240px}
+  .mentor-photo img{width:100%;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,.18)}
+  .mentor-title-block{padding-top:8px}
+  .article-title{font-size:26px;font-weight:700;color:var(--navy);line-height:1.6;margin-bottom:18px;letter-spacing:2px}
+  .article-byline{font-size:14px;color:var(--text-soft);border-top:1px solid var(--border);padding-top:12px;letter-spacing:1px}
+  .mentor-body p{margin-bottom:18px;color:var(--text)}
 
   /* 企家班之歌 */
   .song-box{background:var(--navy);color:#eaf0f6;border-radius:10px;padding:36px 40px;max-width:640px;margin:0 auto}
@@ -101,7 +103,8 @@
 
   @media(max-width:860px){
     .course-grid{grid-template-columns:1fr}
-    .situ-intro{flex-direction:column}
+    .mentor-header{flex-direction:column}
+    .mentor-photo{flex:none;width:100%;max-width:280px}
     .foot-grid{grid-template-columns:1fr}
     .nav-toggle{display:block;background:none;border:none;color:#fff;font-size:22px;padding:12px 16px;cursor:pointer;margin-left:auto}
     .nav-inner>ul{display:none;width:100%;flex-direction:column}
@@ -137,7 +140,7 @@
         <ul class="submenu">
           <li><a href="about.html#天下第一班">天下第一班</a></li>
           <li><a href="about.html#課程資訊">課程資訊</a></li>
-          <li><a href="about.html#司徒專欄">司徒專欄</a></li>
+          <li><a href="about.html#總導師的話">總導師的話</a></li>
           <li><a href="about.html#企家班之歌">企家班之歌</a></li>
         </ul>
       </li>
@@ -172,7 +175,7 @@
   <ul>
     <li><a href="#天下第一班">天下第一班</a></li>
     <li><a href="#課程資訊">課程資訊</a></li>
-    <li><a href="#司徒專欄">司徒專欄</a></li>
+    <li><a href="#總導師的話">總導師的話</a></li>
     <li><a href="#企家班之歌">企家班之歌</a></li>
   </ul>
 </div>
@@ -245,23 +248,38 @@
   </div>
 </section>
 
-<!-- 司徒專欄 -->
-<section class="block" id="司徒專欄">
+<!-- 總導師的話 -->
+<section class="block" id="總導師的話">
   <div class="wrap">
     <div class="sec-head">
-      <h2>司徒專欄</h2>
-      <div class="en">SITU'S COLUMN</div>
+      <h2>總導師的話</h2>
+      <div class="en">FROM THE CHIEF MENTOR</div>
     </div>
-    <div class="situ-intro">
-      <div class="situ-badge">
-        <div class="icon" style="background:none;overflow:hidden;padding:0"><img src="images/seetoo.png" alt="司徒達賢" style="width:100%;height:100%;object-fit:cover"></div>
-        <div class="name">司徒達賢</div>
-        <div class="title">政大企管系 榮譽教授</div>
+    <div class="mentor-article">
+      <div class="mentor-header">
+        <div class="mentor-photo">
+          <img src="images/mentor_portrait.jpg" alt="企家班總導師 司徒達賢教授">
+        </div>
+        <div class="mentor-title-block">
+          <div class="article-title">華人管理教育<br>史上重要的一頁</div>
+          <div class="article-byline">文／企家班總導師　司徒達賢<br>政大企管系 榮譽教授</div>
+        </div>
       </div>
-      <div class="situ-text">
-        <p>詢問參與過企業家管理發展進修班的高階主管們最難忘的師長時，十之八九會回答說「司徒達賢」。</p>
-        <p>司徒達賢教授是國內第一位捧回「企業政策」的企管博士，記憶力奇佳、思路清晰靈活、讓學生上課不敢打混。現任企管系主任于卓民、副教授林淑姬等多位教師都曾是他的學生。</p>
-        <p>司徒教授長年致力推動學術與企業界結合，其豐富的個案教學與深厚的理論功底，使他成為企家班最令人印象深刻的師長之一。</p>
+      <div class="mentor-body">
+        <p>1964年政治大學在美國密西根大學協助下，以當時最先進的管理教育理念為藍圖，成立企業管理研究所，是華人世界第一個授予MBA學位的教育機構，也是華人世界管理教育的重要里程碑。</p>
+        <p>1981年政大企研所成立企業家班，為企業領導人及高階經理人提供完整且有系統的管理課程以及研究所學分，也是華人世界高階在職管理教育的重大創新。企業家班成立迄今四十五年，依然是台灣企業界在追求管理知能成長時的首選。</p>
+        <p>四十五年來，曾經在企業家班任教的教師超過兩百位，為學員提供了當時最新最實用的管理知識。近年來，年輕的師資陸續加入，教學內容也隨時代而日新月異。</p>
+        <p>在學員組成上，早期年齡跨距較接近，自三十屆起，開始有更多的第二代或企業準接班人加入，使代際交流效果更好，上課及課餘活動的氣氛也更活潑。此外，近年入學學員的學歷大幅提高，例如今年45屆新生中超過百分之七十曾獲國內外的碩博士學位，其中不乏已在國內外名校獲得EMBA、MBA學位者。</p>
+        <div style="margin:28px 0;border-radius:8px;overflow:hidden">
+          <img src="images/mentor_library.jpg" alt="政大圖書館" style="width:100%;max-height:320px;object-fit:cover;display:block">
+        </div>
+        <p>外人初次接觸企業家班，會感覺到此一團體的氣氛溫韾親切，文化開放，大家都樂於表達意見，即使不同屆的校友，相處也毫無拘束。</p>
+        <p>大家在外界社交活動中，若聽說對方是企家班校友，一句「你是政大企家班的？第幾屆？」就拉近了彼此的心理距離。</p>
+        <p>其實溫韾、親切，開放，都還只是表相。從歷屆畢業校友的定期聚會中，會發現更可貴的是長久而真誠的友誼，正如「企家班之歌」裡說的：「三年時光換一生好朋友」。而這些長久的友誼，又可能進而使彼此變成爾後幾十年裡，義務且毫無保留的管理顧問，甚至事業上的伙伴。</p>
+        <p>這樣的文化與友誼，又起因於在學期間，已經習於知性交流，以及彼此的互相信任。再者，大家知能水準與理念相近，但事業發展歷程與所服務的產業又各異其趣，每位的發言都可能令大家耳目一新，更令大家感到惺惺相惜。</p>
+        <p>而「知性的交流與互補」、「共同學習」、「深層理念的顯露」，以及「相互信任」的組織文化，又與教學過程中的互動討論、切磋琢磨、深入辯證，以及無保留的分享，密切相關。</p>
+        <p>近年來，熱心的校友會，從歷屆正副會長到參與秘書處服務工作的校友們，為校友活動的無私奉獻也是功不可沒。校友會定期舉辦球聚、讀書會、健康講座、家長會（家族長幼成員都是企家班校友者已超過六十個家庭）等，也更進一步凝聚了校友與在校同學。</p>
+        <p style="color:var(--navy);font-weight:600">衷心祝福政大企家班，期盼這樣的學風、文化、情誼，以及透過大家的教與學，對企業界乃至社會所做出的貢獻，能夠長長久久，持續發揚光大。</p>
       </div>
     </div>
   </div>
@@ -353,7 +371,7 @@ C
       <ul>
         <li><a href="about.html#天下第一班">天下第一班</a></li>
         <li><a href="about.html#課程資訊">課程資訊</a></li>
-        <li><a href="about.html#司徒專欄">司徒專欄</a></li>
+        <li><a href="about.html#總導師的話">總導師的話</a></li>
         <li><a href="about.html#企家班之歌">企家班之歌</a></li>
       </ul>
     </div>
