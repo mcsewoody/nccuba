@@ -68,6 +68,29 @@
   .assoc-bullets li::before{content:"▪";color:var(--gold);position:absolute;left:0}
   .assoc-byline{text-align:right;font-size:13px;color:var(--text-soft);margin-top:28px;padding-top:12px;border-top:1px solid var(--border)}
 
+  /* 歷任會長 */
+  .pres-intro{display:flex;gap:28px;align-items:flex-start;margin-bottom:28px}
+  .pres-intro-photo{flex:0 0 200px;border-radius:8px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.14)}
+  .pres-intro-photo img{width:100%;display:block}
+  .pres-intro-text{flex:1}
+  .pres-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0}
+  .pres-item{background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px 12px;text-align:center}
+  .pres-item .num{font-size:11px;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:2px}
+  .pres-item .name{font-size:14px;color:var(--navy);font-weight:700}
+  .era-row{display:flex;gap:24px;align-items:flex-start;margin:20px 0}
+  .era-photo{flex:0 0 180px;border-radius:8px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+  .era-photo img{width:100%;display:block}
+  .era-text{flex:1}
+  .sec-staff{display:flex;gap:14px;flex-wrap:wrap;margin:16px 0 4px}
+  .staff-badge{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 16px;min-width:180px}
+  .staff-badge-name{font-size:14px;color:var(--navy);font-weight:700}
+  .staff-badge-title{font-size:12px;color:var(--text-soft);margin-top:1px}
+  @media(max-width:860px){
+    .pres-grid{grid-template-columns:repeat(3,1fr)}
+    .pres-intro,.era-row{flex-direction:column}
+    .pres-intro-photo,.era-photo{flex:0 0 auto;width:100%;max-width:280px}
+  }
+
   /* 高爾夫球隊 */
   .team-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:28px 0}
   .team-card{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
@@ -152,6 +175,7 @@
       </li>
       <li class="has-sub"><a href="association.html">企家班校友會</a>
         <ul class="submenu">
+          <li><a href="association.html#歷任會長">歷任會長及秘書處</a></li>
           <li><a href="association.html#讀書會">讀書會</a></li>
           <li><a href="association.html#健康講座">健康講座</a></li>
           <li><a href="association.html#高爾夫球隊">高爾夫球隊</a></li>
@@ -188,6 +212,7 @@
 
 <div class="sub-nav">
   <ul>
+    <li><a href="#歷任會長">歷任會長</a></li>
     <li><a href="#讀書會">讀書會</a></li>
     <li><a href="#健康講座">健康講座</a></li>
     <li><a href="#高爾夫球隊">高爾夫球隊</a></li>
@@ -196,8 +221,111 @@
   </ul>
 </div>
 
+<!-- 歷任會長及秘書處介紹 -->
+<section class="block" id="歷任會長">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>歷任會長及秘書處介紹</h2>
+      <div class="en">PAST PRESIDENTS &amp; SECRETARIAT</div>
+    </div>
+    <div class="assoc-body">
+      <div class="pres-intro">
+        <div class="pres-intro-photo">
+          <img src="images/assoc_07.jpg" alt="歷任會長代表" style="object-fit:cover;height:260px">
+        </div>
+        <div class="pres-intro-text">
+          <p style="font-size:17px;color:var(--navy);font-weight:600;line-height:1.9;margin-bottom:16px">政大企家班校友會歷屆會長、秘書長群像：承先啟後、共築榮光</p>
+          <p>自創立以來，政大企家班以政大精神、企家榮光為信念，凝聚了各界企業菁英，成為台灣產業與學術界的重要橋樑。歷屆會長以無私奉獻與卓越領導，歷經七大里程碑，推動校友組織持續成長，奠定政大EMBA及企家班今日的榮耀。</p>
+          <div class="assoc-sub-head" style="margin-top:20px">秘書處</div>
+          <div class="sec-staff">
+            <div class="staff-badge">
+              <div>
+                <div class="staff-badge-name">吳守謙</div>
+                <div class="staff-badge-title">秘書長</div>
+              </div>
+            </div>
+            <div class="staff-badge">
+              <div>
+                <div class="staff-badge-name">林明毅</div>
+                <div class="staff-badge-title">副秘書長</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="assoc-sub-head">歷任會長名錄（第1任至第21任）</div>
+      <div class="pres-grid">
+        <div class="pres-item"><div class="num">第 1 任</div><div class="name">葉松根</div></div>
+        <div class="pres-item"><div class="num">第 2 任</div><div class="name">許清俊</div></div>
+        <div class="pres-item"><div class="num">第 3 任</div><div class="name">林信義</div></div>
+        <div class="pres-item"><div class="num">第 4 任</div><div class="name">朱炳昱</div></div>
+        <div class="pres-item"><div class="num">第 5 任</div><div class="name">林心正</div></div>
+        <div class="pres-item"><div class="num">第 6 任</div><div class="name">葉國荃</div></div>
+        <div class="pres-item"><div class="num">第 7 任</div><div class="name">王正一</div></div>
+        <div class="pres-item"><div class="num">第 8 任</div><div class="name">江誠榮</div></div>
+        <div class="pres-item"><div class="num">第 9 任</div><div class="name">汪賜發</div></div>
+        <div class="pres-item"><div class="num">第 10 任</div><div class="name">胡秋江</div></div>
+        <div class="pres-item"><div class="num">第 11 任</div><div class="name">陳和宗</div></div>
+        <div class="pres-item"><div class="num">第 12 任</div><div class="name">廖宜彥</div></div>
+        <div class="pres-item"><div class="num">第 13 任</div><div class="name">陳茂仁</div></div>
+        <div class="pres-item"><div class="num">第 14 任</div><div class="name">鄧富吉</div></div>
+        <div class="pres-item"><div class="num">第 15 任</div><div class="name">李忠義</div></div>
+        <div class="pres-item"><div class="num">第 16 任</div><div class="name">陳世通</div></div>
+        <div class="pres-item"><div class="num">第 17 任</div><div class="name">戴治中</div></div>
+        <div class="pres-item"><div class="num">第 18 任</div><div class="name">周青麟</div></div>
+        <div class="pres-item"><div class="num">第 19 任</div><div class="name">黃志聰</div></div>
+        <div class="pres-item"><div class="num">第 20 任</div><div class="name">劉恕偉</div></div>
+        <div class="pres-item"><div class="num">第 21 任</div><div class="name">李志祥</div></div>
+      </div>
+
+      <div class="assoc-sub-head">七大里程碑</div>
+
+      <div class="assoc-sub-head" style="margin-top:16px">一、奠基者的典範</div>
+      <p>在司徒老師的邀請下，第四屆葉松根學長成立了校友會並擔任第一任會長，以開拓精神建立班級制度與聯誼基礎。第二任會長許清俊則以穩健經營與遠見卓識，帶領初期校友會步上正軌，為日後的傳承立下基石。</p>
+
+      <div class="assoc-sub-head">二、制度化與成長期</div>
+      <p>林信義、朱炳昱、林心正、葉國荃等會長，在企家班邁入中期時接棒，推動組織制度化、活動常態化。林信義兼具企業與公職經驗，為班友建立政商交流平台；朱炳昱則重視學習與創新，開啟與各地分會的深度互動，讓政大企家班的品牌逐漸走向全國。</p>
+
+      <div class="era-row">
+        <div class="era-text">
+          <div class="assoc-sub-head" style="margin-top:0">三、傳承與擴展</div>
+          <p>王正一、江誠榮、汪賜發，延續前人精神並強化校友連結。他們推動跨屆整合，舉辦聯誼餐會、公益講座與產業論壇，展現企家人知行合一、以學促業的精神。葉國荃更以創新思維強化數位平台，讓政大企家班邁入資訊化新時代。</p>
+
+          <div class="assoc-sub-head">四、厚植文化與社會影響力</div>
+          <p>胡秋江、陳和宗、廖宜彥等會長，強化班級文化與社會影響力。胡秋江推動公益活動，提倡取之社會、用之社會；陳和宗則積極促進與學校的互動，強化產學合作與資源回饋；廖宜彥以溫和而堅定的領導，凝聚不同屆別情感，成為班友間的精神支柱。</p>
+        </div>
+        <div class="era-photo">
+          <img src="images/assoc_08b.jpg" alt="歷任會長" style="object-fit:cover;height:240px">
+        </div>
+      </div>
+
+      <div class="assoc-sub-head">五、現代化與全球視野</div>
+      <p>陳茂仁、鄧富吉、李忠義、陳世通、周青麟，皆在全球化浪潮下重新定義企家班的定位。他們結合國際觀與本土根，推動海外參訪與跨國企業交流，帶領班友走向世界舞台。尤其鄧富吉與周青麟，強化政大企家品牌力，讓政大成為企業界的精神象徵。</p>
+
+      <div class="era-row">
+        <div class="era-photo">
+          <img src="images/assoc_06.jpg" alt="歷任會長" style="object-fit:cover;height:220px">
+        </div>
+        <div class="era-text">
+          <div class="assoc-sub-head" style="margin-top:0">六、數位轉型與共好理念</div>
+          <p>從事國際物流多年的戴治中，以利他共好、創新傳承為核心理念，結合供應鏈、區塊鏈、AI與金融科技的專業背景，帶領企家班進入數位時代。他強調校友的連結不僅是情感，更是一種共創價值的生態系，推動企家大平台，延續前輩精神並開啟新篇章。</p>
+
+          <div class="assoc-sub-head">七、永續精神與不滅傳承</div>
+          <p>在歷屆會長的努力下，政大企家班從一個學習團體，成長為擁有龐大影響力的政大系統象徵。已故的葉松根與林心正兩位前輩，更成為企家人永遠的典範。在現任（第19任）會長黃志聰、副會長劉恕偉、李志祥、永遠的秘書長吳守謙、副秘書長林明毅以及秘書處全體執行秘書們無私奉獻熱情帶領下，成就了此本紀念冊的誕生。</p>
+        </div>
+      </div>
+
+      <div class="assoc-quote">
+        二十位會長和秘書處帶領並開創企家班的前進道路。他們以智慧與情義、堅持與遠見，共同書寫屬於企家班的傳奇篇章，也讓企家精神成為世代傳承、永續發光的象徵。
+      </div>
+      <div class="assoc-byline">撰文：戴治中</div>
+    </div>
+  </div>
+</section>
+
 <!-- 讀書會 -->
-<section class="block" id="讀書會">
+<section class="block alt" id="讀書會">
   <div class="wrap">
     <div class="sec-head">
       <h2>讀書會</h2>
@@ -236,7 +364,7 @@
 </section>
 
 <!-- 健康講座 -->
-<section class="block alt" id="健康講座">
+<section class="block" id="健康講座">
   <div class="wrap">
     <div class="sec-head">
       <h2>健康講座</h2>
@@ -285,7 +413,7 @@
 </section>
 
 <!-- 高爾夫球隊 -->
-<section class="block" id="高爾夫球隊">
+<section class="block alt" id="高爾夫球隊">
   <div class="wrap">
     <div class="sec-head">
       <h2>四大高爾夫球隊</h2>
@@ -347,7 +475,7 @@
 </section>
 
 <!-- iBowl -->
-<section class="block alt" id="iBowl">
+<section class="block" id="iBowl">
   <div class="wrap">
     <div class="sec-head">
       <h2>iBowl 企業家二代會</h2>
@@ -404,7 +532,7 @@
 </section>
 
 <!-- 家長聯誼會 -->
-<section class="block" id="家長聯誼會">
+<section class="block alt" id="家長聯誼會">
   <div class="wrap">
     <div class="sec-head">
       <h2>家長聯誼會</h2>
