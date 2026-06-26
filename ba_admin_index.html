@@ -307,8 +307,21 @@ function amtText(d) {
   return '不顯示';
 }
 
+function amtSortKey(d) {
+  if (d.amountMode==='精確') return Number(d.amountExact||0);
+  if (d.amountMode==='級距') {
+    const t=d.amountTier||'';
+    if (t==='100萬以上') return 1000000;
+    if (t==='50-100萬') return 750000;
+    if (t==='10-50萬') return 300000;
+    if (t==='10萬以下') return 99999;
+    return 0;
+  }
+  return -1;
+}
+
 async function renderDonation() {
-  const rows = (await getCol('donations')).sort((a,b)=>(b.term||'').localeCompare(a.term||'','zh-Hant'));
+  const rows = (await getCol('donations')).sort((a,b)=>amtSortKey(b)-amtSortKey(a));
   if (!rows.length) return emptyCard('尚無捐款紀錄');
   return card('捐款列表',`<table class="data">
     <thead><tr><th>屆別</th><th>捐款人</th><th>金額顯示</th><th>項目</th><th>日期</th><th></th></tr></thead>
@@ -444,7 +457,8 @@ async function openDonation(id) {
     <div class="form-row"><label>金額顯示方式</label><select id="f_amountMode" onchange="amtModeChange()">${opt(['精確','級距','不顯示'],d.amountMode)}</select></div>
     <div class="form-row" id="row_exact" style="display:${d.amountMode==='精確'?'block':'none'}"><label>精確金額（NT$）</label><input id="f_amountExact" type="number" value="${d.amountExact||''}"></div>
     <div class="form-row" id="row_tier" style="display:${d.amountMode==='級距'?'block':'none'}"><label>金額級距</label><select id="f_amountTier">${opt(['100萬以上','50-100萬','10-50萬','10萬以下'],d.amountTier||'10萬以下')}</select></div>
-    <div class="form-row"><label>捐款項目（選填）</label><input id="f_item" value="${esc(d.item||'')}"></div>
+    <div class="form-row"><label>捐款項目</label><input id="f_item" placeholder="如：現金捐款、桌遊一套、獎杯…" value="${esc(d.item||'')}"></div>
+    <div class="form-row"><span style="font-size:13px;color:var(--text-soft)">💡 捐款項目與金額各自獨立，現金及物資捐贈均可填寫</span></div>
   `);
 }
 

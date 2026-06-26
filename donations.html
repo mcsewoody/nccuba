@@ -208,10 +208,23 @@ function fmtAmt(d) {
   return '<span class="amt-hidden">—</span>';
 }
 
+function amtSortKey(d) {
+  if (d.amountMode==='精確') return Number(d.amountExact||0);
+  if (d.amountMode==='級距') {
+    const t = d.amountTier||'';
+    if (t==='100萬以上') return 1000000;
+    if (t==='50-100萬') return 750000;
+    if (t==='10-50萬') return 300000;
+    if (t==='10萬以下') return 99999;
+    return 0;
+  }
+  return -1;
+}
+
 (async () => {
   const snap = await getDocs(collection(db,'donations'));
   const items = snap.docs.map(d=>({id:d.id,...d.data()}));
-  const sorted = [...items].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const sorted = [...items].sort((a,b)=>amtSortKey(b)-amtSortKey(a));
   document.getElementById('donorWrap').innerHTML = sorted.length ? `
     <table class="donor-table">
       <thead><tr><th>屆別</th><th>捐款人</th><th>金額</th><th>捐款項目</th><th>日期</th></tr></thead>
