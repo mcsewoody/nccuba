@@ -73,6 +73,7 @@
   table.alumni tr:hover td{background:#f8fafc}
   .term-badge{display:inline-block;background:var(--bg-soft);color:var(--navy);font-size:12px;font-weight:700;padding:2px 9px;border-radius:3px;min-width:36px;text-align:center}
   .no-result{text-align:center;padding:40px 20px;color:var(--text-soft);font-size:14px}
+  .mobile-company{display:none}
 
   footer{background:var(--navy-dark);color:#c7d3df;padding:40px 0 24px;margin-top:10px}
   .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
@@ -111,6 +112,7 @@
     .submenu.open{display:block!important}
     .submenu li a{color:#cdd9e5;border-bottom:1px solid rgba(255,255,255,.08)}
     table.alumni th:nth-child(3),table.alumni td:nth-child(3){display:none}
+    .mobile-company{display:block;font-size:12px;color:var(--text-soft);margin-top:2px}
   }
 </style>
 </head>
@@ -528,7 +530,7 @@ function render() {
   document.getElementById('alumniBody').innerHTML = rows.length
     ? rows.map(r=>`<tr>
         <td><span class="term-badge">第${r[0]}屆</span></td>
-        <td>${esc(r[1])}</td>
+        <td>${esc(r[1])}<span class="mobile-company">${esc(r[2])}</span></td>
         <td>${esc(r[2])}</td>
         <td>${esc(r[3])}</td>
       </tr>`).join('')
