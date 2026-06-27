@@ -57,6 +57,7 @@
   .submenu li a{color:var(--text);padding:11px 16px;font-size:14px;border-bottom:1px solid #f0f0f0}
   .submenu li a:hover{background:var(--bg-soft);color:var(--navy)}
   .nav-toggle{display:none}
+  .sub-toggle{display:none}
 
   /* ---------- Hero ---------- */
   .hero{position:relative;height:600px;overflow:hidden}
@@ -344,15 +345,20 @@ const todayStr = new Date().toISOString().slice(0,10);
 })();
 </script>
 <script>
-document.querySelectorAll('.has-sub>a').forEach(a => {
-  a.addEventListener('click', e => {
-    if (window.innerWidth<=860) { e.preventDefault(); a.parentElement.querySelector('.submenu').classList.toggle('open'); }
+document.querySelectorAll('.has-sub').forEach(li=>{
+  const btn=document.createElement('button');
+  btn.className='sub-toggle';btn.innerHTML='▾';
+  btn.addEventListener('click',e=>{
+    e.preventDefault();e.stopPropagation();
+    li.querySelector('.submenu').classList.toggle('open');
   });
+  li.querySelector(':scope>a').after(btn);
 });
 document.querySelectorAll('#navlist a').forEach(a=>{
   a.addEventListener('click',()=>{
     if(window.innerWidth<=860) document.getElementById('navlist').classList.remove('open');
   });
+});
 });
 </script>
 </body>
