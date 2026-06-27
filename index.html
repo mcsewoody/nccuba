@@ -349,6 +349,11 @@ document.querySelectorAll('.has-sub>a').forEach(a => {
     if (window.innerWidth<=860) { e.preventDefault(); a.parentElement.querySelector('.submenu').classList.toggle('open'); }
   });
 });
+document.querySelectorAll('#navlist a').forEach(a=>{
+  a.addEventListener('click',()=>{
+    if(window.innerWidth<=860) document.getElementById('navlist').classList.remove('open');
+  });
+});
 </script>
 </body>
 </html>
