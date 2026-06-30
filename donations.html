@@ -252,7 +252,7 @@ function amtSortKey(d) {
         <td style="font-size:18px;font-weight:700">${d.isAnonymous?'善心人士':d.donorName}</td>
         <td>${fmtAmt(d)}</td>
         <td>${d.item||'—'}</td>
-        <td style="color:var(--text-soft);font-size:13px">${d.date||'—'}</td>
+        <td style="color:var(--text-soft);font-size:13px">${d.donationDate||'—'}</td>
       </tr>`).join('')}</tbody>
     </table>` : '<p style="color:var(--text-soft)">目前無捐款紀錄。</p>';
 })();

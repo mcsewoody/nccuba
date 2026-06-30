@@ -81,6 +81,7 @@
   .pill.gray{background:#9aa6b2}.pill.green{background:var(--ok)}
   .badge-admin{background:var(--navy);color:#fff;font-size:11px;padding:2px 8px;border-radius:3px}
   .badge-editor{background:#eef3f8;color:var(--blue);font-size:11px;padding:2px 8px;border-radius:3px}
+  .badge-event-manager{background:#e67e22;color:#fff;font-size:11px;padding:2px 8px;border-radius:3px}
   .badge-off{background:#f0d3d3;color:var(--danger);font-size:11px;padding:2px 8px;border-radius:3px}
 
   /* ---------- 彈窗 ---------- */
@@ -138,7 +139,7 @@
       </div>
       <nav class="sb-nav" id="sbNav">
         <button data-tab="ann" class="active" onclick="switchTab('ann')"><span class="ico">📢</span><span class="lbl">公告管理</span></button>
-        <button data-tab="event" onclick="switchTab('event')"><span class="ico">📅</span><span class="lbl">行事曆管理</span></button>
+        <button data-tab="event" onclick="switchTab('event')"><span class="ico">📅</span><span class="lbl">活動訊息管理</span></button>
         <button data-tab="donation" onclick="switchTab('donation')"><span class="ico">💝</span><span class="lbl">捐款芳名錄</span></button>
         <button data-tab="gallery" onclick="switchTab('gallery')"><span class="ico">🖼️</span><span class="lbl">活動剪影</span></button>
         <button data-tab="download" onclick="switchTab('download')"><span class="ico">📁</span><span class="lbl">下載專區</span></button>
@@ -198,7 +199,34 @@ const app2 = initializeApp(firebaseConfig, 'secondary');
 const auth2 = getAuth(app2);
 
 let CURRENT = null, curTab = 'ann', editing = {coll:null,id:null}, _editData = null;
-const TAB_TITLE = {ann:"公告管理",event:"行事曆管理",donation:"捐款芳名錄管理",gallery:"活動剪影管理",download:"下載專區管理",user:"使用者管理"};
+const TAB_TITLE = {ann:"公告管理",event:"活動訊息管理",donation:"捐款芳名錄管理",gallery:"活動剪影管理",download:"下載專區管理",user:"使用者管理"};
+
+const VENUES = [
+  '政大公企中心',
+  '政大校本部商學院',
+  // 台北市 / 新北市
+  '台灣高爾夫俱樂部（台北）',
+  '淡水高爾夫俱樂部（新北淡水）',
+  '陽明山高爾夫球場（台北士林）',
+  '林口高爾夫俱樂部（新北林口）',
+  '揚昇高爾夫球場（新北林口）',
+  '長庚高爾夫球場（新北蘆竹）',
+  '新店高爾夫俱樂部（新北新店）',
+  // 桃園
+  '桃園高爾夫俱樂部（桃園）',
+  '大溪高爾夫俱樂部（桃園大溪）',
+  '龍潭高爾夫俱樂部（桃園龍潭）',
+  '觀音高爾夫俱樂部（桃園觀音）',
+  '台茂高爾夫俱樂部（桃園中壢）',
+  '石門水庫高爾夫球場（桃園龍潭）',
+  // 新竹
+  '六福莊高爾夫球場（新竹關西）',
+  '新竹高爾夫俱樂部（新竹）',
+  '山溪地高爾夫俱樂部（新竹芎林）',
+  // 宜蘭
+  '宜蘭高爾夫俱樂部（宜蘭）',
+  '蘭陽高爾夫俱樂部（宜蘭礁溪）',
+];
 
 onAuthStateChanged(auth, async user => {
   if (user) {
@@ -226,9 +254,17 @@ async function doLogin() {
 function enterApp() {
   document.getElementById('loginView').style.display = 'none';
   document.getElementById('appView').style.display = 'block';
-  document.getElementById('whoName').innerHTML = (CURRENT.displayName||CURRENT.email) + '<small>' + (CURRENT.role==='admin'?'管理者':'幹部') + '</small>';
+  const roleLabel = CURRENT.role==='admin'?'管理者':CURRENT.role==='event_manager'?'活動長':'幹部';
+  document.getElementById('whoName').innerHTML = (CURRENT.displayName||CURRENT.email) + '<small>' + roleLabel + '</small>';
   document.getElementById('navUser').style.display = CURRENT.role==='admin' ? 'flex' : 'none';
-  switchTab('ann');
+  if (CURRENT.role==='event_manager') {
+    document.querySelectorAll('.sb-nav button').forEach(b => {
+      if (b.dataset.tab !== 'event' && b.dataset.tab !== 'gallery') b.style.display = 'none';
+    });
+    switchTab('event');
+  } else {
+    switchTab('ann');
+  }
 }
 
 async function doLogout() {
@@ -242,6 +278,7 @@ async function doLogout() {
 
 function switchTab(t) {
   if (t==='user' && CURRENT.role!=='admin') return;
+  if (CURRENT.role==='event_manager' && t!=='event' && t!=='gallery') return;
   curTab = t;
   document.querySelectorAll('.sb-nav button').forEach(b => b.classList.toggle('active', b.dataset.tab===t));
   document.getElementById('pageTitle').textContent = TAB_TITLE[t];
@@ -286,12 +323,12 @@ async function renderEvent() {
   const rows = (await getCol('events')).sort((a,b)=>(a.startTime||'').localeCompare(b.startTime||''));
   if (!rows.length) return emptyCard('尚無活動');
   const now = new Date();
-  return card('活動列表（前台自動分流近期／過期）',`<table class="data">
-    <thead><tr><th>活動名稱</th><th>開始時間</th><th>地點</th><th>狀態</th><th></th></tr></thead>
+  return card('活動列表（前台依開始時間自動分流近期／過期）',`<table class="data">
+    <thead><tr><th>活動名稱</th><th>開始時間</th><th>報到時間</th><th>地點</th><th>狀態</th><th></th></tr></thead>
     <tbody>${rows.map(e=>{
       const past = new Date((e.startTime||'').replace(' ','T')) < now;
       return `<tr>
-        <td>${esc(e.title)}</td><td>${e.startTime||'—'}</td><td>${esc(e.location||'')}</td>
+        <td>${esc(e.title)}</td><td>${e.startTime||'—'}</td><td>${e.checkinTime||'—'}</td><td>${esc(e.location||'')}</td>
         <td>${past?'<span class="pill gray">過期</span>':'<span class="pill green">近期</span>'}</td>
         <td class="actions">
           <button class="btn ghost sm" onclick="openEvent('${e.id}')">編輯</button>
@@ -386,7 +423,7 @@ async function renderUser() {
     <thead><tr><th>電子郵件</th><th>顯示名稱</th><th>角色</th><th>狀態</th><th></th></tr></thead>
     <tbody>${rows.map(u=>`<tr>
       <td>${esc(u.email||'')}</td><td>${esc(u.displayName||'')}</td>
-      <td>${u.role==='admin'?'<span class="badge-admin">管理者</span>':'<span class="badge-editor">幹部</span>'}</td>
+      <td>${u.role==='admin'?'<span class="badge-admin">管理者</span>':u.role==='event_manager'?'<span class="badge-event-manager">活動長</span>':'<span class="badge-editor">幹部</span>'}</td>
       <td>${u.isActive?'<span class="pill green">啟用</span>':'<span class="badge-off">停用</span>'}</td>
       <td class="actions">
         <button class="btn ghost sm" onclick="openUser('${u.id}')">編輯</button>
@@ -427,16 +464,21 @@ async function openAnn(id) {
 }
 
 async function openEvent(id) {
-  let d = {title:'',startTime:'',endTime:'',location:'',description:'',signupUrl:''};
+  let d = {title:'',startTime:'',endTime:'',checkinTime:'',location:'',description:'',signupUrl:''};
   if (id) { const s=await getDoc(doc(db,'events',id)); d={id,...s.data()}; }
   _editData=d; editing={coll:'events',id:id||null};
+  const venueOpts = VENUES.map(v=>`<option value="${esc(v)}">`).join('');
   openModal(id?'編輯活動':'新增活動',`
     <div class="form-row"><label>活動名稱</label><input id="f_title" value="${esc(d.title)}"></div>
     <div class="form-2">
       <div class="form-row"><label>開始時間</label><input id="f_startTime" placeholder="2026-09-06 14:00" value="${esc(d.startTime||'')}"></div>
       <div class="form-row"><label>結束時間</label><input id="f_endTime" placeholder="2026-09-06 16:00" value="${esc(d.endTime||'')}"></div>
     </div>
-    <div class="form-row"><label>地點</label><input id="f_location" value="${esc(d.location||'')}"></div>
+    <div class="form-row"><label>報到時間（選填）</label><input id="f_checkinTime" placeholder="2026-09-06 13:30" value="${esc(d.checkinTime||'')}"></div>
+    <div class="form-row"><label>地點</label>
+      <input id="f_location" list="venueList" value="${esc(d.location||'')}" placeholder="選擇或自行輸入地點">
+      <datalist id="venueList">${venueOpts}</datalist>
+    </div>
     <div class="form-row"><label>說明</label><textarea id="f_description">${esc(d.description||'')}</textarea></div>
     <div class="form-row"><label>報名連結（選填）</label><input id="f_signupUrl" value="${esc(d.signupUrl||'')}"></div>
     <div class="hint">時間格式：YYYY-MM-DD HH:MM。前台依開始時間自動分流近期／過期。</div>
@@ -487,6 +529,7 @@ async function openUser(id) {
     ${!id?`<div class="form-row"><label>初始密碼</label><input id="f_password" type="password" placeholder="至少 6 碼"></div>`:''}
     <div class="form-row"><label>角色</label><select id="f_role" ${isAdminRow?'disabled':''}>
       <option value="editor" ${d.role==='editor'?'selected':''}>幹部</option>
+      <option value="event_manager" ${d.role==='event_manager'?'selected':''}>活動長（僅限活動訊息管理＋活動剪影）</option>
       <option value="admin" ${d.role==='admin'?'selected':''}>管理者</option>
     </select></div>
     <div class="hint">${id?'如需更改電子郵件或密碼，請至 Firebase Console 操作。':'系統將自動在 Firebase 建立登入帳號。'}</div>
@@ -518,7 +561,7 @@ async function saveModal() {
     obj = {title:val('f_title'),category:val('f_category'),content:val('f_content'),publishDate:val('f_publishDate'),unpublishDate:val('f_unpublishDate'),status:val('f_status'),isPinned:chk('f_isPinned')};
   } else if (coll==='events') {
     if (!val('f_title').trim()) { toast('請填活動名稱'); return; }
-    obj = {title:val('f_title'),startTime:val('f_startTime'),endTime:val('f_endTime'),location:val('f_location'),description:val('f_description'),signupUrl:val('f_signupUrl')};
+    obj = {title:val('f_title'),startTime:val('f_startTime'),endTime:val('f_endTime'),checkinTime:val('f_checkinTime')||'',location:val('f_location'),description:val('f_description'),signupUrl:val('f_signupUrl')};
   } else if (coll==='donations') {
     if (!val('f_term').trim()) { toast('屆別為必填'); return; }
     obj = {term:val('f_term'),donorName:val('f_donorName'),isAnonymous:chk('f_isAnonymous'),amountMode:val('f_amountMode'),amountExact:Number(val('f_amountExact')||0),amountTier:val('f_amountTier')||'',item:val('f_item'),donationDate:val('f_donationDate')};
@@ -608,6 +651,7 @@ document.getElementById('csvFileInput').addEventListener('change', async e => {
       const obj = {
         title: r[0]||'', startTime: r[1]||'', endTime: r[2]||'',
         location: r[3]||'', description: r[4]||'', signupUrl: r[5]||'',
+        checkinTime: r[6]||'',
         createdBy: CURRENT.uid, createdAt: serverTimestamp()
       };
       await addDoc(collection(db,'events'), obj);
