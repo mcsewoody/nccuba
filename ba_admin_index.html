@@ -252,14 +252,22 @@ const VENUES = [
 
 onAuthStateChanged(auth, async user => {
   if (user) {
-    const snap = await getDoc(doc(db, 'users', user.uid));
-    if (!snap.exists() || snap.data().isActive === false) {
+    try {
+      const snap = await getDoc(doc(db, 'users', user.uid));
+      if (!snap.exists() || snap.data().isActive === false) {
+        await signOut(auth);
+        document.getElementById('lgErr').textContent = '此帳號無存取權限，請聯絡管理者。';
+        return;
+      }
+      CURRENT = {uid: user.uid, email: user.email, ...snap.data()};
+      enterApp();
+    } catch(e) {
       await signOut(auth);
-      document.getElementById('lgErr').textContent = '此帳號無存取權限，請聯絡管理者。';
-      return;
+      document.getElementById('lgErr').textContent =
+        e.code === 'permission-denied'
+          ? '權限不足，請確認 Firestore Rules 已允許使用者讀取自身帳號資料。'
+          : '登入驗證失敗：' + e.message;
     }
-    CURRENT = {uid: user.uid, email: user.email, ...snap.data()};
-    enterApp();
   }
 });
 
