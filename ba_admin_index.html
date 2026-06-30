@@ -316,7 +316,7 @@ async function renderTab() {
   else if (curTab==='donation') { act.innerHTML='<button class="btn gold" onclick="openDonation()">＋ 新增捐款</button>'; c.innerHTML=await renderDonation(); }
   else if (curTab==='gallery') { act.innerHTML='<button class="btn gold" onclick="openGallery()">＋ 新增相簿</button>'; c.innerHTML=await renderGallery(); }
   else if (curTab==='download') { act.innerHTML='<button class="btn gold" onclick="openDownload()">＋ 新增檔案</button>'; c.innerHTML=await renderDownload(); }
-  else if (curTab==='user') { act.innerHTML='<button class="btn gold" onclick="openUser()">＋ 新增使用者</button>'; c.innerHTML=await renderUser(); }
+  else if (curTab==='user') { act.innerHTML='<button class="btn ghost sm" onclick="openRescue()">🔧 救回帳號</button> <button class="btn gold" onclick="openUser()">＋ 新增使用者</button>'; c.innerHTML=await renderUser(); }
 }
 
 async function getCol(name) {
@@ -582,6 +582,44 @@ async function openUser(id) {
   `);
 }
 
+async function openRescue() {
+  openModal('救回帳號', `
+    <p style="color:var(--text-soft);font-size:13px;margin-bottom:16px">
+      適用情況：帳號 Firestore 資料已刪除，但 Firebase Auth 帳號仍存在。<br>
+      請輸入該帳號的電子郵件與<strong>重設後的新密碼</strong>，即可重建資料。
+    </p>
+    <div class="form-row"><label>電子郵件</label><input id="f_rescue_email" type="email" placeholder="golf@nccuba.org"></div>
+    <div class="form-row"><label>密碼（帳號目前有效的密碼）</label><input id="f_rescue_pass" type="password" placeholder="輸入該帳號密碼"></div>
+    <div class="form-row"><label>顯示名稱</label><input id="f_rescue_name" placeholder="例如：高爾夫組"></div>
+    <div class="form-row"><label>角色</label><select id="f_rescue_role">
+      <option value="editor">幹部</option>
+      <option value="event_manager">活動長（僅限活動訊息管理＋活動剪影）</option>
+    </select></div>
+  `);
+  document.getElementById('mSave').onclick = doRescue;
+}
+
+async function doRescue() {
+  const email = document.getElementById('f_rescue_email').value.trim();
+  const pass  = document.getElementById('f_rescue_pass').value;
+  const name  = document.getElementById('f_rescue_name').value.trim() || email;
+  const role  = document.getElementById('f_rescue_role').value;
+  if (!email || !pass) { toast('請填入電子郵件與密碼'); return; }
+  try {
+    const cred = await signInWithEmailAndPassword(auth2, email, pass);
+    const uid  = cred.user.uid;
+    await signOut(auth2);
+    await setDoc(doc(db, 'users', uid), {
+      email, displayName: name, role, isActive: true, createdAt: serverTimestamp()
+    });
+    closeModal(); renderTab(); toast(`✓ 帳號 ${email} 已救回`);
+  } catch(e) {
+    if (e.code==='auth/invalid-credential'||e.code==='auth/wrong-password') toast('密碼錯誤，請確認後重試');
+    else if (e.code==='auth/user-not-found') toast('找不到此 Auth 帳號，請改用「新增使用者」');
+    else toast('救回失敗：'+e.message);
+  }
+}
+
 function downloadCSVTemplate() {
   const rows = [
     ['活動名稱', '活動日期(YYYY-MM-DD)', '報到時間(HH:MM)', '地點', '說明', '報名連結'],
@@ -746,7 +784,7 @@ function parseCSV(text) {
   return rows;
 }
 
-Object.assign(window, {doLogin,doLogout,switchTab,closeModal,saveModal,openAnn,openEvent,openDonation,openGallery,openDownload,openUser,toggleUser,delRow,amtModeChange,triggerCSV,toggleExpired,downloadCSVTemplate});
+Object.assign(window, {doLogin,doLogout,switchTab,closeModal,saveModal,openAnn,openEvent,openDonation,openGallery,openDownload,openUser,toggleUser,delRow,amtModeChange,triggerCSV,toggleExpired,downloadCSVTemplate,openRescue});
 
 document.getElementById('lgPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 </script>
