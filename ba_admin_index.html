@@ -140,7 +140,7 @@
       <nav class="sb-nav" id="sbNav">
         <button data-tab="ann" class="active" onclick="switchTab('ann')"><span class="ico">📢</span><span class="lbl">公告管理</span></button>
         <button data-tab="event" onclick="switchTab('event')"><span class="ico">📅</span><span class="lbl">活動訊息管理</span></button>
-        <button data-tab="donation" onclick="switchTab('donation')"><span class="ico">💝</span><span class="lbl">捐款芳名錄</span></button>
+        <button data-tab="donation" onclick="switchTab('donation')"><span class="ico">💝</span><span class="lbl">捐款與贊助</span></button>
         <button data-tab="gallery" onclick="switchTab('gallery')"><span class="ico">🖼️</span><span class="lbl">活動剪影</span></button>
         <button data-tab="download" onclick="switchTab('download')"><span class="ico">📁</span><span class="lbl">下載專區</span></button>
         <button data-tab="user" id="navUser" onclick="switchTab('user')"><span class="ico">👥</span><span class="lbl">使用者管理</span></button>
@@ -199,7 +199,7 @@ const app2 = initializeApp(firebaseConfig, 'secondary');
 const auth2 = getAuth(app2);
 
 let CURRENT = null, curTab = 'ann', editing = {coll:null,id:null}, _editData = null;
-const TAB_TITLE = {ann:"公告管理",event:"活動訊息管理",donation:"捐款芳名錄管理",gallery:"活動剪影管理",download:"下載專區管理",user:"使用者管理"};
+const TAB_TITLE = {ann:"公告管理",event:"活動訊息管理",donation:"捐款與贊助管理",gallery:"活動剪影管理",download:"下載專區管理",user:"使用者管理"};
 
 const VENUES = [
   '政大公企中心',
@@ -402,7 +402,7 @@ function amtSortKey(d) {
 async function renderDonation() {
   const rows = (await getCol('donations')).sort((a,b)=>amtSortKey(b)-amtSortKey(a));
   if (!rows.length) return emptyCard('尚無捐款紀錄');
-  return card('捐款列表',`<table class="data">
+  return card('捐款與贊助列表',`<table class="data">
     <thead><tr><th>屆別</th><th>捐款人</th><th>金額顯示</th><th>項目</th><th>日期</th><th></th></tr></thead>
     <tbody>${rows.map(d=>`<tr>
       <td>${d.term}</td>
