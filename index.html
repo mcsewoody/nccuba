@@ -124,6 +124,19 @@
   .dl-btn{flex:0 0 auto;background:var(--navy);color:#fff;padding:7px 16px;border-radius:4px;font-size:13px;font-weight:600;white-space:nowrap}
   .dl-btn:hover{background:var(--navy-dark);text-decoration:none}
 
+  /* 公告 Modal */
+  .ann-modal-mask{display:none;position:fixed;inset:0;background:rgba(19,41,63,.55);z-index:200;align-items:center;justify-content:center;padding:20px}
+  .ann-modal-mask.open{display:flex}
+  .ann-modal{background:#fff;border-radius:12px;width:100%;max-width:640px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative}
+  .ann-modal-head{padding:20px 52px 14px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:1}
+  .ann-modal-head h2{font-size:18px;color:var(--navy);line-height:1.5;margin-bottom:8px}
+  .ann-modal-meta{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--text-soft)}
+  .ann-modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:26px;color:#9aa6b2;cursor:pointer;line-height:1;padding:4px}
+  .ann-modal-close:hover{color:var(--navy)}
+  .ann-modal-body{padding:20px 24px;font-size:15px;line-height:1.9;color:var(--text);white-space:pre-wrap;word-break:break-word}
+  .ann-item.clickable{cursor:pointer;border-radius:4px;transition:background .12s}
+  .ann-item.clickable:hover{background:var(--bg-soft)}
+
   /* 活動剪影 */
   .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
   .gallery-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff;transition:transform .15s,box-shadow .15s}
@@ -224,6 +237,21 @@
   </div>
 </nav>
 
+<!-- 公告彈窗 -->
+<div class="ann-modal-mask" id="annModal" onclick="if(event.target===this)closeAnn()">
+  <div class="ann-modal">
+    <button class="ann-modal-close" onclick="closeAnn()">×</button>
+    <div class="ann-modal-head">
+      <h2 id="annModalTitle"></h2>
+      <div class="ann-modal-meta">
+        <span id="annModalTag" class="ann-tag"></span>
+        <span id="annModalDate"></span>
+      </div>
+    </div>
+    <div class="ann-modal-body" id="annModalBody"></div>
+  </div>
+</div>
+
 <!-- Hero -->
 <section class="hero">
   <img class="hero-bg" src="images/campus_hero.jpg" alt="政大公企中心">
@@ -309,16 +337,38 @@ async function getCol(name) {
 
 const todayStr = new Date().toISOString().slice(0,10);
 
+let _annData = [];
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function showAnn(id) {
+  const a = _annData.find(x => x.id === id);
+  if (!a) return;
+  document.getElementById('annModalTitle').textContent = a.title;
+  document.getElementById('annModalDate').textContent = a.publishDate || '';
+  const tag = document.getElementById('annModalTag');
+  tag.textContent = a.category;
+  tag.className = 'ann-tag tag-' + a.category;
+  document.getElementById('annModalBody').textContent = a.content || '（無內文）';
+  document.getElementById('annModal').classList.add('open');
+}
+
+function closeAnn() {
+  document.getElementById('annModal').classList.remove('open');
+}
+
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeAnn(); });
+
 (async () => {
   const items = await getCol('announcements');
-  const active = items
+  _annData = items
     .filter(a => a.status==='上架' && (!a.unpublishDate || a.unpublishDate >= todayStr))
     .sort((a,b) => (b.isPinned-a.isPinned)||(b.publishDate||'').localeCompare(a.publishDate||''));
-  document.getElementById('annList').innerHTML = active.map(a=>`
-    <li class="ann-item">
+  document.getElementById('annList').innerHTML = _annData.map(a=>`
+    <li class="ann-item clickable" onclick="showAnn('${esc(a.id)}')">
       <span class="ann-date">${a.publishDate||''}</span>
       <span class="ann-tag tag-${a.category}">${a.category}</span>
-      <span class="ann-title">${a.isPinned?'<span class="ann-pin">[置頂]</span>':''}${a.title}</span>
+      <span class="ann-title">${a.isPinned?'<span class="ann-pin">[置頂]</span>':''}${esc(a.title)}</span>
     </li>`).join('') || '<li class="ann-item"><span class="ann-title" style="color:var(--text-soft)">目前無公告。</span></li>';
 })();
 
@@ -348,6 +398,8 @@ const todayStr = new Date().toISOString().slice(0,10);
     </div>`;
   }).join('') || '<p style="color:var(--text-soft)">目前無近期活動。</p>';
 })();
+window.showAnn = showAnn;
+window.closeAnn = closeAnn;
 </script>
 <script>
 document.querySelectorAll('.has-sub').forEach(li=>{
