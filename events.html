@@ -57,6 +57,21 @@
   .sec-head .count{margin-left:auto;font-size:13px;color:var(--text-soft)}
 
   .event-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+
+  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+  .gallery-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff;transition:transform .15s,box-shadow .15s;display:block;color:inherit}
+  .gallery-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.1);text-decoration:none}
+  .gallery-cover{aspect-ratio:16/10;background:#dfe5ec;display:flex;align-items:center;justify-content:center;color:#8a99aa;font-size:13px}
+  .gallery-cover img{width:100%;height:100%;object-fit:cover}
+  .gallery-info{padding:12px 14px}
+  .gallery-info h3{font-size:15px;color:var(--navy);margin-bottom:3px}
+  .gallery-info .date{font-size:12px;color:var(--text-soft)}
+  .gallery-info .ext{font-size:12px;color:var(--gold);margin-top:4px}
+
+  .yt-banner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:36px 0;text-align:center}
+  .yt-banner p{color:var(--text-soft);font-size:15px;max-width:520px;line-height:1.8}
+  .btn-yt{display:inline-flex;align-items:center;gap:10px;background:#ff0000;color:#fff;padding:14px 32px;border-radius:6px;font-size:16px;font-weight:700;text-decoration:none}
+  .btn-yt:hover{background:#cc0000;text-decoration:none}
   .event-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff;display:flex}
   .event-date-box{flex:0 0 84px;background:var(--navy);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px}
   .event-date-box.past{background:#78909c}
@@ -152,7 +167,7 @@
         <ul class="submenu">
           <li><a href="events.html">近期活動行事曆</a></li>
           <li><a href="events.html#過去">過期活動行事曆</a></li>
-          <li><a href="#">影音平台</a></li>
+          <li><a href="#影音平台">影音平台</a></li>
         </ul>
       </li>
       <li><a href="donations.html">捐款與贊助</a></li>
@@ -188,6 +203,27 @@
       <span class="count" id="pastCount"></span>
     </div>
     <div class="event-grid" id="pastGrid"></div>
+  </div>
+</section>
+
+<!-- 活動剪影 -->
+<section class="block" id="活動剪影">
+  <div class="wrap">
+    <div class="sec-head"><h2>活動剪影</h2><span class="en">GALLERY</span><span class="count" id="galleryCount"></span></div>
+    <div class="gallery-grid" id="galleryGrid"><p style="color:var(--text-soft)">載入中…</p></div>
+  </div>
+</section>
+
+<!-- 影音平台 -->
+<section class="block alt" id="影音平台">
+  <div class="wrap">
+    <div class="sec-head"><h2>影音平台</h2><span class="en">YOUTUBE</span></div>
+    <div class="yt-banner">
+      <p>歡迎訂閱政大企家班 YouTube 頻道，觀看歷屆課程、活動與校友分享的精彩影片。</p>
+      <a class="btn-yt" href="https://www.youtube.com/channel/UC0n-O1ZDkga3oMpSxoQJduw/videos" target="_blank" rel="noopener">
+        ▶ 前往 YouTube 頻道
+      </a>
+    </div>
   </div>
 </section>
 
@@ -287,6 +323,24 @@ function eventCard(e, past) {
   document.getElementById('pastGrid').innerHTML =
     past.map(e => eventCard(e, true)).join('') ||
     '<p style="color:var(--text-soft)">無過去活動記錄。</p>';
+})();
+
+(async () => {
+  const snap = await getDocs(collection(db, 'galleries'));
+  const items = snap.docs.map(d => ({id:d.id,...d.data()}))
+    .sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  document.getElementById('galleryCount').textContent = items.length ? `共 ${items.length} 筆` : '';
+  document.getElementById('galleryGrid').innerHTML = items.map(g => `
+    <a class="gallery-card" href="${g.driveUrl||'#'}" target="_blank" rel="noopener">
+      <div class="gallery-cover">
+        ${g.coverUrl ? `<img src="${g.coverUrl}" alt="${g.title}" loading="lazy">` : '📷 點擊開啟相簿'}
+      </div>
+      <div class="gallery-info">
+        <h3>${g.title}</h3>
+        <div class="date">${g.date||''}</div>
+        <div class="ext">開啟 Google 相簿 ↗</div>
+      </div>
+    </a>`).join('') || '<p style="color:var(--text-soft)">尚無活動剪影。</p>';
 })();
 
 </script>
