@@ -239,9 +239,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+function evDateStr(e) { return e.date || (e.startTime||'').slice(0,10); }
+
 function eventCard(e, past) {
-  const dt = new Date((e.startTime||'').replace(' ','T'));
+  const dateStr = evDateStr(e);
+  const dt = new Date(dateStr.replace(/-/g,'/'));
   const valid = !isNaN(dt);
+  const timeStr = e.date ? (e.checkinTime||'') : (e.startTime||'').slice(11);
+  const displayTime = timeStr ? dateStr + ' ' + timeStr : dateStr;
   return `<div class="event-card">
     <div class="event-date-box${past?' past':''}">
       <div class="m">${valid?dt.getMonth()+1+'月':'—'}</div>
@@ -249,7 +254,7 @@ function eventCard(e, past) {
     </div>
     <div class="event-body">
       <h3 class="${past?'past':''}">${e.title}</h3>
-      <div class="event-meta">🕒 ${e.startTime||''}</div>
+      <div class="event-meta">🕒 ${displayTime}</div>
       <div class="event-meta">📍 ${e.location||''}</div>
       <div class="event-meta">${e.description||''}</div>
       ${e.signupUrl?`<a href="${e.signupUrl}" target="_blank" rel="noopener" style="font-size:13px">立即報名 ›</a>`:''}
@@ -260,16 +265,16 @@ function eventCard(e, past) {
 (async () => {
   const snap = await getDocs(collection(db, 'events'));
   const items = snap.docs.map(d => ({id:d.id,...d.data()}));
-  const now = new Date();
+  const todayStr = new Date().toISOString().slice(0,10);
 
   const upcoming = items
-    .map(e => ({...e, dt:new Date((e.startTime||'').replace(' ','T'))}))
-    .filter(e => e.dt >= now)
+    .map(e => ({...e, dt:new Date(evDateStr(e).replace(/-/g,'/'))}))
+    .filter(e => evDateStr(e) >= todayStr)
     .sort((a,b) => a.dt - b.dt);
 
   const past = items
-    .map(e => ({...e, dt:new Date((e.startTime||'').replace(' ','T'))}))
-    .filter(e => e.dt < now)
+    .map(e => ({...e, dt:new Date(evDateStr(e).replace(/-/g,'/'))}))
+    .filter(e => evDateStr(e) < todayStr)
     .sort((a,b) => b.dt - a.dt);
 
   document.getElementById('upcomingCount').textContent = upcoming.length ? `共 ${upcoming.length} 筆` : '';

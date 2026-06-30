@@ -320,22 +320,42 @@ async function renderAnn() {
 }
 
 async function renderEvent() {
-  const rows = (await getCol('events')).sort((a,b)=>(a.startTime||'').localeCompare(b.startTime||''));
-  if (!rows.length) return emptyCard('尚無活動');
-  const now = new Date();
-  return card('活動列表（前台依開始時間自動分流近期／過期）',`<table class="data">
-    <thead><tr><th>活動名稱</th><th>開始時間</th><th>報到時間</th><th>地點</th><th>狀態</th><th></th></tr></thead>
-    <tbody>${rows.map(e=>{
-      const past = new Date((e.startTime||'').replace(' ','T')) < now;
-      return `<tr>
-        <td>${esc(e.title)}</td><td>${e.startTime||'—'}</td><td>${e.checkinTime||'—'}</td><td>${esc(e.location||'')}</td>
-        <td>${past?'<span class="pill gray">過期</span>':'<span class="pill green">近期</span>'}</td>
-        <td class="actions">
-          <button class="btn ghost sm" onclick="openEvent('${e.id}')">編輯</button>
-          <button class="btn danger sm" onclick="delRow('events','${e.id}')">刪除</button>
-        </td>
-      </tr>`;
-    }).join('')}</tbody></table>`);
+  const todayStr = today();
+  const evDateStr = e => e.date || (e.startTime||'').slice(0,10);
+  const all = (await getCol('events')).sort((a,b) => evDateStr(a).localeCompare(evDateStr(b)));
+  if (!all.length) return emptyCard('尚無活動');
+
+  const upcoming = all.filter(e => evDateStr(e) >= todayStr);
+  const expired  = all.filter(e => evDateStr(e) <  todayStr);
+
+  const rowHtml = e => {
+    const dateStr = evDateStr(e);
+    const timeStr = e.date ? (e.checkinTime||'—') : ((e.startTime||'').slice(11)||'—');
+    return `<tr>
+      <td>${esc(e.title)}</td>
+      <td>${dateStr||'—'}</td>
+      <td>${timeStr}</td>
+      <td>${esc(e.location||'')}</td>
+      <td class="actions">
+        <button class="btn ghost sm" onclick="openEvent('${e.id}')">編輯</button>
+        <button class="btn danger sm" onclick="delRow('events','${e.id}')">刪除</button>
+      </td>
+    </tr>`;
+  };
+
+  return `<div class="card">
+    <div class="card-head">
+      <h3>活動列表</h3>
+      <div class="right">
+        ${expired.length ? `<button class="btn ghost sm" id="btnExpired" onclick="toggleExpired()">查看過期活動（${expired.length}）</button>` : ''}
+      </div>
+    </div>
+    <table class="data">
+      <thead><tr><th>活動名稱</th><th>活動日期</th><th>報到時間</th><th>地點</th><th></th></tr></thead>
+      <tbody>${upcoming.length ? upcoming.map(rowHtml).join('') : `<tr><td colspan="5" style="text-align:center;color:#9aa6b2;padding:20px">目前無近期活動</td></tr>`}</tbody>
+      <tbody id="expiredRows" style="display:none">${expired.map(rowHtml).join('')}</tbody>
+    </table>
+  </div>`;
 }
 
 function amtText(d) {
@@ -464,24 +484,28 @@ async function openAnn(id) {
 }
 
 async function openEvent(id) {
-  let d = {title:'',startTime:'',endTime:'',checkinTime:'',location:'',description:'',signupUrl:''};
-  if (id) { const s=await getDoc(doc(db,'events',id)); d={id,...s.data()}; }
+  let d = {title:'', date:today(), checkinTime:'', location:'', description:'', signupUrl:''};
+  if (id) {
+    const s = await getDoc(doc(db,'events',id));
+    const raw = s.data();
+    // 相容舊資料：startTime → date
+    if (raw.startTime && !raw.date) raw.date = raw.startTime.slice(0,10);
+    d = {id, ...raw};
+  }
   _editData=d; editing={coll:'events',id:id||null};
   const venueOpts = VENUES.map(v=>`<option value="${esc(v)}">`).join('');
   openModal(id?'編輯活動':'新增活動',`
     <div class="form-row"><label>活動名稱</label><input id="f_title" value="${esc(d.title)}"></div>
     <div class="form-2">
-      <div class="form-row"><label>開始時間</label><input id="f_startTime" placeholder="2026-09-06 14:00" value="${esc(d.startTime||'')}"></div>
-      <div class="form-row"><label>結束時間</label><input id="f_endTime" placeholder="2026-09-06 16:00" value="${esc(d.endTime||'')}"></div>
+      <div class="form-row"><label>活動日期</label><input id="f_date" type="date" value="${d.date||''}"></div>
+      <div class="form-row"><label>報到時間（選填）</label><input id="f_checkinTime" type="time" value="${d.checkinTime||''}"></div>
     </div>
-    <div class="form-row"><label>報到時間（選填）</label><input id="f_checkinTime" placeholder="2026-09-06 13:30" value="${esc(d.checkinTime||'')}"></div>
     <div class="form-row"><label>地點</label>
       <input id="f_location" list="venueList" value="${esc(d.location||'')}" placeholder="選擇或自行輸入地點">
       <datalist id="venueList">${venueOpts}</datalist>
     </div>
     <div class="form-row"><label>說明</label><textarea id="f_description">${esc(d.description||'')}</textarea></div>
     <div class="form-row"><label>報名連結（選填）</label><input id="f_signupUrl" value="${esc(d.signupUrl||'')}"></div>
-    <div class="hint">時間格式：YYYY-MM-DD HH:MM。前台依開始時間自動分流近期／過期。</div>
   `);
 }
 
@@ -536,6 +560,15 @@ async function openUser(id) {
   `);
 }
 
+function toggleExpired() {
+  const rows = document.getElementById('expiredRows');
+  const btn = document.getElementById('btnExpired');
+  if (!rows || !btn) return;
+  const hiding = rows.style.display === 'none';
+  rows.style.display = hiding ? '' : 'none';
+  btn.textContent = hiding ? '收起過期活動' : `查看過期活動（${rows.querySelectorAll('tr').length}）`;
+}
+
 function amtModeChange() {
   const m = document.getElementById('f_amountMode').value;
   document.getElementById('row_exact').style.display = m==='精確' ? 'block' : 'none';
@@ -561,7 +594,7 @@ async function saveModal() {
     obj = {title:val('f_title'),category:val('f_category'),content:val('f_content'),publishDate:val('f_publishDate'),unpublishDate:val('f_unpublishDate'),status:val('f_status'),isPinned:chk('f_isPinned')};
   } else if (coll==='events') {
     if (!val('f_title').trim()) { toast('請填活動名稱'); return; }
-    obj = {title:val('f_title'),startTime:val('f_startTime'),endTime:val('f_endTime'),checkinTime:val('f_checkinTime')||'',location:val('f_location'),description:val('f_description'),signupUrl:val('f_signupUrl')};
+    obj = {title:val('f_title'), date:val('f_date'), checkinTime:val('f_checkinTime')||'', location:val('f_location'), description:val('f_description'), signupUrl:val('f_signupUrl')};
   } else if (coll==='donations') {
     if (!val('f_term').trim()) { toast('屆別為必填'); return; }
     obj = {term:val('f_term'),donorName:val('f_donorName'),isAnonymous:chk('f_isAnonymous'),amountMode:val('f_amountMode'),amountExact:Number(val('f_amountExact')||0),amountTier:val('f_amountTier')||'',item:val('f_item'),donationDate:val('f_donationDate')};
@@ -649,9 +682,8 @@ document.getElementById('csvFileInput').addEventListener('change', async e => {
     let count = 0;
     for (const r of data) {
       const obj = {
-        title: r[0]||'', startTime: r[1]||'', endTime: r[2]||'',
+        title: r[0]||'', date: r[1]||'', checkinTime: r[2]||'',
         location: r[3]||'', description: r[4]||'', signupUrl: r[5]||'',
-        checkinTime: r[6]||'',
         createdBy: CURRENT.uid, createdAt: serverTimestamp()
       };
       await addDoc(collection(db,'events'), obj);
@@ -680,7 +712,7 @@ function parseCSV(text) {
   return rows;
 }
 
-Object.assign(window, {doLogin,doLogout,switchTab,closeModal,saveModal,openAnn,openEvent,openDonation,openGallery,openDownload,openUser,toggleUser,delRow,amtModeChange,triggerCSV});
+Object.assign(window, {doLogin,doLogout,switchTab,closeModal,saveModal,openAnn,openEvent,openDonation,openGallery,openDownload,openUser,toggleUser,delRow,amtModeChange,triggerCSV,toggleExpired});
 
 document.getElementById('lgPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 </script>

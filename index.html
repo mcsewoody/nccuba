@@ -323,25 +323,29 @@ const todayStr = new Date().toISOString().slice(0,10);
 
 (async () => {
   const items = await getCol('events');
-  const now = new Date();
+  const todayStr = new Date().toISOString().slice(0,10);
+  const evDateStr = e => e.date || (e.startTime||'').slice(0,10);
   const upcoming = items
-    .map(e => ({...e, dt:new Date((e.startTime||'').replace(' ','T'))}))
-    .filter(e => { const t=e.dt; return t>=now && t<=new Date(now.getFullYear(),now.getMonth()+3,now.getDate()); })
+    .map(e => ({...e, _d: evDateStr(e), dt: new Date(evDateStr(e).replace(/-/g,'/'))}))
+    .filter(e => e._d >= todayStr)
     .sort((a,b) => a.dt - b.dt);
-  document.getElementById('eventGrid').innerHTML = upcoming.map(e=>`
-    <div class="event-card">
+  document.getElementById('eventGrid').innerHTML = upcoming.map(e => {
+    const timeStr = e.date ? e.checkinTime||'' : (e.startTime||'').slice(11);
+    const displayTime = timeStr ? e._d + ' ' + timeStr : e._d;
+    return `<div class="event-card">
       <div class="event-date-box">
         <div class="m">${e.dt.getMonth()+1}月</div>
         <div class="d">${e.dt.getDate()}</div>
       </div>
       <div class="event-body">
         <h3>${e.title}</h3>
-        <div class="event-meta">🕒 ${e.startTime}</div>
+        <div class="event-meta">🕒 ${displayTime}</div>
         <div class="event-meta">📍 ${e.location||''}</div>
         <div class="event-meta">${e.description||''}</div>
         ${e.signupUrl?`<a href="${e.signupUrl}" target="_blank" rel="noopener" style="font-size:13px">立即報名 ›</a>`:''}
       </div>
-    </div>`).join('') || '<p style="color:var(--text-soft)">目前無近期活動。</p>';
+    </div>`;
+  }).join('') || '<p style="color:var(--text-soft)">目前無近期活動。</p>';
 })();
 </script>
 <script>
