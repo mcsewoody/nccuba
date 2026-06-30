@@ -180,7 +180,7 @@
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, createUserWithEmailAndPassword, updatePassword } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, getDoc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const firebaseConfig = {
@@ -578,7 +578,16 @@ async function openUser(id) {
       <option value="event_manager" ${d.role==='event_manager'?'selected':''}>活動長（僅限活動訊息管理＋活動剪影）</option>
       <option value="admin" ${d.role==='admin'?'selected':''}>管理者</option>
     </select></div>
-    <div class="hint">${id?'如需更改電子郵件或密碼，請至 Firebase Console 操作。':'系統將自動在 Firebase 建立登入帳號。'}</div>
+    ${id && !isAdminRow ? `
+    <div class="form-row" style="margin-top:6px">
+      <label>更改密碼（選填）</label>
+      <div class="form-2">
+        <div><input id="f_cur_pass" type="password" placeholder="輸入現有密碼"></div>
+        <div><input id="f_new_pass" type="password" placeholder="新密碼（至少 6 碼）"></div>
+      </div>
+      <div class="hint">兩欄都填才會更改密碼；留空則不異動。</div>
+    </div>` : ''}
+    <div class="hint">${id?'如需更改電子郵件，請至 Firebase Console 操作。':'系統將自動在 Firebase 建立登入帳號。'}</div>
   `);
 }
 
@@ -692,6 +701,19 @@ async function saveModal() {
       return;
     } else {
       obj = {displayName:val('f_displayName')||_editData.displayName, role:_editData.role==='admin'?'admin':val('f_role')};
+      const curPass = val('f_cur_pass'), newPass = val('f_new_pass');
+      if (curPass || newPass) {
+        if (!curPass || !newPass) { toast('請同時填入現有密碼與新密碼'); return; }
+        if (newPass.length < 6) { toast('新密碼至少需要 6 碼'); return; }
+        try {
+          const cred = await signInWithEmailAndPassword(auth2, _editData.email, curPass);
+          await updatePassword(cred.user, newPass);
+          await signOut(auth2);
+        } catch(e) {
+          toast(e.code==='auth/invalid-credential'||e.code==='auth/wrong-password' ? '現有密碼錯誤，密碼未更改' : '密碼更改失敗：'+e.message);
+          return;
+        }
+      }
     }
   }
   try {
