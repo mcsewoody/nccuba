@@ -329,6 +329,13 @@ function eventCard(e, past) {
     '<p style="color:var(--text-soft)">無過去活動記錄。</p>';
 })();
 
+// 將 Google Drive 分享連結轉成可直接嵌入的縮圖網址；非 Drive 連結原樣返回
+function driveImg(url){
+  if(!url) return '';
+  const m = url.match(/\/file\/d\/([^/]+)/) || url.match(/[?&]id=([^&]+)/);
+  return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000` : url;
+}
+
 (async () => {
   const snap = await getDocs(collection(db, 'galleries'));
   const items = snap.docs.map(d => ({id:d.id,...d.data()}))
@@ -337,7 +344,7 @@ function eventCard(e, past) {
   document.getElementById('galleryGrid').innerHTML = items.map(g => `
     <a class="gallery-card" href="${g.driveUrl||'#'}" target="_blank" rel="noopener">
       <div class="gallery-cover">
-        ${g.coverUrl ? `<img src="${g.coverUrl}" alt="${g.title}" loading="lazy">` : '📷 點擊開啟相簿'}
+        ${g.coverUrl ? `<img src="${driveImg(g.coverUrl)}" alt="${g.title}" loading="lazy">` : '📷 點擊開啟相簿'}
       </div>
       <div class="gallery-info">
         <h3>${g.title}</h3>
