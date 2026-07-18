@@ -567,7 +567,7 @@ async function openGallery(id) {
     <div class="form-row"><label>相簿標題</label><input id="f_title" value="${esc(d.title)}"></div>
     <div class="form-row"><label>活動日期</label><input id="f_date" type="date" value="${d.date||''}"></div>
     <div class="form-row"><label>Google 相簿連結</label><input id="f_driveUrl" placeholder="https://drive.google.com/..." value="${esc(d.driveUrl||'')}"></div>
-    <div class="form-row"><label>封面縮圖網址（選填）</label><input id="f_coverUrl" value="${esc(d.coverUrl||'')}"></div>
+    <div class="form-row"><label>封面縮圖網址（選填）</label><input id="f_coverUrl" placeholder="貼上 Google Drive 圖片分享連結" value="${esc(d.coverUrl||'')}"><div class="hint">貼 Google Drive 圖片分享連結即可，系統會自動轉換為縮圖。請先將該圖片的共用權限設為「知道連結的任何人」，否則前台無法顯示。</div></div>
   `);
 }
 
