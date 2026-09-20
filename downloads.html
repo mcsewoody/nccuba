@@ -223,6 +223,14 @@ const firebaseConfig = {
 
 const db = getFirestore(initializeApp(firebaseConfig));
 
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// 只允許 http/https，擋掉 javascript: 之類可執行的網址協定
+function safeUrl(u) {
+  const t = String(u == null ? '' : u).trim();
+  return /^https?:\/\//i.test(t) ? esc(t) : '';
+}
+
 (async () => {
   const snap = await getDocs(collection(db,'downloads'));
   const items = snap.docs.map(d=>({id:d.id,...d.data()}));
@@ -231,11 +239,11 @@ const db = getFirestore(initializeApp(firebaseConfig));
     <li class="dl-item">
       <div class="dl-icon">📄</div>
       <div class="dl-info">
-        <h3>${d.title}</h3>
-        ${d.description?`<div class="desc">${d.description}</div>`:''}
-        ${d.date?`<div class="date">${d.date}</div>`:''}
+        <h3>${esc(d.title)}</h3>
+        ${d.description?`<div class="desc">${esc(d.description)}</div>`:''}
+        ${d.date?`<div class="date">${esc(d.date)}</div>`:''}
       </div>
-      <a class="dl-btn" href="${d.fileUrl||'#'}" target="_blank" rel="noopener">下載 ↗</a>
+      <a class="dl-btn" href="${safeUrl(d.fileUrl)||'#'}" target="_blank" rel="noopener">下載 ↗</a>
     </li>`).join('') || '<li style="color:var(--text-soft);padding:14px 0;font-size:14px">目前無下載項目。</li>';
 })();
 

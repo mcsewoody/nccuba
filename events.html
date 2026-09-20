@@ -280,6 +280,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+// 只允許 http/https，擋掉 javascript: 之類可執行的網址協定
+function safeUrl(u) {
+  const t = String(u == null ? '' : u).trim();
+  return /^https?:\/\//i.test(t) ? esc(t) : '';
+}
+
 function evDateStr(e) { return e.date || (e.startTime||'').slice(0,10); }
 
 function eventCard(e, past) {
@@ -294,11 +306,11 @@ function eventCard(e, past) {
       <div class="d">${valid?dt.getDate():'—'}</div>
     </div>
     <div class="event-body">
-      <h3 class="${past?'past':''}">${e.title}</h3>
-      <div class="event-meta">🕒 ${displayTime}</div>
-      <div class="event-meta">📍 ${e.location||''}</div>
-      <div class="event-meta">${e.description||''}</div>
-      ${e.signupUrl?`<a href="${e.signupUrl}" target="_blank" rel="noopener" style="font-size:13px">立即報名 ›</a>`:''}
+      <h3 class="${past?'past':''}">${esc(e.title)}</h3>
+      <div class="event-meta">🕒 ${esc(displayTime)}</div>
+      <div class="event-meta">📍 ${esc(e.location||'')}</div>
+      <div class="event-meta">${esc(e.description||'')}</div>
+      ${safeUrl(e.signupUrl)?`<a href="${safeUrl(e.signupUrl)}" target="_blank" rel="noopener" style="font-size:13px">立即報名 ›</a>`:''}
     </div>
   </div>`;
 }
@@ -343,13 +355,13 @@ function driveImg(url){
     .sort((a,b) => (b.date||'').localeCompare(a.date||''));
   document.getElementById('galleryCount').textContent = items.length ? `共 ${items.length} 筆` : '';
   document.getElementById('galleryGrid').innerHTML = items.map(g => `
-    <a class="gallery-card" href="${g.driveUrl||'#'}" target="_blank" rel="noopener">
+    <a class="gallery-card" href="${safeUrl(g.driveUrl)||'#'}" target="_blank" rel="noopener">
       <div class="gallery-cover">
-        ${g.coverUrl ? `<img src="${driveImg(g.coverUrl)}" alt="${g.title}" loading="lazy">` : '📷 點擊開啟相簿'}
+        ${safeUrl(driveImg(g.coverUrl)) ? `<img src="${safeUrl(driveImg(g.coverUrl))}" alt="${esc(g.title)}" loading="lazy">` : '📷 點擊開啟相簿'}
       </div>
       <div class="gallery-info">
-        <h3>${g.title}</h3>
-        <div class="date">${g.date||''}</div>
+        <h3>${esc(g.title)}</h3>
+        <div class="date">${esc(g.date||'')}</div>
         <div class="ext">開啟 Google 相簿 ↗</div>
       </div>
     </a>`).join('') || '<p style="color:var(--text-soft)">尚無活動剪影。</p>';
