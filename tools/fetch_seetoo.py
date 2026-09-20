@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # 從 prof-seetoo.blogspot.com 的 Blogger Atom feed 抓取全部文章，
-# 產出 data/seetoo_index.json（列表用）與 data/seetoo/c<nn>.json（內文，固定大小分塊延遲載入），
+# 產出 data/seetoo_index.json（列表用）、data/seetoo/c<nn>.json（內文，固定大小分塊延遲載入）
+# 與 data/seetoo_search.json（全文搜尋用純文字，讀者第一次搜尋時才載入），
 # 並把文章內嵌圖片下載到 images/seetoo/ 改為本地路徑。
 # 內容已停更，此腳本平時不需重跑；需更新時執行 python3 tools/fetch_seetoo.py
 
@@ -109,6 +110,13 @@ def clean(content):
     return c.strip()
 
 
+def plain_text(content):
+    """去標籤、還原實體字元，供全文搜尋比對用。"""
+    t = re.sub(r"<[^>]+>", " ", content)
+    t = html.unescape(t).replace("\u00a0", " ")
+    return re.sub(r"\s+", " ", t).strip()
+
+
 def excerpt(content, n=110):
     t = re.sub(r"<[^>]+>", "", content)
     t = html.unescape(t).replace(" ", " ")
@@ -123,7 +131,7 @@ def main():
     print("抓取 feed…")
     entries = fetch_entries()
 
-    seen_imgs, index, bodies = {}, [], {}
+    seen_imgs, index, bodies, search = {}, [], {}, {}
     for e in entries:
         pid = post_id(e)
         title = e.get("title", {}).get("$t", "").strip() or "（無標題）"
@@ -135,6 +143,7 @@ def main():
         })
         bodies[pid] = {"title": title, "date": published,
                        "body": body, "src": orig_link(e)}
+        search[pid] = plain_text(body)
 
     index.sort(key=lambda p: (p["date"], p["id"]), reverse=True)
 
@@ -151,6 +160,8 @@ def main():
 
     with open(os.path.join(DATA_DIR, "seetoo_index.json"), "w", encoding="utf-8") as f:
         json.dump({"count": len(index), "posts": index}, f, ensure_ascii=False, separators=(",", ":"))
+    with open(os.path.join(DATA_DIR, "seetoo_search.json"), "w", encoding="utf-8") as f:
+        json.dump(search, f, ensure_ascii=False, separators=(",", ":"))
     for cid, posts in chunks.items():
         with open(os.path.join(DATA_DIR, "seetoo", f"{cid}.json"), "w", encoding="utf-8") as f:
             json.dump(posts, f, ensure_ascii=False, separators=(",", ":"))
@@ -158,7 +169,9 @@ def main():
     idx_kb = os.path.getsize(os.path.join(DATA_DIR, "seetoo_index.json")) / 1024
     sizes = [os.path.getsize(os.path.join(DATA_DIR, "seetoo", f"{c}.json")) / 1024 for c in chunks]
     print(f"\n完成：{len(index)} 篇、{len(chunks)} 個分塊、{len(seen_imgs)} 張圖片")
+    sch_kb = os.path.getsize(os.path.join(DATA_DIR, "seetoo_search.json")) / 1024
     print(f"  索引檔 {idx_kb:.1f} KB（首次載入）")
+    print(f"  全文搜尋檔 {sch_kb:.1f} KB（第一次搜尋時才載入）")
     print(f"  分塊 最小 {min(sizes):.1f} KB / 最大 {max(sizes):.1f} KB（開文章時才載入）")
 
 
