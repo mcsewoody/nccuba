@@ -1,0 +1,262 @@
+[
+  {
+    "term": "18",
+    "donorName": "奚志明",
+    "isAnonymous": false,
+    "item": "2025 春季盃 爐主",
+    "donationDate": "2026-09-20",
+    "amountMode": "不顯示",
+    "amountExact": 0,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "25",
+    "donorName": "吳守謙",
+    "isAnonymous": false,
+    "item": "2025 夏季盃 爐主",
+    "donationDate": "2026-09-20",
+    "amountMode": "不顯示",
+    "amountExact": 0,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "35",
+    "donorName": "許樞龍",
+    "isAnonymous": false,
+    "item": "2025 秋季盃 爐主",
+    "donationDate": "2026-09-20",
+    "amountMode": "不顯示",
+    "amountExact": 0,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "32",
+    "donorName": "學長姐",
+    "isAnonymous": false,
+    "item": "2025 冬季盃 爐主",
+    "donationDate": "2026-09-20",
+    "amountMode": "不顯示",
+    "amountExact": 0,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "18",
+    "donorName": "黃志聰",
+    "isAnonymous": false,
+    "item": "25-26 球隊贊助",
+    "donationDate": "2026-09-20",
+    "amountMode": "精確",
+    "amountExact": 100000,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "32",
+    "donorName": "劉恕偉",
+    "isAnonymous": false,
+    "item": "25-26 球隊贊助",
+    "donationDate": "2026-09-20",
+    "amountMode": "精確",
+    "amountExact": 220000,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "35",
+    "donorName": "李志祥",
+    "isAnonymous": false,
+    "item": "25-26 球隊贊助",
+    "donationDate": "2026-09-20",
+    "amountMode": "精確",
+    "amountExact": 100000,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "41",
+    "donorName": "陳柏亦",
+    "isAnonymous": false,
+    "item": "25-26 球隊贊助",
+    "donationDate": "2026-09-20",
+    "amountMode": "精確",
+    "amountExact": 50000,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "24",
+    "donorName": "林金淵",
+    "isAnonymous": false,
+    "item": "25-26 球隊贊助",
+    "donationDate": "2026-09-20",
+    "amountMode": "精確",
+    "amountExact": 20000,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "25",
+    "donorName": "林明毅",
+    "isAnonymous": false,
+    "item": "25-26 球隊贊助",
+    "donationDate": "2026-09-20",
+    "amountMode": "精確",
+    "amountExact": 20000,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "31",
+    "donorName": "陳世通",
+    "isAnonymous": false,
+    "item": "25-26 球隊贊助",
+    "donationDate": "2026-09-20",
+    "amountMode": "精確",
+    "amountExact": 50000,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "43",
+    "donorName": "全班",
+    "isAnonymous": false,
+    "item": "25-26 球隊贊助",
+    "donationDate": "2026-09-20",
+    "amountMode": "精確",
+    "amountExact": 100000,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "44",
+    "donorName": "全班",
+    "isAnonymous": false,
+    "item": "25-26 球隊贊助",
+    "donationDate": "2026-09-20",
+    "amountMode": "精確",
+    "amountExact": 100000,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "25",
+    "donorName": "簡榮坤",
+    "isAnonymous": false,
+    "item": "贊助電輔車兩台",
+    "donationDate": "2026-09-20",
+    "amountMode": "不顯示",
+    "amountExact": 0,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "41",
+    "donorName": "陳柏亦",
+    "isAnonymous": false,
+    "item": "碧潭高爾夫球場擊球卷",
+    "donationDate": "2026-09-20",
+    "amountMode": "不顯示",
+    "amountExact": 0,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "24",
+    "donorName": "鄧富吉",
+    "isAnonymous": false,
+    "item": "按摩卷",
+    "donationDate": "2026-09-20",
+    "amountMode": "不顯示",
+    "amountExact": 0,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "32",
+    "donorName": "陳正威",
+    "isAnonymous": false,
+    "item": "老協珍高級禮盒",
+    "donationDate": "2026-09-20",
+    "amountMode": "不顯示",
+    "amountExact": 0,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "32",
+    "donorName": "曾湞琪",
+    "isAnonymous": false,
+    "item": "光隆海洋深層水",
+    "donationDate": "2026-09-20",
+    "amountMode": "不顯示",
+    "amountExact": 0,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "32",
+    "donorName": "楊培中",
+    "isAnonymous": false,
+    "item": "翡冷翠門票",
+    "donationDate": "2026-09-20",
+    "amountMode": "不顯示",
+    "amountExact": 0,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "32",
+    "donorName": "劉恕偉",
+    "isAnonymous": false,
+    "item": "peripower 充電器",
+    "donationDate": "2026-09-20",
+    "amountMode": "不顯示",
+    "amountExact": 0,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "33",
+    "donorName": "陳一銘",
+    "isAnonymous": false,
+    "item": "筆記本電腦一台",
+    "donationDate": "2026-09-20",
+    "amountMode": "不顯示",
+    "amountExact": 0,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "38",
+    "donorName": "許文南",
+    "isAnonymous": false,
+    "item": "panasonic 沖牙機 8 台",
+    "donationDate": "2026-09-20",
+    "amountMode": "不顯示",
+    "amountExact": 0,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "25",
+    "donorName": "吳守謙",
+    "isAnonymous": false,
+    "item": "企家班45週年活動贊助",
+    "donationDate": "2026-09-20",
+    "amountMode": "精確",
+    "amountExact": 75000,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "18",
+    "donorName": "黃志聰",
+    "isAnonymous": false,
+    "item": "企家班45週年活動贊助",
+    "donationDate": "2026-09-20",
+    "amountMode": "精確",
+    "amountExact": 75000,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "32",
+    "donorName": "劉恕偉",
+    "isAnonymous": false,
+    "item": "企家班45週年活動贊助",
+    "donationDate": "2026-09-20",
+    "amountMode": "精確",
+    "amountExact": 75000,
+    "amountTier": "10萬以下"
+  },
+  {
+    "term": "35",
+    "donorName": "李志祥",
+    "isAnonymous": false,
+    "item": "企家班45週年活動贊助",
+    "donationDate": "2026-09-20",
+    "amountMode": "精確",
+    "amountExact": 75000,
+    "amountTier": "10萬以下"
+  }
+]
