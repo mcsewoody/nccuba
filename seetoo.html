@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>司徒達賢論壇 | 政大企家班</title>
+<style>
+  :root{
+    --navy:#1b3a5b;--navy-dark:#13293f;--blue:#2c5f8a;--gold:#b8860b;
+    --bg:#ffffff;--bg-soft:#f4f6f9;--text:#2b2b2b;--text-soft:#5a5a5a;
+    --border:#e2e6ec;--maxw:1100px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;color:var(--text);line-height:1.7;background:var(--bg);font-size:16px}
+  a{color:var(--blue);text-decoration:none}
+  a:hover{text-decoration:underline}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+  .topbar{background:#fff;border-bottom:1px solid var(--border)}
+  .topbar-inner{display:flex;align-items:center;gap:18px;padding:14px 20px;max-width:var(--maxw);margin:0 auto;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand-logo{width:62px;height:62px;border-radius:6px}
+  .brand-logo-img{width:62px;height:62px}
+  .brand-name{font-size:24px;font-weight:700;color:var(--navy);letter-spacing:2px}
+  .brand-name small{display:block;font-size:12px;font-weight:400;color:var(--text-soft);letter-spacing:1px;margin-top:2px}
+  .top-actions{margin-left:auto}
+
+  nav.main{background:var(--navy);position:sticky;top:0;z-index:50}
+  .nav-inner{max-width:var(--maxw);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center}
+  .nav-inner>ul{list-style:none;display:flex;flex-wrap:wrap}
+  .nav-inner li{position:relative}
+  .nav-inner a{color:#eaf0f6;display:block;padding:14px 16px;font-size:15px;font-weight:500}
+  .nav-inner a:hover{background:rgba(255,255,255,.12);text-decoration:none}
+  .nav-inner .has-sub>a::after{content:"▾";margin-left:5px;font-size:11px;opacity:.8}
+  .submenu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:210px;box-shadow:0 8px 24px rgba(0,0,0,.15);border:1px solid var(--border);border-top:2px solid var(--gold);z-index:60}
+  .nav-inner li:hover>.submenu{display:block}
+  .submenu li a{color:var(--text);padding:11px 16px;font-size:14px;border-bottom:1px solid #f0f0f0}
+  .submenu li a:hover{background:var(--bg-soft);color:var(--navy)}
+  .nav-toggle{display:none}
+  .sub-toggle{display:none}
+  .nav-crumb{display:none}
+
+  .page-banner{background:var(--navy);color:#fff;padding:36px 0}
+  .page-banner h1{font-size:28px;font-weight:700;letter-spacing:3px}
+  .page-banner .en{font-size:13px;color:var(--gold);letter-spacing:2px;margin-top:4px;font-weight:600}
+  .breadcrumb{font-size:13px;color:#9fb4c8;margin-bottom:12px}
+  .breadcrumb a{color:#9fb4c8}
+  .breadcrumb a:hover{color:#fff}
+
+  .block{padding:46px 0}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;border-bottom:2px solid var(--navy);padding-bottom:10px}
+  .sec-head h2{font-size:22px;color:var(--navy);font-weight:700;letter-spacing:2px}
+  .sec-head .en{color:var(--gold);font-size:13px;letter-spacing:2px;font-weight:600}
+
+  .donate-intro p{margin-bottom:14px;line-height:1.85}
+  .donate-account{background:var(--bg-soft);border-left:4px solid var(--gold);padding:16px 20px;margin:16px 0;border-radius:0 6px 6px 0;font-size:15px;line-height:2.1}
+  .donate-label{display:inline-block;width:44px;font-weight:700;color:var(--navy)}
+
+  #donorWrap{overflow-x:auto}
+  .donor-table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  .donor-table th,.donor-table td{padding:16px 22px;text-align:left;font-size:15px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+  .donor-table th{background:var(--navy);color:#fff;font-weight:600;font-size:13px}
+  .donor-table tr:last-child td{border-bottom:none}
+  .donor-table tr:hover td{background:#f8fafc}
+  .amt{font-weight:700;color:var(--navy);font-size:15px}
+  .amt-tier{display:inline-block;background:#eef3f8;color:var(--blue);padding:4px 14px;border-radius:3px;font-size:14px;font-weight:700}
+  .amt-hidden{color:#aaa;font-size:14px}
+
+  footer{background:var(--navy-dark);color:#c7d3df;padding:40px 0 24px;margin-top:10px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
+  footer h4{color:#fff;font-size:15px;margin-bottom:12px;letter-spacing:1px}
+  footer p,footer li{font-size:14px;line-height:1.9;list-style:none}
+  footer a{color:#9fb4c8}
+  footer a:hover{color:#fff}
+  .foot-social{display:flex;gap:12px;margin-top:12px}
+  .foot-social a{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff}
+  .foot-social a:hover{background:#06c755;text-decoration:none}
+  .foot-bottom{text-align:center;margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);font-size:13px;color:#7e93a7}
+
+  @media(max-width:860px){
+    .foot-grid{grid-template-columns:1fr}
+    .topbar-inner{padding:8px 14px;gap:10px}
+    .brand-name{font-size:17px;letter-spacing:1px}
+    .sub-sep{display:none}
+    .sub-en,.sub-zh{display:block}
+    .page-banner{padding:0 0 8px}
+    .page-banner .breadcrumb{display:none}
+    .page-banner h1{font-size:22px;letter-spacing:2px}
+    .nav-crumb{display:flex;align-items:center;flex:1;padding:0 20px;font-size:12px;color:#9fb4c8}
+    .nav-crumb a{color:#9fb4c8;text-decoration:none;padding:0!important;display:inline!important;font-size:12px}
+    .nav-toggle{display:block;background:none;border:none;color:#fff;font-size:34px;line-height:1;padding:4px 12px;cursor:pointer;margin-left:auto}
+    .nav-inner a{padding:8px 12px;font-size:14px}
+    .has-sub{display:flex;flex-wrap:wrap;align-items:center}
+    .has-sub>a{flex:1;min-width:0}
+    .nav-inner .has-sub>a::after{display:none}
+    .sub-toggle{display:inline-flex;align-items:center;justify-content:center;background:none;border:none;color:#cdd9e5;padding:8px 14px;cursor:pointer;font-size:15px}
+    .submenu{width:100%;flex-basis:100%}
+    .nav-inner>ul{display:none;width:100%;flex-direction:column}
+    .nav-inner>ul.open{display:flex}
+    .nav-inner li{width:100%}
+    .submenu{position:static;box-shadow:none;border:none;background:rgba(255,255,255,.06)}
+    .nav-inner li:hover>.submenu{display:none}
+    .submenu.open{display:block!important}
+    .submenu li a{color:#cdd9e5;border-bottom:1px solid rgba(255,255,255,.08)}
+    .donor-table td:nth-child(5){display:none}
+    .donor-table th,.donor-table td{padding:10px 12px!important;font-size:13px!important}
+  }
+
+  /* ── 司徒達賢論壇 ───────────────────────────── */
+  .forum-note{background:var(--bg-soft);border-left:4px solid var(--gold);padding:14px 18px;margin-bottom:26px;font-size:14px;color:var(--text-soft);line-height:1.8;border-radius:0 6px 6px 0}
+  .forum-note strong{color:var(--navy)}
+
+  .forum-layout{display:grid;grid-template-columns:172px 1fr;gap:34px;align-items:start}
+  .year-nav{position:sticky;top:78px}
+  .year-nav h3{font-size:13px;color:var(--gold);letter-spacing:2px;font-weight:700;margin-bottom:10px}
+  .year-nav ul{list-style:none;border-left:2px solid var(--border)}
+  .year-nav button{display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+    font-family:inherit;font-size:14px;color:var(--text-soft);padding:7px 12px;margin-left:-2px;
+    border-left:2px solid transparent;line-height:1.5}
+  .year-nav button:hover{color:var(--navy);background:var(--bg-soft)}
+  .year-nav button.on{color:var(--navy);font-weight:700;border-left-color:var(--gold);background:var(--bg-soft)}
+  .year-nav .cnt{float:right;font-size:12px;color:#9aa7b4;font-weight:400}
+
+  .forum-tools{display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
+  .forum-search{flex:1;min-width:200px;padding:9px 13px;border:1px solid var(--border);border-radius:5px;
+    font-family:inherit;font-size:14px;color:var(--text)}
+  .forum-search:focus{outline:none;border-color:var(--blue)}
+  .sort-btn{background:#fff;border:1px solid var(--border);border-radius:5px;padding:9px 14px;cursor:pointer;
+    font-family:inherit;font-size:13px;color:var(--text-soft);white-space:nowrap}
+  .sort-btn:hover{border-color:var(--blue);color:var(--navy)}
+  .result-count{font-size:13px;color:var(--text-soft);margin-bottom:14px}
+
+  .post-list{list-style:none}
+  .post-item{border-bottom:1px solid var(--border);padding:16px 0}
+  .post-item:first-child{border-top:1px solid var(--border)}
+  .post-item a.post-title{font-size:16px;font-weight:600;color:var(--navy);line-height:1.6}
+  .post-item a.post-title:hover{color:var(--blue)}
+  .post-meta{font-size:12px;color:var(--gold);font-weight:600;letter-spacing:1px;margin-bottom:5px}
+  .post-excerpt{font-size:14px;color:var(--text-soft);margin-top:6px;line-height:1.75}
+
+  .article-head{border-bottom:2px solid var(--navy);padding-bottom:14px;margin-bottom:22px}
+  .article-head h2{font-size:23px;color:var(--navy);font-weight:700;line-height:1.55}
+  .article-date{font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px;margin-bottom:8px}
+  .article-body{font-size:16px;line-height:1.95;max-width:780px}
+  .article-body p,.article-body div{margin-bottom:15px}
+  .article-body img{margin:18px 0;height:auto!important;max-width:100%!important}
+  .article-body table{max-width:100%;border-collapse:collapse}
+  .article-body td,.article-body th{border:1px solid var(--border);padding:8px 12px}
+  .article-body blockquote{border-left:3px solid var(--gold);padding-left:16px;color:var(--text-soft);margin:16px 0}
+  .article-body ul,.article-body ol{margin:0 0 15px 24px}
+  .article-body a{word-break:break-all}
+  .video-embed{position:relative;width:100%;max-width:720px;aspect-ratio:16/9;margin:20px 0;background:#000}
+  .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .article-nav{display:flex;justify-content:space-between;gap:14px;margin-top:34px;padding-top:20px;
+    border-top:1px solid var(--border);font-size:14px;flex-wrap:wrap}
+  .article-nav a{max-width:46%}
+  .article-src{font-size:13px;color:var(--text-soft);margin-top:20px;padding-top:14px;border-top:1px dashed var(--border)}
+  .back-link{display:inline-block;font-size:14px;margin-bottom:16px}
+  .loading{color:var(--text-soft);padding:30px 0}
+
+  @media(max-width:860px){
+    .forum-layout{grid-template-columns:1fr;gap:20px}
+    .year-nav{position:static}
+    .year-nav ul{display:flex;flex-wrap:wrap;gap:4px;border-left:none}
+    .year-nav button{width:auto;border:1px solid var(--border);border-radius:16px;padding:5px 13px;
+      margin-left:0;font-size:13px}
+    .year-nav button.on{border-color:var(--gold)}
+    .year-nav .cnt{display:none}
+    .article-body{font-size:15px}
+    .article-head h2{font-size:19px}
+    .article-nav a{max-width:100%}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-logo"><img src="logo.svg" alt="政大企家班" class="brand-logo-img" style="object-fit:contain;border-radius:6px"></div>
+      <div class="brand-name">政大企家班<small><span class="sub-en">NCCU Business Administration</span><span class="sub-sep"> · </span><span class="sub-zh">企業家經營管理研究班</span></small></div>
+    </div>
+    <div class="top-actions"></div>
+  </div>
+</header>
+
+<nav class="main">
+  <div class="nav-inner wrap" style="padding-left:0;padding-right:0">
+    <div class="nav-crumb"><a href="index.html">首頁</a> › 司徒達賢論壇</div>
+    <button class="nav-toggle" aria-label="選單" onclick="document.getElementById('navlist').classList.toggle('open')">☰ <span style="font-size:19px;font-weight:600;vertical-align:middle;letter-spacing:1px">Menu</span></button>
+    <ul id="navlist">
+      <li><a href="index.html">首頁</a></li>
+      <li class="has-sub"><a href="about.html">關於企家班</a>
+        <ul class="submenu">
+          <li><a href="about.html#天下第一班">天下第一班</a></li>
+          <li><a href="about.html#課程資訊">課程資訊</a></li>
+          <li><a href="about.html#總導師的話">總導師的話</a></li>
+          <li><a href="about.html#達賢圖書館">達賢圖書館</a></li>
+          <li><a href="about.html#企家班之歌">企家班之歌</a></li>
+        </ul>
+      </li>
+      <li><a href="seetoo.html">司徒達賢論壇</a></li>
+      <li class="has-sub"><a href="association.html">企家班校友會</a>
+        <ul class="submenu">
+          <li><a href="association.html#歷任會長">歷任會長及秘書處</a></li>
+          <li><a href="association.html#讀書會">讀書會</a></li>
+          <li><a href="association.html#健康講座">健康講座</a></li>
+          <li><a href="association.html#高爾夫球隊">高爾夫球隊</a></li>
+          <li><a href="association.html#iBowl">iBowl</a></li>
+          <li><a href="association.html#家長聯誼會">家長聯誼會</a></li>
+        </ul>
+      </li>
+      <li class="has-sub"><a href="alumni.html">歷屆校友</a>
+        <ul class="submenu">
+          <li><a href="alumni.html">部分校友名錄(在學時或結業後職務)</a></li>
+        </ul>
+      </li>
+      <li class="has-sub"><a href="events.html">活動訊息</a>
+        <ul class="submenu">
+          <li><a href="events.html">近期活動行事曆</a></li>
+          <li><a href="events.html#過去">過期活動行事曆</a></li>
+          <li><a href="events.html#活動剪影">活動剪影</a></li>
+          <li><a href="events.html#影音平台">影音平台</a></li>
+        </ul>
+      </li>
+      <li><a href="donations.html">捐款與贊助</a></li>
+      <li><a href="downloads.html">下載專區</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-banner">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="index.html">首頁</a> › 司徒達賢論壇</div>
+    <h1>司徒達賢論壇</h1>
+    <div class="en">SEETOO FORUM</div>
+  </div>
+</div>
+
+<section class="block">
+  <div class="wrap">
+
+    <div class="forum-note">
+      <strong>關於本專欄</strong>　本專欄收錄司徒達賢教授於「司徒達賢教授論壇」發表之文章，
+      經　司徒達賢教授授權轉載，著作權為作者所有，非經同意請勿轉載。
+      原站：<a href="https://prof-seetoo.blogspot.com/" target="_blank" rel="noopener">prof-seetoo.blogspot.com</a>
+    </div>
+
+    <div id="forumApp"><p class="loading">載入中…</p></div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <h4>國立政治大學 企業家管理發展進修班</h4>
+      <p>電話：02-29393091 EXT 87071-5, 87063-5<br>
+         地址：11605 台北市文山區指南路二段64號<br>
+         Email：<a href="mailto:nccu.ba.app@gmail.com">nccu.ba.app@gmail.com</a></p>
+      <div class="foot-social">
+        <a href="https://www.youtube.com/channel/UC0n-O1ZDkga3oMpSxoQJduw/videos" target="_blank" rel="noopener">YT</a>
+      </div>
+    </div>
+    <div>
+      <h4>關於企家班</h4>
+      <ul>
+        <li><a href="about.html#天下第一班">天下第一班</a></li>
+        <li><a href="about.html#課程資訊">課程資訊</a></li>
+        <li><a href="alumni.html">校友名錄</a></li>
+        <li><a href="events.html">活動行事曆</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>校友服務</h4>
+      <ul>
+        <li><a href="donations.html">捐款與贊助</a></li>
+        <li><a href="downloads.html">下載專區</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">© 政大企家班 NCCU BA. 本站為校友會資訊網站。</div>
+</footer>
+
+<script>
+(function () {
+  var INDEX_URL = 'data/seetoo_index.json';
+  var app = document.getElementById('forumApp');
+  var posts = [], chunkCache = {};
+  var state = { year: 'all', q: '', sort: 'desc' };
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function fmtDate(d) { return d ? d.replace(/-/g, '.') : ''; }
+
+  // 目前篩選條件下的文章，已套用排序
+  function filtered() {
+    var q = state.q.trim().toLowerCase();
+    var out = posts.filter(function (p) {
+      if (state.year !== 'all' && p.year !== state.year) return false;
+      if (!q) return true;
+      return (p.title + ' ' + p.excerpt).toLowerCase().indexOf(q) !== -1;
+    });
+    if (state.sort === 'asc') out = out.slice().reverse();
+    return out;
+  }
+
+  function yearCounts() {
+    var m = {};
+    posts.forEach(function (p) { m[p.year] = (m[p.year] || 0) + 1; });
+    return Object.keys(m).sort().reverse().map(function (y) { return { year: y, n: m[y] }; });
+  }
+
+  function renderList() {
+    var list = filtered();
+    var years = yearCounts();
+
+    var nav = '<div class="year-nav"><h3>年份</h3><ul>' +
+      '<li><button data-year="all" class="' + (state.year === 'all' ? 'on' : '') + '">' +
+      '全部<span class="cnt">' + posts.length + '</span></button></li>' +
+      years.map(function (y) {
+        return '<li><button data-year="' + y.year + '" class="' + (state.year === y.year ? 'on' : '') + '">' +
+          y.year + '<span class="cnt">' + y.n + '</span></button></li>';
+      }).join('') + '</ul></div>';
+
+    var tools = '<div class="forum-tools">' +
+      '<input id="fSearch" class="forum-search" type="search" placeholder="搜尋標題或內容關鍵字…" value="' + esc(state.q) + '">' +
+      '<button id="fSort" class="sort-btn">' + (state.sort === 'desc' ? '由新到舊 ↓' : '由舊到新 ↑') + '</button>' +
+      '</div>';
+
+    var count = '<div class="result-count">共 ' + list.length + ' 篇' +
+      (state.year !== 'all' ? '（' + state.year + ' 年）' : '') +
+      (state.q ? '，符合「' + esc(state.q) + '」' : '') + '</div>';
+
+    var items = list.length
+      ? '<ul class="post-list">' + list.map(function (p) {
+          return '<li class="post-item">' +
+            '<div class="post-meta">' + fmtDate(p.date) + '</div>' +
+            '<a class="post-title" href="seetoo.html?id=' + p.id + '">' + esc(p.title) + '</a>' +
+            '<div class="post-excerpt">' + esc(p.excerpt) + '</div></li>';
+        }).join('') + '</ul>'
+      : '<p class="loading">找不到符合的文章。</p>';
+
+    app.innerHTML = '<div class="forum-layout">' + nav + '<div>' + tools + count + items + '</div></div>';
+
+    app.querySelectorAll('.year-nav button').forEach(function (b) {
+      b.onclick = function () { state.year = b.dataset.year; renderList(); };
+    });
+    var s = document.getElementById('fSearch');
+    s.oninput = function () {
+      state.q = s.value;
+      var pos = s.selectionStart;
+      renderList();
+      var n = document.getElementById('fSearch');
+      n.focus(); n.setSelectionRange(pos, pos);
+    };
+    document.getElementById('fSort').onclick = function () {
+      state.sort = state.sort === 'desc' ? 'asc' : 'desc';
+      renderList();
+    };
+  }
+
+  function loadChunk(c) {
+    if (chunkCache[c]) return Promise.resolve(chunkCache[c]);
+    return fetch('data/seetoo/' + c + '.json').then(function (r) {
+      if (!r.ok) throw new Error('chunk ' + c);
+      return r.json();
+    }).then(function (j) { chunkCache[c] = j; return j; });
+  }
+
+  function renderArticle(id) {
+    var i = posts.findIndex(function (p) { return p.id === id; });
+    if (i === -1) { app.innerHTML = '<p class="loading">找不到這篇文章。<a href="seetoo.html">回列表</a></p>'; return; }
+    var meta = posts[i];
+    app.innerHTML = '<p class="loading">載入文章中…</p>';
+
+    loadChunk(meta.c).then(function (chunk) {
+      var post = chunk[id];
+      // posts 依日期新→舊排序，故前一篇（較舊）為 i+1
+      var older = posts[i + 1], newer = posts[i - 1];
+      var navHtml = '<div class="article-nav">' +
+        (newer ? '<a href="seetoo.html?id=' + newer.id + '">← 較新：' + esc(newer.title) + '</a>' : '<span></span>') +
+        (older ? '<a href="seetoo.html?id=' + older.id + '" style="text-align:right">較舊：' + esc(older.title) + ' →</a>' : '<span></span>') +
+        '</div>';
+      app.innerHTML =
+        '<a class="back-link" href="seetoo.html">← 回文章列表</a>' +
+        '<div class="article-head"><div class="article-date">' + fmtDate(post.date) + '</div>' +
+        '<h2>' + esc(post.title) + '</h2></div>' +
+        '<div class="article-body">' + post.body + '</div>' +
+        (post.src ? '<div class="article-src">原文出處：<a href="' + esc(post.src) +
+          '" target="_blank" rel="noopener">' + esc(post.src) + '</a></div>' : '') +
+        navHtml;
+      // 站內連結攔截後 body 內可能有外連，統一在新分頁開啟
+      app.querySelectorAll('.article-body a[href^="http"]').forEach(function (a) {
+        a.target = '_blank'; a.rel = 'noopener';
+      });
+      window.scrollTo(0, 0);
+    }).catch(function () {
+      app.innerHTML = '<p class="loading">文章載入失敗，請重新整理。<a href="seetoo.html">回列表</a></p>';
+    });
+  }
+
+  function route() {
+    var id = new URLSearchParams(location.search).get('id');
+    if (id) renderArticle(id); else renderList();
+  }
+
+  // 站內連結改用 pushState，避免每次切換都重抓索引
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a');
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
+    var href = a.getAttribute('href') || '';
+    if (href.indexOf('seetoo.html') !== 0) return;
+    e.preventDefault();
+    history.pushState({}, '', href);
+    route();
+  });
+  window.addEventListener('popstate', route);
+
+  fetch(INDEX_URL).then(function (r) { return r.json(); }).then(function (d) {
+    posts = d.posts;
+    route();
+  }).catch(function () {
+    app.innerHTML = '<p class="loading">資料載入失敗，請稍後再試。</p>';
+  });
+})();
+</script>
+
+</body>
+</html>
