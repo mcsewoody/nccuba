@@ -19,12 +19,30 @@
 
 ```
 nccu_ba/
-├── index.html           # 前台（公開網站）
+├── index.html           # 前台首頁
+├── about.html           # 關於企家班
+├── seetoo.html          # 司徒達賢論壇（授權轉載之文章彙整）
+├── association.html     # 企家班校友會
+├── alumni.html          # 歷屆校友
+├── events.html          # 活動訊息
+├── donations.html       # 捐款與贊助
+├── downloads.html       # 下載專區
 ├── ba_admin_index.html  # 後台管理（幹部登入）
+├── data/                # 靜態資料
+│   ├── seetoo_index.json    # 論壇文章索引（列表用）
+│   └── seetoo/c00–c11.json  # 論壇文章內文，固定大小分塊延遲載入
+├── tools/
+│   └── fetch_seetoo.py  # 自 Blogger feed 產生上述 data/ 內容，平時不需重跑
+├── images/              # 圖片（含 seetoo/ 為論壇文章在地化圖片）
+├── files/               # 下載專區檔案
+├── logo.svg
+├── CNAME                # 自訂網域 nccuba.org
 └── CLAUDE.md
 ```
 
-後續預計加入子頁面（關於企家班、校友列表、課程、招生等）。
+導覽列目前寫死在 8 個前台頁面中（`index`、`about`、`seetoo`、`association`、
+`alumni`、`events`、`donations`、`downloads`），新增或調整項目需同步修改各檔。
+待辦：抽成共用片段。
 
 ## 設計規範
 
