@@ -65,6 +65,16 @@
   .donor-table th{background:var(--navy);color:#fff;font-weight:600;font-size:13px}
   .donor-table tr:last-child td{border-bottom:none}
   .donor-table tr:hover td{background:#f8fafc}
+  .donor-tools{display:flex;gap:12px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+  .donor-search{flex:1;min-width:220px;padding:9px 13px;border:1px solid var(--border);
+    border-radius:5px;font-family:inherit;font-size:14px;color:var(--text)}
+  .donor-search:focus{outline:none;border-color:var(--blue)}
+  .donor-count{font-size:13px;color:var(--text-soft);white-space:nowrap}
+  .donor-table th{cursor:pointer;user-select:none;white-space:nowrap}
+  .donor-table th:hover{background:#24527a}
+  .donor-table th .arrow{font-size:10px;margin-left:5px;opacity:.4}
+  .donor-table th.on .arrow{opacity:1;color:#f0c14b}
+  .donor-table mark{background:#fdf3d0;color:inherit;padding:0 1px;border-radius:2px}
   .amt{font-weight:700;color:var(--navy);font-size:15px}
   .amt-tier{display:inline-block;background:#eef3f8;color:var(--blue);padding:4px 14px;border-radius:3px;font-size:14px;font-weight:700}
   .amt-hidden{color:#aaa;font-size:14px}
@@ -105,7 +115,7 @@
     .nav-inner li:hover>.submenu{display:none}
     .submenu.open{display:block!important}
     .submenu li a{color:#cdd9e5;border-bottom:1px solid rgba(255,255,255,.08)}
-    .donor-table td:nth-child(5){display:none}
+    .donor-table th:nth-child(5),.donor-table td:nth-child(5){display:none}
     .donor-table th,.donor-table td{padding:10px 12px!important;font-size:13px!important}
   }
 </style>
@@ -194,6 +204,11 @@
 <section class="block">
   <div class="wrap">
     <div class="sec-head"><h2>捐款與贊助芳名錄</h2><span class="en">感謝各屆校友與善心人士對企家班的支持與贊助</span></div>
+    <div class="donor-tools" id="donorTools" style="display:none">
+      <input id="donorSearch" class="donor-search" type="search" autocomplete="off"
+             placeholder="搜尋屆別、捐款人、項目或日期…">
+      <span class="donor-count" id="donorCount"></span>
+    </div>
     <div id="donorWrap"><p style="color:var(--text-soft)">載入中…</p></div>
   </div>
 </section>
@@ -244,40 +259,118 @@ const firebaseConfig = {
 
 const db = getFirestore(initializeApp(firebaseConfig));
 
-function fmtAmt(d) {
-  if (d.amountMode==='精確') return '<span class="amt">NT$ '+Number(d.amountExact||0).toLocaleString()+'</span>';
-  if (d.amountMode==='級距') return '<span class="amt-tier">'+(d.amountTier||'')+'</span>';
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+// 先跳脫再標記，避免關鍵字含 HTML 特殊字元時破版
+function mark(text, q) {
+  var e = esc(text);
+  if (!q) return e;
+  var eq = esc(q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return e.replace(new RegExp(eq, 'gi'), function (m) { return '<mark>' + m + '</mark>'; });
+}
+
+function fmtAmt(d, q) {
+  if (d.amountMode === '精確')
+    return '<span class="amt">' + mark('NT$ ' + Number(d.amountExact || 0).toLocaleString(), q) + '</span>';
+  if (d.amountMode === '級距') return '<span class="amt-tier">' + mark(d.amountTier || '', q) + '</span>';
   return '<span class="amt-hidden">—</span>';
 }
 
 function amtSortKey(d) {
-  if (d.amountMode==='精確') return Number(d.amountExact||0);
-  if (d.amountMode==='級距') {
-    const t = d.amountTier||'';
-    if (t==='100萬以上') return 1000000;
-    if (t==='50-100萬') return 750000;
-    if (t==='10-50萬') return 300000;
-    if (t==='10萬以下') return 99999;
+  if (d.amountMode === '精確') return Number(d.amountExact || 0);
+  if (d.amountMode === '級距') {
+    const t = d.amountTier || '';
+    if (t === '100萬以上') return 1000000;
+    if (t === '50-100萬') return 750000;
+    if (t === '10-50萬') return 300000;
+    if (t === '10萬以下') return 99999;
     return 0;
   }
-  return -1;
+  return -1;   // 不顯示金額者排最後
+}
+
+const donorName = d => (d.isAnonymous ? '善心人士' : (d.donorName || ''));
+const amtText = d => (d.amountMode === '精確' ? 'NT$ ' + Number(d.amountExact || 0).toLocaleString()
+                    : d.amountMode === '級距' ? (d.amountTier || '') : '');
+
+const COLS = [
+  { key: 'term',  label: '屆別',     num: true,  val: d => Number(d.term) || 0 },
+  { key: 'donor', label: '捐款人',   num: false, val: donorName },
+  { key: 'amount',label: '金額',     num: true,  val: amtSortKey },
+  { key: 'item',  label: '捐款項目', num: false, val: d => d.item || '' },
+  { key: 'date',  label: '日期',     num: false, val: d => d.donationDate || '' },
+];
+
+let ITEMS = [], sortKey = 'amount', sortDir = 'desc', query = '';
+
+function compare(a, b) {
+  const col = COLS.find(c => c.key === sortKey);
+  const x = col.val(a), y = col.val(b);
+  let r = col.num ? x - y : String(x).localeCompare(String(y), 'zh-Hant');
+  if (r === 0) r = amtSortKey(b) - amtSortKey(a);   // 同值時以金額大者優先
+  return sortDir === 'asc' ? r : -r;
+}
+
+function matches(d, q) {
+  return [d.term, donorName(d), d.item, d.donationDate, amtText(d)]
+    .join(' ').toLowerCase().indexOf(q) !== -1;
+}
+
+function render() {
+  const q = query.trim().toLowerCase();
+  const rows = ITEMS.filter(d => !q || matches(d, q)).sort(compare);
+
+  document.getElementById('donorCount').textContent =
+    q ? '符合 ' + rows.length + ' 筆 / 共 ' + ITEMS.length + ' 筆'
+      : '共 ' + ITEMS.length + ' 筆';
+
+  const head = COLS.map(c => {
+    const on = c.key === sortKey;
+    const arrow = on ? (sortDir === 'asc' ? '▲' : '▼') : '▾';
+    return '<th class="' + (on ? 'on' : '') + '" data-key="' + c.key +
+           '" title="點擊依此欄排序">' + c.label + '<span class="arrow">' + arrow + '</span></th>';
+  }).join('');
+
+  document.getElementById('donorWrap').innerHTML = rows.length ? `
+    <table class="donor-table">
+      <thead><tr>${head}</tr></thead>
+      <tbody>${rows.map(d => `<tr>
+        <td style="font-size:18px;font-weight:700;color:var(--navy)">${mark(d.term || '—', q)}</td>
+        <td style="font-size:18px;font-weight:700">${mark(donorName(d) || '—', q)}</td>
+        <td>${fmtAmt(d, q)}</td>
+        <td>${mark(d.item || '—', q)}</td>
+        <td style="color:var(--text-soft);font-size:13px">${mark(d.donationDate || '—', q)}</td>
+      </tr>`).join('')}</tbody>
+    </table>`
+    : '<p style="color:var(--text-soft)">' + (q ? '找不到符合的紀錄。' : '目前無捐款紀錄。') + '</p>';
+
+  document.querySelectorAll('.donor-table th').forEach(th => {
+    th.onclick = () => {
+      const k = th.dataset.key;
+      // 換欄時給合理的預設方向：數值由大到小、文字由小到大
+      if (sortKey === k) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+      else { sortKey = k; sortDir = COLS.find(c => c.key === k).num ? 'desc' : 'asc'; }
+      render();
+    };
+  });
 }
 
 (async () => {
-  const snap = await getDocs(collection(db,'donations'));
-  const items = snap.docs.map(d=>({id:d.id,...d.data()}));
-  const sorted = [...items].sort((a,b)=>amtSortKey(b)-amtSortKey(a));
-  document.getElementById('donorWrap').innerHTML = sorted.length ? `
-    <table class="donor-table">
-      <thead><tr><th>屆別</th><th>捐款人</th><th>金額</th><th>捐款項目</th><th>日期</th></tr></thead>
-      <tbody>${sorted.map(d=>`<tr>
-        <td style="font-size:18px;font-weight:700;color:var(--navy)">${d.term||'—'}</td>
-        <td style="font-size:18px;font-weight:700">${d.isAnonymous?'善心人士':d.donorName}</td>
-        <td>${fmtAmt(d)}</td>
-        <td>${d.item||'—'}</td>
-        <td style="color:var(--text-soft);font-size:13px">${d.donationDate||'—'}</td>
-      </tr>`).join('')}</tbody>
-    </table>` : '<p style="color:var(--text-soft)">目前無捐款紀錄。</p>';
+  const snap = await getDocs(collection(db, 'donations'));
+  ITEMS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+  const tools = document.getElementById('donorTools');
+  if (ITEMS.length) tools.style.display = 'flex';
+
+  let t;
+  const input = document.getElementById('donorSearch');
+  input.oninput = () => { query = input.value; clearTimeout(t); t = setTimeout(render, 150); };
+
+  render();
 })();
 
 </script>
