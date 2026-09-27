@@ -6,14 +6,14 @@
 
 **前台** (`index.html`)：公開給歷屆學員、校友、以及有意報名的企業家瀏覽。內容包含最新公告、近期活動、捐款芳名錄、活動剪影。
 
-**後台** (`ba_admin_index.html`)：幹部專用管理介面，可管理公告、行事曆、捐款芳名錄、活動剪影、帳號。目前有 admin（管理者）與 editor（幹部）兩種角色。
+**後台** (`ba_admin_index.html`)：幹部專用管理介面，可管理公告、行事曆、捐款芳名錄、活動剪影、下載專區、帳號。目前有 admin（管理者）、editor（幹部）、event_manager（活動長）三種角色。
 
 ## 技術架構
 
 - **純靜態 HTML/CSS/JS**，不使用任何前端框架（不引入 Vue / React）
-- **Firebase**：Firestore（資料庫）、Firebase Auth（身份驗證）、Firebase Storage（檔案）
+- **Firebase**：Firestore（資料庫）、Firebase Auth（身份驗證）；Storage 尚未使用
 - **部署**：GitHub Pages（靜態託管）
-- **現況**：資料層目前用 `localStorage` 模擬（`DB_KEY = 'nccuba_admin_demo'`），`seed` 資料中有示範內容；正式接 Firebase 後 demo 帳號失效
+- **現況**：已正式接上 Firebase（專案 `nccuba-8568a`），後台以 Email/Password 登入並直接讀寫 Firestore；前台 `index`、`events`、`donations`、`downloads` 未登入即可讀取 Firestore 資料並渲染
 
 ## 檔案結構（現況）
 
@@ -32,7 +32,8 @@ nccu_ba/
 │   ├── seetoo_index.json    # 論壇文章索引（列表用）
 │   └── seetoo/c00–c11.json  # 論壇文章內文，固定大小分塊延遲載入
 ├── tools/
-│   └── fetch_seetoo.py  # 自 Blogger feed 產生上述 data/ 內容，平時不需重跑
+│   ├── fetch_seetoo.py  # 自 Blogger feed 產生上述 data/ 內容，平時不需重跑
+│   └── *.js / *.json    # Firestore 批次寫入片段，於後台登入後貼進 Console 執行
 ├── images/              # 圖片（含 seetoo/ 為論壇文章在地化圖片）
 ├── files/               # 下載專區檔案
 ├── logo.svg
@@ -89,31 +90,35 @@ nccu_ba/
 - 不引入外部 CSS framework（Bootstrap、Tailwind 等）
 - 不加不必要的 comment；邏輯複雜處才加一行說明
 
-### Firebase 整合（待完成）
-- 用 Firebase SDK (ESM 模組方式) 引入，不用 CDN compat 版
-- Firestore collection 命名：`announcements`、`events`、`donations`、`galleries`、`users`（與現有 `seed` 欄位對齊）
+### Firebase 整合
+- 以 Firebase SDK 10.x ESM 模組（gstatic）引入，不用 compat 版
+- Firestore collection：`announcements`、`events`、`donations`、`galleries`、`downloads`、`users`
+- 各頁讀取：`index` → announcements、events；`events` → events、galleries；`donations` → donations；`downloads` → downloads
 - Firebase Auth：Email/Password 登入，對應後台帳號
 - GitHub Pages 是靜態環境，Firebase config 可寫在前端（public key 正常），但 Firestore Security Rules 必須正確設定
 
 ### 安全性
 - 後台入口由 Firebase Auth 把守，未登入不得讀寫資料
-- Firestore Rules：`announcements`、`events`、`donations`、`galleries` 允許未登入讀取（前台需要）；寫入需登入且驗證角色
+- Firestore Rules：`announcements`、`events`、`donations`、`galleries`、`downloads` 允許未登入讀取（前台需要）；寫入需登入且驗證角色；`users` 未登入不可讀
+- 前台渲染 Firestore 資料時一律跳脫輸出，href/src 只接受 http/https
 - 不把 Firebase Service Account 或任何 secret 放進前端
-- `admin` 角色：完整存取；`editor` 角色：不得操作使用者管理
+- `admin` 角色：完整存取；`editor` 角色：不得操作使用者管理；`event_manager` 角色：僅限活動與剪影
 
 ## 待辦路線圖（優先順序）
 
-1. **Firebase Auth 整合** — 取代 demo 帳號，使用真實 Email/Password 登入
-2. **Firestore 資料層** — 取代 `localStorage`，後台 CRUD 寫入 Firestore
-3. **前台動態化** — `index.html` 從 Firestore 讀取公告、活動、捐款、剪影並渲染
-4. **子頁面展開** — 關於企家班、校友專訪、課程資訊、招生專區等導覽列項目
+已完成：Firebase Auth 登入、Firestore 資料層（後台 CRUD）、前台動態化、
+司徒達賢論壇、捐款芳名錄（排序／搜尋／批次匯入）、前台 XSS 防護。
+
+1. **導覽列抽成共用片段** — 目前寫死在 8 個前台頁面，獨立重構，不與新功能混做
+2. **子頁面內容充實** — `about`、`association`、`alumni` 目前為靜態內容；可再擴充校友專訪、課程資訊、招生專區
 
 ## 使用者與角色
 
 | 角色 | 帳號 | 權限 |
 |------|------|------|
 | admin（管理者） | 會長（你）及授權人 | 所有功能含使用者管理 |
-| editor（幹部） | 各屆幹部 | 公告、活動、捐款、剪影的 CRUD；不含使用者管理 |
+| editor（幹部） | 各屆幹部 | 公告、活動、捐款、剪影、下載的 CRUD；不含使用者管理 |
+| event_manager（活動長） | 活動負責幹部 | 僅活動（行事曆）與活動剪影 |
 
 後台側欄的「使用者管理」僅 admin 看得到。
 
