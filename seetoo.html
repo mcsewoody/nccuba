@@ -488,6 +488,22 @@
   });
 })();
 </script>
+<script>
+document.querySelectorAll('.has-sub').forEach(li=>{
+  const btn=document.createElement('button');
+  btn.className='sub-toggle';btn.innerHTML='▾';
+  btn.addEventListener('click',e=>{
+    e.preventDefault();e.stopPropagation();
+    li.querySelector('.submenu').classList.toggle('open');
+  });
+  li.querySelector(':scope>a').after(btn);
+});
+document.querySelectorAll('#navlist a').forEach(a=>{
+  a.addEventListener('click',()=>{
+    if(window.innerWidth<=860) document.getElementById('navlist').classList.remove('open');
+  });
+});
+</script>
 
 </body>
 </html>
